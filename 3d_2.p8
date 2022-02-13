@@ -5,7 +5,7 @@ function _init()
 	x=64
 	y=64
 	s=4
-  
+
 end
 
 function setup_block(x, y, s)
@@ -37,7 +37,7 @@ function _update60()
 	if(btn(1)) then
 		s+=1
 	end
-	
+
 	if(btn(2)) then
 	end
 	if(btn(3)) then
@@ -47,8 +47,8 @@ function _update60()
 	if(btn(5)) then
 	end
 
-	
-	
+
+
 end
 
 function _draw()
