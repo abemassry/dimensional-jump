@@ -13,11 +13,11 @@ function setup_block(x, y, s)
 	y0=y-4
 	x1=x+4
 	y1=y+4
-	z=4
+	z=5
 	xx0=x0+z
-	yy0=y0+z
+	yy0=y0-z
 	xx1=x1+z
-	yy1=y1+z
+	yy1=y1-z
 	draw_block(x0+s,x1+s,y0,y1,xx0,xx1,yy0,yy1,7)
 end
 
@@ -53,9 +53,19 @@ end
 
 function _draw()
 	cls()
-	setup_block(64,64,s)
-	setup_block(64-10,64,s)
-	setup_block(64-20,64,s)
+	setup_block(64+60,64,12)
+	setup_block(64+50,64,11)
+	setup_block(64+40,64,10)
+	setup_block(64+30,64,9)
+	setup_block(64+20,64,8)
+	setup_block(64+10,64,7)
+	setup_block(64,64,6)
+	setup_block(64-10,64,5)
+	setup_block(64-20,64,4)
+	setup_block(64-30,64,3)
+	setup_block(64-40,64,2)
+	setup_block(64-50,64,1)
+	setup_block(64-60,64,0)
 
 end
 
