@@ -8,16 +8,18 @@ function _init()
 
 end
 
-function setup_block(x, y, s)
-	x0=x-8
-	y0=y-8
-	x1=x+8
-	y1=y+8
-	z=5
-	xx0=x0+z+2
-	yy0=y0-z+2
-	xx1=x1+z-2
-	yy1=y1-z-2
+function setup_block(x, y, z, s)
+	x0=(x-8)-z
+	y0=(y-8)-z
+	x1=(x+8)-z
+	y1=(y+8)-z
+
+	iz=5
+
+	xx0=x0+iz+2
+	yy0=y0-iz+2
+	xx1=x1+iz-2
+	yy1=y1-iz-2
 	draw_block(x0+s,x1+s,y0,y1,xx0,xx1,yy0,yy1,7)
 end
 
@@ -53,13 +55,18 @@ end
 
 function _draw()
 	cls()
-	setup_block(64+60,64,12)
-	setup_block(64+40,64,10)
-	setup_block(64+20,64,8)
-	setup_block(64,64,7)
-	setup_block(64-20,64,4)
-	setup_block(64-40,64,2)
-	setup_block(64-60,64,0)
+  for i=0,90,30 do
+    for j=0,3 do
+      ydiff = j*22
+      setup_block(64+60,64+ydiff,i,12)
+      setup_block(64+40,64+ydiff,i,10)
+      setup_block(64+20,64+ydiff,i,8)
+      setup_block(64,64+ydiff,i,7)
+      setup_block(64-20,64+ydiff,i,4)
+      setup_block(64-40,64+ydiff,i,2)
+      setup_block(64-60,64+ydiff,i,0)
+    end
+  end
 
 end
 
