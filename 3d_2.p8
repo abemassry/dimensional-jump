@@ -9,10 +9,10 @@ function _init()
 end
 
 function setup_block(x, y, z, s)
-	x0=(x-8)-z
-	y0=(y-8)-z
+	x0=(x-8)+(z)
+	y0=(y-8)+(z)
 	x1=(x+8)-z
-	y1=(y+8)-z
+	y1=(y+8)-(z)
 
 	iz=5
 
@@ -55,18 +55,28 @@ end
 
 function _draw()
 	cls()
-  for i=0,90,30 do
-    for j=0,3 do
-      ydiff = j*22
-      setup_block(64+60,64+ydiff,i,12)
-      setup_block(64+40,64+ydiff,i,10)
-      setup_block(64+20,64+ydiff,i,8)
-      setup_block(64,64+ydiff,i,7)
-      setup_block(64-20,64+ydiff,i,4)
-      setup_block(64-40,64+ydiff,i,2)
-      setup_block(64-60,64+ydiff,i,0)
-    end
-  end
+	for j=0,3 do
+		i=0
+		ydiff = j*22
+		setup_block(64+60,64+ydiff,i,12)
+		setup_block(64+40,64+ydiff,i,10)
+		setup_block(64+20,64+ydiff,i,8)
+		setup_block(64,64+ydiff,i,7)
+		setup_block(64-20,64+ydiff,i,4)
+		setup_block(64-40,64+ydiff,i,2)
+		setup_block(64-60,64+ydiff,i,0)
+	end
+	for i=0,1 do
+		ydiff = -18 + (i * 20)
+		zdiff = 3
+		setup_block(64+60,64+ydiff,zdiff,12)
+		setup_block(64+40,64+ydiff,zdiff,10)
+		setup_block(64+20,64+ydiff,zdiff,8)
+		setup_block(64,64+ydiff,zdiff,7)
+		setup_block(64-20,64+ydiff,zdiff,4)
+		setup_block(64-40,64+ydiff,zdiff,2)
+		setup_block(64-60,64+ydiff,zdiff,0)
+	end
 
 end
 
