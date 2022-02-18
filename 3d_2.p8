@@ -8,28 +8,31 @@ function _init()
 
 end
 
-function setup_block(x, y, z, s)
+function setup_block(x, y, z, depth, s, c)
 	x0=(x-8)+(z)
 	y0=(y-8)+(z)
 	x1=(x+8)-z
 	y1=(y+8)-(z)
 
-	iz=5
+	iz=depth
 
 	xx0=x0+iz+2
 	yy0=y0-iz+2
 	xx1=x1+iz-2
 	yy1=y1-iz-2
-	draw_block(x0+s,x1+s,y0,y1,xx0,xx1,yy0,yy1,7)
+	draw_block(x0+s,x1+s,y0,y1,xx0,xx1,yy0,yy1,c)
 end
 
 function draw_block(x0,x1,y0,y1,xx0,xx1,yy0,yy1,c)
+	palt(0, false)
+	rectfill(xx0,yy0,xx1,yy1,0)
+	rect(xx0,yy0,xx1,yy1,c)
+	palt(0, true)
 	rect(x0-2,y0,x1-2,y1,c)
 	line(xx0,yy0,x0-2,y0,c)
 	line(xx1,yy0,x1-2,y0,c)
 	line(xx0,yy1,x0-2,y1,c)
 	line(xx1,yy1,x1-2,y1,c)
-	rect(xx0,yy0,xx1,yy1,c)
 end
 
 function _update60()
@@ -55,27 +58,39 @@ end
 
 function _draw()
 	cls()
+	for i=0,0 do
+		ydiff = -22 + (i * 20)
+		zdiff = 6
+		depth = 3
+		setup_block(64+50,64+ydiff,zdiff,depth,12,6)
+		setup_block(64+30,64+ydiff,zdiff,depth,10,6)
+		setup_block(64+15,64+ydiff,zdiff,depth,8,6)
+		setup_block(64,64+ydiff,zdiff,depth,7,6)
+		setup_block(64-15,64+ydiff,zdiff,depth,4,6)
+		setup_block(64-30,64+ydiff,zdiff,depth,2,6)
+		setup_block(64-50,64+ydiff,zdiff,depth,0,6)
+	end
+	for i=0,0 do
+		ydiff = -10 + (i * 20)
+		zdiff = 3
+		setup_block(64+55,64+ydiff,zdiff,5,12,6)
+		setup_block(64+35,64+ydiff,zdiff,5,10,6)
+		setup_block(64+18,64+ydiff,zdiff,5,8,6)
+		setup_block(64,64+ydiff,zdiff,5,7,6)
+		setup_block(64-18,64+ydiff,zdiff,5,4,6)
+		setup_block(64-35,64+ydiff,zdiff,5,2,6)
+		setup_block(64-55,64+ydiff,zdiff,5,0,6)
+	end
 	for j=0,3 do
 		i=0
 		ydiff = j*22
-		setup_block(64+60,64+ydiff,i,12)
-		setup_block(64+40,64+ydiff,i,10)
-		setup_block(64+20,64+ydiff,i,8)
-		setup_block(64,64+ydiff,i,7)
-		setup_block(64-20,64+ydiff,i,4)
-		setup_block(64-40,64+ydiff,i,2)
-		setup_block(64-60,64+ydiff,i,0)
-	end
-	for i=0,1 do
-		ydiff = -18 + (i * 20)
-		zdiff = 3
-		setup_block(64+60,64+ydiff,zdiff,12)
-		setup_block(64+40,64+ydiff,zdiff,10)
-		setup_block(64+20,64+ydiff,zdiff,8)
-		setup_block(64,64+ydiff,zdiff,7)
-		setup_block(64-20,64+ydiff,zdiff,4)
-		setup_block(64-40,64+ydiff,zdiff,2)
-		setup_block(64-60,64+ydiff,zdiff,0)
+		setup_block(64+60,64+ydiff,i,5,12,6)
+		setup_block(64+40,64+ydiff,i,5,10,6)
+		setup_block(64+20,64+ydiff,i,5,8,6)
+		setup_block(64,64+ydiff,i,5,7,6)
+		setup_block(64-20,64+ydiff,i,5,4,6)
+		setup_block(64-40,64+ydiff,i,5,2,6)
+		setup_block(64-60,64+ydiff,i,5,0,6)
 	end
 
 end
