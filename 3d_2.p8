@@ -20,10 +20,11 @@ function setup_block(x, y, z, depth, s, c)
 	yy0=y0-iz+2
 	xx1=x1+iz-2
 	yy1=y1-iz-2
-	if iz > 6 then
-		draw_square
+	if iz < 3 then
+		rectfill(xx0,yy0,xx1,yy1,c)
+	else
+		draw_block(x0+s,x1+s,y0,y1,xx0,xx1,yy0,yy1,c)
 	end
-	draw_block(x0+s,x1+s,y0,y1,xx0,xx1,yy0,yy1,c)
 end
 
 function draw_block(x0,x1,y0,y1,xx0,xx1,yy0,yy1,c)
@@ -62,16 +63,16 @@ end
 function _draw()
 	cls()
 	for i=0,0 do
-		ydiff = -18 + (i * 20)
+		ydiff = -17 + (i * 20)
 		zdiff = 7
 		depth = 2
-		setup_block(64+50,64+ydiff,zdiff,depth,12,6)
-		setup_block(64+30,64+ydiff,zdiff,depth,10,6)
-		setup_block(64+15,64+ydiff,zdiff,depth,8,6)
-		setup_block(64,64+ydiff,zdiff,depth,7,6)
+		setup_block(64+57,64+ydiff,zdiff,depth,12,6)
+		setup_block(64+37,64+ydiff,zdiff,depth,10,6)
+		setup_block(64+20,64+ydiff,zdiff,depth,8,6)
+		setup_block(64+3,64+ydiff,zdiff,depth,7,6)
 		setup_block(64-15,64+ydiff,zdiff,depth,4,6)
-		setup_block(64-30,64+ydiff,zdiff,depth,2,6)
-		setup_block(64-50,64+ydiff,zdiff,depth,0,6)
+		setup_block(64-32,64+ydiff,zdiff,depth,2,6)
+		setup_block(64-52,64+ydiff,zdiff,depth,0,6)
 	end
 	for i=0,0 do
 		ydiff = -10 + (i * 20)
