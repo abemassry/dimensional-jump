@@ -20,6 +20,9 @@ function setup_block(x, y, z, depth, s, c)
 	yy0=y0-iz+2
 	xx1=x1+iz-2
 	yy1=y1-iz-2
+	if iz > 6 then
+		draw_square
+	end
 	draw_block(x0+s,x1+s,y0,y1,xx0,xx1,yy0,yy1,c)
 end
 
@@ -59,9 +62,9 @@ end
 function _draw()
 	cls()
 	for i=0,0 do
-		ydiff = -22 + (i * 20)
-		zdiff = 6
-		depth = 3
+		ydiff = -18 + (i * 20)
+		zdiff = 7
+		depth = 2
 		setup_block(64+50,64+ydiff,zdiff,depth,12,6)
 		setup_block(64+30,64+ydiff,zdiff,depth,10,6)
 		setup_block(64+15,64+ydiff,zdiff,depth,8,6)
