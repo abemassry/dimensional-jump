@@ -66,35 +66,39 @@ function _draw()
 		ydiff = -17 + (i * 20)
 		zdiff = 7
 		depth = 2
-		setup_block(64+57,64+ydiff,zdiff,depth,12,6)
-		setup_block(64+37,64+ydiff,zdiff,depth,10,6)
-		setup_block(64+20,64+ydiff,zdiff,depth,8,6)
-		setup_block(64+3,64+ydiff,zdiff,depth,7,6)
-		setup_block(64-15,64+ydiff,zdiff,depth,4,6)
-		setup_block(64-32,64+ydiff,zdiff,depth,2,6)
-		setup_block(64-52,64+ydiff,zdiff,depth,0,6)
+		setup_block(64+57,64+ydiff,zdiff,depth,12,5)
+		setup_block(64+37,64+ydiff,zdiff,depth,10,5)
+		setup_block(64+20,64+ydiff,zdiff,depth,8,5)
+		setup_block(64+3,64+ydiff,zdiff,depth,7,5)
+		setup_block(64-15,64+ydiff,zdiff,depth,4,5)
+		setup_block(64-32,64+ydiff,zdiff,depth,2,5)
+		setup_block(64-52,64+ydiff,zdiff,depth,0,5)
 	end
 	for i=0,0 do
 		ydiff = -10 + (i * 20)
 		zdiff = 3
-		setup_block(64+55,64+ydiff,zdiff,5,12,6)
-		setup_block(64+35,64+ydiff,zdiff,5,10,6)
-		setup_block(64+18,64+ydiff,zdiff,5,8,6)
-		setup_block(64,64+ydiff,zdiff,5,7,6)
-		setup_block(64-18,64+ydiff,zdiff,5,4,6)
-		setup_block(64-35,64+ydiff,zdiff,5,2,6)
-		setup_block(64-55,64+ydiff,zdiff,5,0,6)
+		setup_block(64+55,64+ydiff,zdiff,5,12,5)
+		setup_block(64+35,64+ydiff,zdiff,5,10,5)
+		setup_block(64+18,64+ydiff,zdiff,5,8,5)
+		setup_block(64,64+ydiff,zdiff,5,7,5)
+		setup_block(64-18,64+ydiff,zdiff,5,4,5)
+		setup_block(64-35,64+ydiff,zdiff,5,2,5)
+		setup_block(64-55,64+ydiff,zdiff,5,0,5)
 	end
 	for j=0,3 do
 		i=0
 		ydiff = j*22
-		setup_block(64+60,64+ydiff,i,5,12,6)
-		setup_block(64+40,64+ydiff,i,5,10,6)
-		setup_block(64+20,64+ydiff,i,5,8,6)
-		setup_block(64,64+ydiff,i,5,7,6)
-		setup_block(64-20,64+ydiff,i,5,4,6)
-		setup_block(64-40,64+ydiff,i,5,2,6)
-		setup_block(64-60,64+ydiff,i,5,0,6)
+		setup_block(64+60,64+ydiff,i,5,12,5)
+		setup_block(64+40,64+ydiff,i,5,10,5)
+		setup_block(64+20,64+ydiff,i,5,8,5)
+		if j == 0 then
+			setup_block(64,64+ydiff,i,5,7,7)
+		else
+			setup_block(64,64+ydiff,i,5,7,5)
+		end
+		setup_block(64-20,64+ydiff,i,5,4,5)
+		setup_block(64-40,64+ydiff,i,5,2,5)
+		setup_block(64-60,64+ydiff,i,5,0,5)
 	end
 
 end
