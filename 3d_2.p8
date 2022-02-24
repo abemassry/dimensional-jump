@@ -5,6 +5,8 @@ function _init()
 	x=64
 	y=64
 	s=4
+  current= 0
+	level = 0
 
 end
 
@@ -40,11 +42,12 @@ function draw_block(x0,x1,y0,y1,xx0,xx1,yy0,yy1,c)
 end
 
 function _update60()
+	current = 0
 	if(btn(0)) then
-		s-=1
+		current-=1
 	end
 	if(btn(1)) then
-		s+=1
+		current+=1
 	end
 
 	if(btn(2)) then
@@ -90,13 +93,21 @@ function _draw()
 		ydiff = j*22
 		setup_block(64+60,64+ydiff,i,5,12,5)
 		setup_block(64+40,64+ydiff,i,5,10,5)
-		setup_block(64+20,64+ydiff,i,5,8,5)
-		if j == 0 then
+		if current == 1 and j == level then
+			setup_block(64+20,64+ydiff,i,5,8,7)
+		else
+			setup_block(64+20,64+ydiff,i,5,8,5)
+		end
+		if current == 0 and j == level then
 			setup_block(64,64+ydiff,i,5,7,7)
 		else
 			setup_block(64,64+ydiff,i,5,7,5)
 		end
-		setup_block(64-20,64+ydiff,i,5,4,5)
+		if current == -1 and j == level then
+			setup_block(64-20,64+ydiff,i,5,4,7)
+		else
+			setup_block(64-20,64+ydiff,i,5,4,5)
+		end
 		setup_block(64-40,64+ydiff,i,5,2,5)
 		setup_block(64-60,64+ydiff,i,5,0,5)
 	end
