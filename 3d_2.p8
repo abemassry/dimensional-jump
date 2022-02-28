@@ -11,6 +11,8 @@ function _init()
 	xcpos = 0
 	leftpress = false
 	rightpress = false
+	uppress = false
+	downpress = false
 
 end
 
@@ -61,8 +63,10 @@ function _update60()
 	end
 
 	if(btn(2)) then
+		uppress = true
 	end
 	if(btn(3)) then
+		downpress = true
 	end
 	if(btn(4)) then
 	end
