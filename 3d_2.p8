@@ -8,6 +8,7 @@ function _init()
   current= 0
 	level = 0
 	xnudge = 0
+	ynudge = 0
 	xcpos = 0
 	leftpress = false
 	rightpress = false
@@ -73,7 +74,7 @@ function _update60()
 	if(btn(5)) then
 	end
 
-	if (not btn(0) and not btn(1)) then
+	if ((not btn(0)) and (not btn(1)) and (not btn(2)) and (not btn(3))) then
 		if (leftpress == true) then
 			xnudge+=1
 			current-=1
@@ -86,6 +87,15 @@ function _update60()
 			xcpos-=20
 			rightpress = false
 		end
+		if (uppress == true) then
+			level -= 1
+			uppress = false
+		end
+		if (downpress == true) then
+			level += 1
+			downpress = false
+		end
+
 	end
 
 	if xcpos > 60 then
@@ -101,12 +111,20 @@ function _update60()
 		current = -3
 	end
 
+	if level < 0 then
+		level = 0
+	end
+
+	if level > 3 then
+		level = 3
+	end
+
 end
 
 function _draw()
 	cls()
 	for i=0,0 do
-		ydiff = -17 + (i * 20)
+		ydiff = -17 + (i * 20) - (level*4)
 		zdiff = 7
 		depth = 2
 		setup_block(xcpos+64+57,64+ydiff,zdiff,depth,12+xnudge,5)
@@ -118,7 +136,7 @@ function _draw()
 		setup_block(xcpos+64-52,64+ydiff,zdiff,depth,0+xnudge,5)
 	end
 	for i=0,0 do
-		ydiff = -10 + (i * 20)
+		ydiff = -10 + (i * 20) - (level*4)
 		zdiff = 3
 		depth = 5
 		setup_block(xcpos+64+55,64+ydiff,zdiff,depth,12+xnudge,5)
@@ -131,7 +149,7 @@ function _draw()
 	end
 	for j=0,3 do
 		i=0
-		ydiff = j*22
+		ydiff = j*22 - (level*4)
 		depth = 5
 		c = 5
 		if (current == 3 and j == level) c = 7
