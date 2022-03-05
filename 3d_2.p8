@@ -17,7 +17,7 @@ function _init()
 
 end
 
-function setup_block(x, y, z, depth, s, c)
+function setup_block(x, y, z, depth, s, u, c)
 	x0=(x-8)+(z)
 	y0=(y-8)+(z)
 	x1=(x+8)-z
@@ -32,7 +32,7 @@ function setup_block(x, y, z, depth, s, c)
 	if iz < 3 then
 		rectfill(xx0,yy0,xx1,yy1,c)
 	else
-		draw_block(x0+s,x1+s,y0,y1,xx0,xx1,yy0,yy1,c)
+		draw_block(x0+s,x1+s,y0+u,y1+u,xx0,xx1,yy0,yy1,c)
 	end
 end
 
@@ -152,6 +152,7 @@ function _draw()
 		ydiff = j*22 - (level*4)
 		depth = 5
 		c = 5
+
 		if (current == 3 and j == level) c = 7
 		setup_block(xcpos+64+60,64+ydiff,i,depth,13+xnudge,c)
 		c = 5
