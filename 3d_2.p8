@@ -11,10 +11,12 @@ function _init()
 	xnudge = 0
 	ynudge = 0
 	xcpos = 0
+	jumpanim = 0
 	leftpress = false
 	rightpress = false
 	uppress = false
 	downpress = false
+	jumppress = false
 
 end
 
@@ -71,8 +73,10 @@ function _update60()
 		downpress = true
 	end
 	if(btn(4)) then
+		jumppress = true
 	end
 	if(btn(5)) then
+		jumppress = true
 	end
 
 	if ((not btn(0)) and (not btn(1)) and (not btn(2)) and (not btn(3))) then
@@ -120,11 +124,20 @@ function _update60()
 		level = 3
 	end
 
+	if (jumppress == true) then
+		jumpanim -= 0.1
+	end
+
+	if (jumpanim < -10) then
+		jumpanim = 0
+		jumppress = false
+	end
+
+
 end
 
 function _draw()
 	cls()
-	print("level: "..level, 0,0,7)
 	for i=0,0 do
 		ydiff = -17 + (i * 20) - (level*4)
 		zdiff = 7
@@ -154,7 +167,7 @@ function _draw()
 		setup_block(xcpos+64-55,64+ydiff,zdiff,depth,0+xnudge,u,5)
 	end
 	for j=0,3 do
-		i=0
+		i= (jumpanim * .5)
 		ydiff = j*22 - (level*4)
 		depth = 5
 		c = 5
@@ -178,7 +191,7 @@ function _draw()
 		setup_block(xcpos+64-40,64+ydiff,i,depth,2+xnudge,u,c)
 		c = 5
 		if (current == -3 and j == level) c = 7
-		setup_block(xcpos+64-60,64+ydiff,i,depth,0+xnudge,u,c)
+		setup_block((jumpanim*2)+xcpos+64-60,(jumpanim*3)+64+ydiff,i,depth,0+xnudge,u,c)
 	end
 
 end
