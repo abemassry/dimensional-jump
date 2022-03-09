@@ -6,7 +6,8 @@ function _init()
 	y=64
 	s=4
 	u=0
-  current= 0
+	current= 0
+	prevcurrent = 0
 	level = 0
 	xnudge = 0
 	ynudge = 0
@@ -73,9 +74,11 @@ function _update60()
 		downpress = true
 	end
 	if(btn(4)) then
+		if (jumppress == false) prevcurrent = current
 		jumppress = true
 	end
 	if(btn(5)) then
+		if (jumppress == false) prevcurrent = current
 		jumppress = true
 	end
 
@@ -125,12 +128,14 @@ function _update60()
 	end
 
 	if (jumppress == true) then
-		jumpanim -= 0.1
+		current = -10
+		jumpanim -= 2.5
 	end
 
-	if (jumpanim < -10) then
+	if (jumpanim < -50) then
 		jumpanim = 0
 		jumppress = false
+		current = prevcurrent
 	end
 
 
@@ -140,31 +145,45 @@ function _draw()
 	cls()
 	for i=0,0 do
 		ydiff = -17 + (i * 20) - (level*4)
-		zdiff = 7
+		zdiff = 7 + (jumpanim * .2)
 		depth = 2
 		if (level > 0) ydiff = ydiff + 5
 		if (level >= 3) ydiff = ydiff + 6
-		setup_block(xcpos+64+57,64+ydiff,zdiff,depth,12+xnudge,u,5)
-		setup_block(xcpos+64+37,64+ydiff,zdiff,depth,10+xnudge,u,5)
-		setup_block(xcpos+64+20,64+ydiff,zdiff,depth,8+xnudge,u,5)
+		setup_block((jumpanim*-3)+xcpos+64+57,64+ydiff,zdiff,depth,12+xnudge,u,5)
+		setup_block((jumpanim*-2)+xcpos+64+37,64+ydiff,zdiff,depth,10+xnudge,u,5)
+		setup_block((jumpanim*-1)+xcpos+64+20,64+ydiff,zdiff,depth,8+xnudge,u,5)
 		setup_block(xcpos+64+3,64+ydiff,zdiff,depth,7+xnudge,u,5)
-		setup_block(xcpos+64-15,64+ydiff,zdiff,depth,4+xnudge,u,5)
-		setup_block(xcpos+64-32,64+ydiff,zdiff,depth,2+xnudge,u,5)
-		setup_block(xcpos+64-52,64+ydiff,zdiff,depth,0+xnudge,u,5)
+		setup_block((jumpanim*1)+xcpos+64-15,64+ydiff,zdiff,depth,4+xnudge,u,5)
+		setup_block((jumpanim*2)+xcpos+64-32,64+ydiff,zdiff,depth,2+xnudge,u,5)
+		setup_block((jumpanim*3)+xcpos+64-52,64+ydiff,zdiff,depth,0+xnudge,u,5)
 	end
 	for i=0,0 do
 		ydiff = -10 + (i * 20) - (level*4)
-		zdiff = 3
+		zdiff = (3 + (jumpanim * .2))
 		depth = 5
 		if (level > 0) ydiff = ydiff + 5
 		if (level >= 3) ydiff = ydiff + 6
-		setup_block(xcpos+64+55,64+ydiff,zdiff,depth,12+xnudge,u,5)
-		setup_block(xcpos+64+35,64+ydiff,zdiff,depth,10+xnudge,u,5)
-		setup_block(xcpos+64+18,64+ydiff,zdiff,depth,8+xnudge,u,5)
-		setup_block(xcpos+64,64+ydiff,zdiff,depth,7+xnudge,u,5)
-		setup_block(xcpos+64-18,64+ydiff,zdiff,depth,4+xnudge,u,5)
-		setup_block(xcpos+64-35,64+ydiff,zdiff,depth,2+xnudge,u,5)
-		setup_block(xcpos+64-55,64+ydiff,zdiff,depth,0+xnudge,u,5)
+		c = 5
+		if (prevcurrent == 3 and jumppress == true) c = 7
+		setup_block((jumpanim*-3)+xcpos+64+55,64+ydiff,zdiff,depth,12+xnudge,u,c)
+		c = 5
+		if (prevcurrent == 2 and jumppress == true) c = 7
+		setup_block((jumpanim*-2)+xcpos+64+35,64+ydiff,zdiff,depth,10+xnudge,u,c)
+		c = 5
+		if (prevcurrent == 1 and jumppress == true) c = 7
+		setup_block((jumpanim*-1)+xcpos+64+18,64+ydiff,zdiff,depth,8+xnudge,u,c)
+		c = 5
+		if (prevcurrent == 0 and jumppress == true) c = 7
+		setup_block(xcpos+64,64+ydiff,zdiff,depth,7+xnudge,u,c)
+		c = 5
+		if (prevcurrent == -1 and jumppress == true) c = 7
+		setup_block((jumpanim*1)+xcpos+64-18,64+ydiff,zdiff,depth,4+xnudge,u,c)
+		c = 5
+		if (prevcurrent == -2 and jumppress == true) c = 7
+		setup_block((jumpanim*2)+xcpos+64-35,64+ydiff,zdiff,depth,2+xnudge,u,c)
+		c = 5
+		if (prevcurrent == -3 and jumppress == true) c = 7
+		setup_block((jumpanim*3)+xcpos+64-55,64+ydiff,zdiff,depth,0+xnudge,u,c)
 	end
 	for j=0,3 do
 		i= (jumpanim * .5)
@@ -173,25 +192,25 @@ function _draw()
 		c = 5
 		if (j == level) u = -(j-0.5)
 		if (current == 3 and j == level) c = 7
-		setup_block(xcpos+64+60,64+ydiff,i,depth,13+xnudge,u,c)
+		setup_block((jumpanim*-3)+xcpos+64+60,((j * -1)*(jumpanim*1.))+64+ydiff,i,depth,13+xnudge,u,c)
 		c = 5
 		if (current == 2 and j == level) c = 7
-		setup_block(xcpos+64+40,64+ydiff,i,depth,11+xnudge,u,c)
+		setup_block((jumpanim*-2)+xcpos+64+40,((j * -1)*(jumpanim*1.))+64+ydiff,i,depth,11+xnudge,u,c)
 		c = 5
 		if (current == 1 and j == level) c = 7
-		setup_block(xcpos+64+20,64+ydiff,i,depth,9+xnudge,u,c)
+		setup_block((jumpanim*-1)+xcpos+64+20,((j * -1)*(jumpanim*1.))+64+ydiff,i,depth,9+xnudge,u,c)
 		c = 5
 		if (current == 0 and j == level) c = 7
-		setup_block(xcpos+64,64+ydiff,i,depth,7+xnudge,u,c)
+		setup_block(xcpos+64,((j * -1)*(jumpanim*1.))+64+ydiff,i,depth,7+xnudge,u,c)
 		c = 5
 		if (current == -1 and j == level) c = 7
-		setup_block(xcpos+64-20,64+ydiff,i,depth,4+xnudge,u,c)
+		setup_block((jumpanim*1)+xcpos+64-20,((j * -1)*(jumpanim*1.))+64+ydiff,i,depth,4+xnudge,u,c)
 		c = 5
 		if (current == -2 and j == level) c = 7
-		setup_block(xcpos+64-40,64+ydiff,i,depth,2+xnudge,u,c)
+		setup_block((jumpanim*2)+xcpos+64-40,((j * -1)*(jumpanim*1.))+64+ydiff,i,depth,2+xnudge,u,c)
 		c = 5
 		if (current == -3 and j == level) c = 7
-		setup_block((jumpanim*2)+xcpos+64-60,(jumpanim*3)+64+ydiff,i,depth,0+xnudge,u,c)
+		setup_block((jumpanim*3)+xcpos+64-60,((j * -1)*(jumpanim*1.))+64+ydiff,i,depth,0+xnudge,u,c)
 	end
 
 end
