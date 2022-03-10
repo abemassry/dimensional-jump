@@ -13,6 +13,7 @@ function _init()
 	ynudge = 0
 	xcpos = 0
 	jumpanim = 0
+	startanim = 0
 	leftpress = false
 	rightpress = false
 	uppress = false
@@ -129,13 +130,16 @@ function _update60()
 
 	if (jumppress == true) then
 		current = -10
-		jumpanim -= 2.5
+		if (startanim > 5) then
+			jumpanim -= 2.5
+		end
 	end
 
 	if (jumpanim < -50) then
 		jumpanim = 0
 		jumppress = false
 		current = prevcurrent
+		startanim = 0
 	end
 
 
@@ -159,30 +163,30 @@ function _draw()
 	end
 	for i=0,0 do
 		ydiff = -10 + (i * 20) - (level*4)
-		zdiff = (3 + (jumpanim * .2))
+		zdiff = 3 -- + (jumpanim * .2)
 		depth = 5
 		if (level > 0) ydiff = ydiff + 5
 		if (level >= 3) ydiff = ydiff + 6
 		c = 5
-		if (prevcurrent == 3 and jumppress == true) c = 7
+		if (prevcurrent == 3 and jumppress == true and level == 0) c = 7
 		setup_block((jumpanim*-3)+xcpos+64+55,64+ydiff,zdiff,depth,12+xnudge,u,c)
 		c = 5
-		if (prevcurrent == 2 and jumppress == true) c = 7
+		if (prevcurrent == 2 and jumppress == true and level == 0) c = 7
 		setup_block((jumpanim*-2)+xcpos+64+35,64+ydiff,zdiff,depth,10+xnudge,u,c)
 		c = 5
-		if (prevcurrent == 1 and jumppress == true) c = 7
+		if (prevcurrent == 1 and jumppress == true and level == 0) c = 7
 		setup_block((jumpanim*-1)+xcpos+64+18,64+ydiff,zdiff,depth,8+xnudge,u,c)
 		c = 5
-		if (prevcurrent == 0 and jumppress == true) c = 7
+		if (prevcurrent == 0 and jumppress == true and level == 0) c = 7
 		setup_block(xcpos+64,64+ydiff,zdiff,depth,7+xnudge,u,c)
 		c = 5
-		if (prevcurrent == -1 and jumppress == true) c = 7
+		if (prevcurrent == -1 and jumppress == true and level == 0) c = 7
 		setup_block((jumpanim*1)+xcpos+64-18,64+ydiff,zdiff,depth,4+xnudge,u,c)
 		c = 5
-		if (prevcurrent == -2 and jumppress == true) c = 7
+		if (prevcurrent == -2 and jumppress == true and level == 0) c = 7
 		setup_block((jumpanim*2)+xcpos+64-35,64+ydiff,zdiff,depth,2+xnudge,u,c)
 		c = 5
-		if (prevcurrent == -3 and jumppress == true) c = 7
+		if (prevcurrent == -3 and jumppress == true and level == 0) c = 7
 		setup_block((jumpanim*3)+xcpos+64-55,64+ydiff,zdiff,depth,0+xnudge,u,c)
 	end
 	for j=0,3 do
@@ -212,6 +216,8 @@ function _draw()
 		if (current == -3 and j == level) c = 7
 		setup_block((jumpanim*3)+xcpos+64-60,((j * -1)*(jumpanim*1.))+64+ydiff,i,depth,0+xnudge,u,c)
 	end
+	if (jumppress == true) startanim += 1
+
 
 end
 
