@@ -132,7 +132,7 @@ function _update60()
 	if (jumppress == true) then
 		current = -10
 		if (startanim > 5) then
-			jumpanim -= 2.5
+			jumpanim -= 3.75
 		end
 	end
 
@@ -168,49 +168,58 @@ function _draw()
 		if (jumpanim == 0) then
 			ydiff = -10 + (i * 20) - (level*4)
 			blocksize = 8
-			zdiff = 3 -- + (jumpanim * .2)
+			zdiff = 3
+			ja5 = 0
+			ja5n = 0
+			ja2 = 0
+			ja2n = 0
 		else
-			ydiff = - (level*4)
-			blocksize = 8
-			zdiff = 0 -- + (jumpanim * .2)
+			ydiff = - 10 + (i * 20) - (level*4) - (jumpanim * .2)
+			blocksize = 8 - (jumpanim *.02)
+			zdiff = 3  + (jumpanim * .02)
+			ja5 = 5 + (jumpanim *.06)
+			ja5n = -5 - (jumpanim *.06)
+			ja2 = 2 + (jumpanim *.06)
+			ja2n = -2 - (jumpanim *.06)
 		end
 		depth = 5
-		if (level > 0) ydiff = ydiff + 5
-		if (level >= 3) ydiff = ydiff + 6
+		if (level > 0) ydiff = ydiff + 5 + (jumpanim * .2)
+		if (level >= 3) ydiff = ydiff + 6 + (jumpanim * .2)
 		c = 5
 		if (prevcurrent == 3 and jumppress == true and level == 0) c = 7
-		setup_block(xcpos+64+55,64+ydiff,zdiff,depth,12+xnudge,u,c,blocksize)
+		setup_block(ja5+xcpos+64+55,64+ydiff,zdiff,depth,12+xnudge,u,c,blocksize)
 		c = 5
 		if (prevcurrent == 2 and jumppress == true and level == 0) c = 7
-		setup_block(xcpos+64+35,64+ydiff,zdiff,depth,10+xnudge,u,c,blocksize)
+		setup_block(ja5+xcpos+64+35,64+ydiff,zdiff,depth,10+xnudge,u,c,blocksize)
 		c = 5
 		if (prevcurrent == 1 and jumppress == true and level == 0) c = 7
-		setup_block(xcpos+64+18,64+ydiff,zdiff,depth,8+xnudge,u,c,blocksize)
+		setup_block(ja2+xcpos+64+18,64+ydiff,zdiff,depth,8+xnudge,u,c,blocksize)
 		c = 5
 		if (prevcurrent == 0 and jumppress == true and level == 0) c = 7
 		setup_block(xcpos+64,64+ydiff,zdiff,depth,7+xnudge,u,c,blocksize)
 		c = 5
 		if (prevcurrent == -1 and jumppress == true and level == 0) c = 7
-		setup_block(xcpos+64-18,64+ydiff,zdiff,depth,4+xnudge,u,c,blocksize)
+		setup_block(ja2n+xcpos+64-18,64+ydiff,zdiff,depth,4+xnudge,u,c,blocksize)
 		c = 5
 		if (prevcurrent == -2 and jumppress == true and level == 0) c = 7
-		setup_block(xcpos+64-35,64+ydiff,zdiff,depth,2+xnudge,u,c,blocksize)
+		setup_block(ja5n+xcpos+64-35,64+ydiff,zdiff,depth,2+xnudge,u,c,blocksize)
 		c = 5
 		if (prevcurrent == -3 and jumppress == true and level == 0) c = 7
-		setup_block(xcpos+64-55,64+ydiff,zdiff,depth,0+xnudge,u,c,blocksize)
+		setup_block(ja5n+xcpos+64-55,64+ydiff,zdiff,depth,0+xnudge,u,c,blocksize)
 	end
 	for j=0,3 do
-		if (jumpanim < -20) then
+		if (jumpanim < -40) then
 			break
 		end
 		i= (jumpanim * .5)
-		if (jumpanim != 0) then
+		if (jumpanim == 0) then
 			blocksize = 8
+			ydiff = j*22 - (level*4)
 		else
-			blocksize = 8
+			ydiff = j*22 - (level*4) - (jumpanim * .2)
+			blocksize = 8 - (jumpanim * .02)
 		end
 		i = 0
-		ydiff = j*22 - (level*4)
 		depth = 5
 		c = 5
 		if (j == level) u = -(j-0.5)
