@@ -24,6 +24,8 @@ function _init()
 	score_tabulate = 0
 	end_stage_control = 0
 	transition_timer = 0
+	monamie_code={}
+	monamie = false
 	credit_number = 1
 	rolling_credits = false
 	rolling_credits_height = 130
@@ -382,9 +384,11 @@ function _update()
 		end
 		camera(0,0)
 
+		if btn(4) or btn(5) then
+			overlay_state = 4
+		end
 	-- TODO: if condition for overlay state 4
 	-- if negative_altitude > 400 then
-	-- 	overlay_state = 4
 	-- end
 
 	-- TODO: if condition for overlay state 2
@@ -396,7 +400,7 @@ function _update()
 	-- 		pause_length = 5
 	-- 	end
 
-	-- end
+	end
 
 end
 
