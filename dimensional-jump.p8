@@ -46,10 +46,11 @@ function draw_first_overlay()
 	-- map( celx, cely, sx, sy, celw, celh, [layer] )
 	pal(7, 12)
 	bluepos = sin(sintimer)*5
-	map(1, 0, 13+bluepos, 5+bluepos, 128, 128)
+	res = 5 + bluepos
+	map(1, 0, 13+bluepos, 0, 128, 128)
 	pal(7, 8)
 	redpos = -1*(sin(sintimer)*5)
-	map(1, 0, 4+(redpos), -4+redpos, 128, 128)
+	map(1, 0, 4+(redpos), 0, 128, 128)
 	pal(7, 7)
 	map(1, 0, 8, 0, 128, 128)
 	first_overlay()
