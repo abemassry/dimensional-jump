@@ -35,13 +35,13 @@ function _init()
 	-- music(12, 0, 3)
 end
 
-function first_overlay()
+function zero_overlay()
 	print('press ❎ or 🅾️ to start', 18, 98, 7)
 	print('presented by:', 39, 107, 6)
-	print('massindustries', 36, 113, 5)
+	print('mass industries', 35, 113, 5)
 end
 
-function draw_first_overlay()
+function draw_zero_overlay()
 	cls()
 	-- map( celx, cely, sx, sy, celw, celh, [layer] )
 	pal(7, 12)
@@ -53,7 +53,11 @@ function draw_first_overlay()
 	map(1, 0, 4+(redpos), 0, 128, 128)
 	pal(7, 7)
 	map(1, 0, 8, 0, 128, 128)
-	first_overlay()
+	zero_overlay()
+end
+
+function draw_first_level()
+	rectfill(10,10,120,120,7)
 end
 
 function screen_shake(acs)
@@ -395,9 +399,9 @@ function _update60()
 		end
 		camera(0,0)
 
-		if btn(4) or btn(5) then
-			overlay_state = 4
-		end
+		-- if btn(4) or btn(5) then
+		-- 	overlay_state = 4
+		-- end
 	-- TODO: if condition for overlay state 4
 	-- if negative_altitude > 400 then
 	-- end
@@ -417,7 +421,7 @@ end
 
 function _draw()
 	if overlay_state == 0 then
-		draw_first_overlay()
+		draw_zero_overlay()
 	elseif overlay_state == 1 then
 		cls()
 		-- above is background
@@ -427,6 +431,9 @@ function _draw()
 		-- end hud
 
 		-- below is foreground
+		if level == 1 then
+			draw_first_level()
+		end
 	elseif overlay_state == 3 then
 		cls()
 	elseif overlay_state == 4 then
