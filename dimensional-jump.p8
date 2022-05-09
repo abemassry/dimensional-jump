@@ -10,6 +10,12 @@ function _init()
 	btn_1_state = false
 	btn_2_state = false
 	btn_3_state = false
+	btn_4_state = false
+	btn_5_state = false
+
+	btn_4_press = false
+	btn_5_press = false
+
 	overlay_state = 0
 	-- overlay_state 0 title screen
 	-- overlay_state 1 main play
@@ -22,6 +28,7 @@ function _init()
 	score = 0
 	score_counter = 0
 	score_tabulate = 0
+	score1 = 0
 	end_stage_control = 0
 	transition_timer = 0
 	monamie_code={}
@@ -54,6 +61,22 @@ function draw_zero_overlay()
 	pal(7, 7)
 	map(1, 0, 8, 0, 128, 128)
 	zero_overlay()
+end
+
+function update_first_level()
+	prev_4 = btn_4_press
+	if btn(4) then
+		btn_4_press = true
+	else
+		btn_4_press = false
+	end
+	if prev_4 == false and btn_4_press == true then
+		score1 += 1
+	end
+
+	if score1 >= 3 then
+		overlay_state = 4
+	end
 end
 
 function draw_first_level()
@@ -398,10 +421,9 @@ function _update60()
 		if monamie then
 		end
 		camera(0,0)
-
-		-- if btn(4) or btn(5) then
-		-- 	overlay_state = 4
-		-- end
+		if level == 1 then
+			update_first_level()
+		end
 	-- TODO: if condition for overlay state 4
 	-- if negative_altitude > 400 then
 	-- end
@@ -443,6 +465,9 @@ function _draw()
 		cls()
 		roll_credits()
 	end
+
+	-- debug area
+	print('score1: '..flr(score1), 0, 0, 5)
 
 end
 __gfx__
