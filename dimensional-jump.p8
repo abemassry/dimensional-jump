@@ -99,6 +99,21 @@ function screen_shake(acs)
 	end
 end
 
+function zero_level_start()
+	zero_level = {
+		draw=function(self)
+			-- draw items in here
+			rectfill(54, 54, 84, 84, 7)
+		end,
+		update=function(self)
+			-- handle button press
+			if (btn(4) or btn(5)) then
+				overlay_state = 4
+			end
+		end
+	}
+end
+
 
 function draw_end_first_stage_bg(bg_height)
 	bg_height+=156
@@ -171,11 +186,13 @@ end
 function reset_to_next_stage()
 	overlay_state = 1
 
-	if level == 2 then
-		level = 3
-		-- music(28, 1000, 3)
-	else
+	if level == 0 then
+		level = 1
+	elseif level == 1 then
 		level = 2
+		-- music(28, 1000, 3)
+	elseif level == 2 then
+		level = 3
 		-- music(19, 1000, 3)
 	end
 	-- overlay_state 0 title screen
@@ -377,6 +394,7 @@ function _update60()
 			cls()
 			-- music(1, 1000, 3)
 			-- start of play
+			zero_level_start()
 			if not monamie then
 			end
 		end
@@ -421,9 +439,17 @@ function _update60()
 		if monamie then
 		end
 		camera(0,0)
-		if level == 1 then
-			update_first_level()
+
+		if level == 0 then
+			zero_level:update()
+		elseif level == 1 then
+			--one_level:update()
+		elseif level == 2 then
+			--two_level:update()
+		elseif level == 3 then
+			--three_level:update()
 		end
+
 	-- TODO: if condition for overlay state 4
 	-- if negative_altitude > 400 then
 	-- end
@@ -451,7 +477,7 @@ function _draw()
 		-- hud
 		draw_score()
 		-- end hud
-
+		zero_level:draw()
 		-- below is foreground
 		if level == 1 then
 			draw_first_level()
