@@ -23,7 +23,7 @@ function _init()
 	-- overlay_state 3 end of level
 	-- overlay_state 4 transition
 	-- overlay_state 5 credits
-	level = 1 -- default 1
+	level = 0 -- default 0
 	pause_length = 5
 	score = 0
 	score_counter = 0
@@ -79,9 +79,6 @@ function update_first_level()
 	end
 end
 
-function draw_first_level()
-	rectfill(10,10,120,120,7)
-end
 
 function screen_shake(acs)
 	local fade = 0.95
@@ -101,6 +98,32 @@ end
 
 function zero_level_start()
 	zero_level = {
+		button_pressed = false,
+		button_released = false,
+		update=function(self)
+			-- handle button press
+			if (btn(4) or btn(5)) then
+				self.button_pressed = true
+			elseif self.button_pressed == true then
+				self.button_released = true
+			end
+			if self.button_pressed == true and self.button_released == true then
+				self.button_pressed = false
+				self.button_released = false
+				score += 1
+			end
+			if score > 10 then
+				overlay_state = 4
+			end
+		end,
+		draw=function(self)
+			-- draw items in here
+			rectfill(44, 44, 84, 84, 5)
+		end
+	}
+end
+function one_level_start()
+	one_level = {
 		draw=function(self)
 			-- draw items in here
 			rectfill(54, 54, 84, 84, 7)
@@ -113,41 +136,33 @@ function zero_level_start()
 		end
 	}
 end
-
-
-function draw_end_first_stage_bg(bg_height)
-	bg_height+=156
-	if (bg_height < 104) then
-		if (bg_height == 103) then
-			end_stage_control = 1
-			music(-1)
-			sfx(14)
+function two_level_start()
+	two_level = {
+		draw=function(self)
+			-- draw items in here
+			rectfill(54, 54, 84, 84, 7)
+		end,
+		update=function(self)
+			-- handle button press
+			if (btn(4) or btn(5)) then
+				overlay_state = 4
+			end
 		end
-		bg_height = 104
-	end
-
-	spr(192, 0, bg_height, 1, 3)
-	spr(192, 8, bg_height, 1, 3)
-	spr(192, 16, bg_height, 1, 3)
-	spr(193, 24, bg_height, 1, 3)
-	spr(198, 32, bg_height, 1, 3)
-	if (cloud_token % 2 == 0) then
-		for i=1,4 do
-			sp=flr(rnd(3))+194
-			water_sparkle[i] = sp
+	}
+end
+function three_level_start()
+	three_level = {
+		draw=function(self)
+			-- draw items in here
+			rectfill(54, 54, 84, 84, 7)
+		end,
+		update=function(self)
+			-- handle button press
+			if (btn(4) or btn(5)) then
+				overlay_state = 4
+			end
 		end
-	end
-	for i=40,72,8 do
-		j = flr(i/16)
-		spr(water_sparkle[j], i, bg_height, 1, 1)
-		spr(210, i, bg_height+8, 1, 2)
-	end
-	spr(198, 80, bg_height, 1, 3, true, false)
-	spr(193, 88, bg_height, 1,3, true, false)
-	for i=92,128,8 do
-		spr(192, i, bg_height, 1, 3)
-	end
-
+	}
 end
 
 function draw_score()
@@ -188,11 +203,14 @@ function reset_to_next_stage()
 
 	if level == 0 then
 		level = 1
+		one_level_start()
 	elseif level == 1 then
 		level = 2
+		two_level_start()
 		-- music(28, 1000, 3)
 	elseif level == 2 then
 		level = 3
+		three_level_start()
 		-- music(19, 1000, 3)
 	end
 	-- overlay_state 0 title screen
@@ -443,11 +461,11 @@ function _update60()
 		if level == 0 then
 			zero_level:update()
 		elseif level == 1 then
-			--one_level:update()
+			one_level:update()
 		elseif level == 2 then
-			--two_level:update()
+			two_level:update()
 		elseif level == 3 then
-			--three_level:update()
+			three_level:update()
 		end
 
 	-- TODO: if condition for overlay state 4
@@ -477,10 +495,15 @@ function _draw()
 		-- hud
 		draw_score()
 		-- end hud
-		zero_level:draw()
 		-- below is foreground
-		if level == 1 then
-			draw_first_level()
+		if level == 0 then
+			zero_level:draw()
+		elseif level == 1 then
+			one_level:draw()
+		elseif level == 2 then
+			two_level:draw()
+		elseif level == 3 then
+			three_level:draw()
 		end
 	elseif overlay_state == 3 then
 		cls()
@@ -493,7 +516,7 @@ function _draw()
 	end
 
 	-- debug area
-	print('score1: '..flr(score1), 0, 0, 5)
+	-- print('score1: '..flr(score1), 0, 0, 5)
 
 end
 __gfx__
