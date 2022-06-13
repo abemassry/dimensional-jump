@@ -39,6 +39,7 @@ function _init()
 	reset_game = false
 	i=0
 	sintimer=0
+	timer=0
 	-- music(12, 0, 3)
 end
 
@@ -96,22 +97,27 @@ function screen_shake(acs)
 	end
 end
 
+function handle_button_press(button_pressed, button_released)
+	if (btn(4) or btn(5)) then
+		button_pressed = true
+	elseif button_pressed == true then
+		button_released = true
+	end
+	if button_pressed == true and button_released == true then
+		button_pressed = false
+		button_released = false
+	end
+	return button_pressed, button_released
+end
+
 function zero_level_start()
 	zero_level = {
 		button_pressed = false,
 		button_released = false,
 		update=function(self)
 			-- handle button press
-			if (btn(4) or btn(5)) then
-				self.button_pressed = true
-			elseif self.button_pressed == true then
-				self.button_released = true
-			end
-			if self.button_pressed == true and self.button_released == true then
-				self.button_pressed = false
-				self.button_released = false
-				score += 1
-			end
+			self.button_pressed, self.button_released = handle_button_press(self.button_pressed, self.button_released)
+			if (timer == 50) score+=1
 			if score > 10 then
 				overlay_state = 4
 			end
@@ -186,7 +192,7 @@ function draw_transition()
 		transition_timer += 1
 	end
 	print('score: '..flr(score_counter), 40, 50, 7)
-	if transition_timer > 60 then
+	if transition_timer > 120 then
 		if level == 3 then
 			-- call roll credits
 			transition_timer = 0
@@ -286,7 +292,7 @@ function display_credit(credit)
 	end
 
 	if (credit == 11) then
-		print('rain drop', 40 + pad_left, 50, 7)
+		print('dimensional jump', 40 + pad_left, 50, 7)
 		print('the end', 44 + pad_left, 57, 7)
 	end
 
@@ -341,7 +347,7 @@ end
 function roll_credits()
 	print('score: '..flr(score), 0, 0, 5)
 	if (rolling_credits == false) then
-		transition_timer += 1
+		transition_timer += 0.5
 		if (transition_timer < 5) then
 			pal(7, 5)
 			pal(2, 5)
@@ -392,6 +398,8 @@ end
 
 
 function _update60()
+	timer+=1
+	if (timer > 60) timer=0
 	sintimer+=0.005
 	if overlay_state == 0 then
 		
@@ -643,3 +651,9 @@ d0d1d2d3d4d5d6d7d8d9dadbdcdddedf000000000000000000008000000000000000000000000000
 0000000000000000000000000000000000000000000000000010112324253637383900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000000000000000000000000000000000000000000000000020213334350000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000000000000000000000000000000000000000000000000030310000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+__sfx__
+010100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+011000001056300000000000000000000000000000000000105630000010563000000000000000000000000000000105001056310563000001e5531e6001b7001e30020300204001e5001e500000000000000000
+003000001e7341e7201e7201e7101e7101e7101e7101e715000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+__music__
+00 01024344
