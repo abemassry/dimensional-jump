@@ -127,9 +127,9 @@ function zero_level_start()
 		draw=function(self)
 			-- draw items in here
 			self.color = 5
-			if (stat(54) != nil) then
-				print('stat:'..stat(54), 0, 6, 7)
-				-- if (stat(50) > 17 and stat(50) < 30) self.color = 7
+			if (stat(50) != nil) then
+				print('stat:'..stat(50), 0, 6, 7)
+				if (stat(50) > 19 and stat(50) < 22) self.color = 7
 			end
 			rectfill(44, 44, 84, 84, self.color)
 		end
