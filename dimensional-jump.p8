@@ -137,15 +137,17 @@ function zero_level_start()
 end
 function one_level_start()
 	one_level = {
-		draw=function(self)
-			-- draw items in here
-			rectfill(54, 54, 84, 84, 7)
-		end,
 		update=function(self)
 			-- handle button press
+			-- need left and right buttons
 			if (btn(4) or btn(5)) then
 				overlay_state = 4
 			end
+		end,
+		draw=function(self)
+			-- draw items in here
+			-- initial 1d grid
+			rectfill(54, 54, 84, 84, 7)
 		end
 	}
 end
