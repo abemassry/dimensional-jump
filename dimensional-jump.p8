@@ -13,8 +13,20 @@ function _init()
 	btn_4_state = false
 	btn_5_state = false
 
-	btn_4_press = false
-	btn_5_press = false
+	btn_press = {}
+	btn_press[0] = false
+	btn_press[1] = false
+	btn_press[2] = false
+	btn_press[3] = false
+	btn_press[4] = false
+	btn_press[5] = false
+	btn_release = {}
+	btn_release[0] = false
+	btn_release[1] = false
+	btn_release[2] = false
+	btn_release[3] = false
+	btn_release[4] = false
+	btn_release[5] = false
 
 	overlay_state = 0
 	-- overlay_state 0 title screen
@@ -64,23 +76,6 @@ function draw_zero_overlay()
 	zero_overlay()
 end
 
-function update_first_level()
-	prev_4 = btn_4_press
-	if btn(4) then
-		btn_4_press = true
-	else
-		btn_4_press = false
-	end
-	if prev_4 == false and btn_4_press == true then
-		score1 += 1
-	end
-
-	if score1 >= 3 then
-		overlay_state = 4
-	end
-end
-
-
 function screen_shake(acs)
 	local fade = 0.95
 	local offset_x=1-rnd(2)
@@ -97,28 +92,27 @@ function screen_shake(acs)
 	end
 end
 
-function handle_button_press(button_pressed, button_released)
-	if (btn(4) or btn(5)) then
-		button_pressed = true
-	elseif button_pressed == true then
-		button_released = true
+function handle_button_release(btn_num)
+	if (btn(btn_num)) then
+		btn_press[btn_num] = true
+	elseif btn_press[btn_num] == true then
+		btn_release[btn_num] = true
 	end
-	if button_pressed == true and button_released == true then
-		button_pressed = false
-		button_released = false
+	if btn_press[btn_num] == true and btn_release[btn_num] == true then
+		btn_press[btn_num] = false
+		btn_release[btn_num] = false
 	end
-	return button_pressed, button_released
+	return btn_release[btn_num]
 end
 
 function zero_level_start()
 	music(0,1000,0)
 	zero_level = {
-		button_pressed = false,
 		button_released = false,
 		color = 5,
 		update=function(self)
 			-- handle button press
-			self.button_pressed, self.button_released = handle_button_press(self.button_pressed, self.button_released)
+			self.button_released = handle_button_release(4)
 			if (timer == 50) score+=1
 			if score > 10 then
 				overlay_state = 4
@@ -137,17 +131,25 @@ function zero_level_start()
 end
 function one_level_start()
 	one_level = {
+		left_released = false,
+		right_released = false,
 		update=function(self)
 			-- handle button press
 			-- need left and right buttons
-			if (btn(4) or btn(5)) then
-				overlay_state = 4
-			end
+			self.left_released = handle_button_release(0)
+			self.right_released = handle_button_release(1)
 		end,
 		draw=function(self)
 			-- draw items in here
 			-- initial 1d grid
 			rectfill(54, 54, 84, 84, 7)
+			if (self.left_released) then
+				-- draw left
+				print('draw_left', 0, 6, 7)
+			end
+			if (self.right_released) then
+				print('draw_right', 0, 6, 7)
+			end
 		end
 	}
 end
