@@ -93,14 +93,15 @@ function screen_shake(acs)
 end
 
 function handle_button_release(btn_num)
-	if (btn(btn_num)) then
-		btn_press[btn_num] = true
-	elseif btn_press[btn_num] == true then
-		btn_release[btn_num] = true
-	end
 	if btn_press[btn_num] == true and btn_release[btn_num] == true then
 		btn_press[btn_num] = false
 		btn_release[btn_num] = false
+	end
+	if (btn(btn_num)) then
+		print('btn_num'..btn_num, 0, 6, 7)
+		btn_press[btn_num] = true
+	elseif btn_press[btn_num] == true then
+		btn_release[btn_num] = true
 	end
 	return btn_release[btn_num]
 end
@@ -114,7 +115,7 @@ function zero_level_start()
 			-- handle button press
 			self.button_released = handle_button_release(4)
 			if (timer == 50) score+=1
-			if score > 10 then
+			if score > 3 then
 				overlay_state = 4
 			end
 		end,
@@ -133,6 +134,7 @@ function one_level_start()
 	one_level = {
 		left_released = false,
 		right_released = false,
+		start_pos = 0,
 		update=function(self)
 			-- handle button press
 			-- need left and right buttons
@@ -142,13 +144,22 @@ function one_level_start()
 		draw=function(self)
 			-- draw items in here
 			-- initial 1d grid
-			rectfill(54, 54, 84, 84, 7)
+			local space=0
+			local c_override = 3
 			if (self.left_released) then
 				-- draw left
-				print('draw_left', 0, 6, 7)
+				c_override = 2
+				print('draw_left', 0, 36, 7)
 			end
 			if (self.right_released) then
-				print('draw_right', 0, 6, 7)
+				c_override = 4
+				print('draw_right', 0, 46, 7)
+			end
+			for i=0,64,1 do
+				c = 6
+				if(i == c_override) c = 7
+				rectfill(space+(i*10)+i, 64, space+10+(i*10)+i, 74, c)
+				space = space + 2
 			end
 		end
 	}
