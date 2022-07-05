@@ -135,23 +135,19 @@ function one_level_start()
 		left_released = false,
 		right_released = false,
 		start_pos = 0,
+		end_pos = 32,
+		player_pos = 1,
 		c_override = 0,
 		allow_timer = 0,
 		t=0,
 		update=function(self)
 			-- handle button press
-			-- need left and right buttons
-			self.left_released = handle_button_release(0)
 			self.right_released = handle_button_release(1)
-			if (self.left_released) then
-				-- draw left
-				self.c_override -= 1
-				-- self.start_pos+=1
-				self.allow_timer = true
-			end
 			if (self.right_released) then
-				self.c_override += 1
-				-- self.start_pos-=1
+				self.c_override -= 1
+				self.start_pos-=1
+				self.end_pos-=1
+				self.player_pos+=1
 				self.allow_timer = true
 			end
 			if self.allow_timer then
@@ -166,11 +162,13 @@ function one_level_start()
 			-- draw items in here
 			-- initial 1d grid
 			local space=0
-			for i=self.start_pos,64,1 do
-				c = 6
-				if(i == self.c_override) c = 7
+			local count=0
+			for i=self.start_pos,self.end_pos,1 do
+				c = 5
+				if(count == self.player_pos) c = 7
 				rectfill(space+(i*10)+i-self.t, 64, space+10+(i*10)+i-self.t, 74, c)
 				space = space + 2
+				count+=1
 			end
 		end
 	}
