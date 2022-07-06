@@ -135,7 +135,8 @@ function one_level_start()
 		left_released = false,
 		right_released = false,
 		start_pos = 0,
-		end_pos = 32,
+		end_pos = 300,
+		end_tile = 88,
 		player_pos = 1,
 		c_override = 0,
 		allow_timer = 0,
@@ -147,14 +148,13 @@ function one_level_start()
 				self.c_override -= 1
 				self.start_pos-=1
 				self.end_pos-=1
-				self.player_pos+=1
+				self.player_pos+=2
 				self.allow_timer = true
 			end
 			if self.allow_timer then
 				self.t += 1
-				if self.t > 10 then
+				if self.t % 14 == 0 then
 					self.allow_timer = false
-					self.t = 0
 				end
 			end
 		end,
@@ -165,8 +165,11 @@ function one_level_start()
 			local count=0
 			for i=self.start_pos,self.end_pos,1 do
 				c = 5
+				if (i % 2 == 0 ) c = 6
 				if(count == self.player_pos) c = 7
+				if (i == self.end_tile) c = 11
 				rectfill(space+(i*10)+i-self.t, 64, space+10+(i*10)+i-self.t, 74, c)
+				print(i, space+(i*10)+i-self.t, 84, 7)
 				space = space + 2
 				count+=1
 			end
