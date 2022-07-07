@@ -165,11 +165,11 @@ function one_level_start()
 			local count=0
 			for i=self.start_pos,self.end_pos,1 do
 				c = 5
-				if (i % 2 == 0 ) c = 6
+				--if (i % 2 == 0 ) c = 6
 				if(count == self.player_pos) c = 7
 				if (i == self.end_tile) c = 11
 				rectfill(space+(i*10)+i-self.t, 64, space+10+(i*10)+i-self.t, 74, c)
-				print(i, space+(i*10)+i-self.t, 84, 7)
+				--print(i, space+(i*10)+i-self.t, 84, 7)
 				space = space + 2
 				count+=1
 			end
