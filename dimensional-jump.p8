@@ -142,7 +142,7 @@ function one_level_start()
 		allow_timer = 0,
 		t=0,
 		update=function(self)
-			-- handle button press
+			-- handle right button press
 			self.right_released = handle_button_release(1)
 			if (self.right_released) then
 				self.c_override -= 1
@@ -151,6 +151,8 @@ function one_level_start()
 				self.player_pos+=2
 				self.allow_timer = true
 			end
+			-- handle left button press
+			-- handle dash jump mechanic
 			if self.allow_timer then
 				self.t += 1
 				if self.t % 14 == 0 then
@@ -191,7 +193,7 @@ function two_level_start()
 		player_posx_prev = player_posx,
 		player_posy_prev = player_posy,
 		update=function(self)
-			-- handle button press
+			-- handle button presses
 			if (handle_button_release(0)) then
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
@@ -203,13 +205,16 @@ function two_level_start()
 				self.player_posx+=1
 			end
 			if (handle_button_release(2)) then
+				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
 				self.player_posy-=1
 			end
 			if (handle_button_release(3)) then
+				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
 				self.player_posy+=1
 			end
+			-- handle dash jump mechanic
 			-- temp end
 			if (btn(4) or btn(5)) then
 				overlay_state = 4
