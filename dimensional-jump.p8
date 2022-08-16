@@ -151,8 +151,13 @@ function one_level_start()
 				self.player_pos+=2
 				self.allow_timer = true
 			end
-			-- handle left button press
 			-- handle dash jump mechanic
+			if (btn(4) and self.right_released) then
+				self.c_override -= 2
+				self.start_pos-=2
+				self.end_pos-=2
+				self.player_pos+=3
+			end
 			if self.allow_timer then
 				self.t += 1
 				if self.t % 14 == 0 then
