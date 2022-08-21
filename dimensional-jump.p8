@@ -137,8 +137,9 @@ function one_level_start()
 		start_pos = 0,
 		end_pos = 300,
 		end_tile = 88,
-		player_pos = 1,
+		player_pos = 5,
 		allow_timer = 0,
+		tick_timer = 0,
 		t=0,
 		update=function(self)
 			-- handle right button press
@@ -160,6 +161,13 @@ function one_level_start()
 				if self.t % 14 == 0 then
 					self.allow_timer = false
 				end
+			end
+			self.tick_timer += 1
+			if self.tick_timer > 60 then
+				self.allow_timer = true
+				--self.start_pos-=1
+				self.end_pos-=1
+				self.tick_timer = 0
 			end
 		end,
 		draw=function(self)
