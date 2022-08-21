@@ -138,25 +138,22 @@ function one_level_start()
 		end_pos = 300,
 		end_tile = 88,
 		player_pos = 1,
-		c_override = 0,
 		allow_timer = 0,
 		t=0,
 		update=function(self)
 			-- handle right button press
 			self.right_released = handle_button_release(1)
-			if (self.right_released) then
-				self.c_override -= 1
+			if (btn(4) and self.right_released and self.allow_timer == false) then
+				-- handle dash jump mechanic
+				self.start_pos-=2
+				self.end_pos-=2
+				self.player_pos+=4
+				self.allow_timer = true
+			elseif (self.right_released and self.allow_timer == false) then
 				self.start_pos-=1
 				self.end_pos-=1
 				self.player_pos+=2
 				self.allow_timer = true
-			end
-			-- handle dash jump mechanic
-			if (btn(4) and self.right_released) then
-				self.c_override -= 2
-				self.start_pos-=2
-				self.end_pos-=2
-				self.player_pos+=3
 			end
 			if self.allow_timer then
 				self.t += 1
@@ -183,6 +180,9 @@ function one_level_start()
 				if (i == 20) c = 1
 				rectfill(space+(i*10)+i-self.t, 64, space+10+(i*10)+i-self.t, 74, c)
 				--print(i, space+(i*10)+i-self.t, 84, 7)
+				print('start:'..self.start_pos, 0, 6, 7)
+				print('end:'..self.end_pos, 0, 12, 7)
+				print('player:'..self.player_pos, 0, 18, 7)
 				space = space + 2
 				count+=1
 			end
