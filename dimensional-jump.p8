@@ -229,22 +229,38 @@ function two_level_start()
 			if (handle_button_release(0)) then
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
-				self.player_posx-=1
+				if (btn(4)) then
+					self.player_posx-=2
+				else
+					self.player_posx-=1
+				end
 			end
 			if (handle_button_release(1)) then
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
-				self.player_posx+=1
+				if (btn(4)) then
+					self.player_posx+=2
+				else
+					self.player_posx+=1
+				end
 			end
 			if (handle_button_release(2)) then
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
-				self.player_posy-=1
+				if (btn(4)) then
+					self.player_posy-=2
+				else
+					self.player_posy-=1
+				end
 			end
 			if (handle_button_release(3)) then
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
-				self.player_posy+=1
+				if (btn(4)) then
+					self.player_posy+=2
+				else
+					self.player_posy+=1
+				end
 			end
 			if (self.player_posx > 127) then
 				self.player_posx_prev = self.player_posx
@@ -268,7 +284,7 @@ function two_level_start()
 			end
 			-- handle dash jump mechanic
 			-- temp end
-			if (btn(4) or btn(5)) then
+			if (btn(5)) then
 				overlay_state = 4
 			end
 		end,
