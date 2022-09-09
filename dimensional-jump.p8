@@ -230,7 +230,13 @@ function two_level_start()
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
 				if (btn(4)) then
-					self.player_posx-=2
+					-- these bounds are for dash jumping
+					-- it's two less than the bounds below
+					if (self.player_posx < 114) then
+						self.player_posx-=1
+					else
+						self.player_posx-=2
+					end
 				else
 					self.player_posx-=1
 				end
@@ -239,7 +245,11 @@ function two_level_start()
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
 				if (btn(4)) then
-					self.player_posx+=2
+					if (self.player_posx > 125) then
+						self.player_posx+=1
+					else
+						self.player_posx+=2
+					end
 				else
 					self.player_posx+=1
 				end
@@ -248,7 +258,11 @@ function two_level_start()
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
 				if (btn(4)) then
-					self.player_posy-=2
+					if (self.player_posy < 2) then
+						self.player_posy-=1
+					else
+						self.player_posy -= 1
+					end
 				else
 					self.player_posy-=1
 				end
@@ -257,7 +271,11 @@ function two_level_start()
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
 				if (btn(4)) then
-					self.player_posy+=2
+					if (self.player_posy > 13) then
+						self.player_posy+=1
+					else
+						self.player_posy+=2
+					end
 				else
 					self.player_posy+=1
 				end
