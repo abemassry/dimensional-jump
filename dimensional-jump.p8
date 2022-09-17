@@ -145,6 +145,9 @@ function one_level_start()
 		allow_timer = 0,
 		tick_timer = 0,
 		dash_jump = false,
+		dropping = false,
+		fall_anim = 0,
+		falling = false,
 		t=0,
 		update=function(self)
 			-- handle right button press
@@ -187,6 +190,9 @@ function one_level_start()
 			local space=0
 			local count=0
 			local dashx = 0
+			local drops = {15, 21, 28, 35, 42}
+			if (self.falling and self.tick_timer % 2 == 0) self.fall_anim += 1
+			if (self.fall_anim > 6) self.fall_anim = 6
 			for i=self.start_pos,self.end_pos,1 do
 				c = 5
 
@@ -206,9 +212,18 @@ function one_level_start()
 					overlay_state = 4
 				end
 
-				if (i == 20) c = 1
+				for drop in all(drops) do
+					if (i == drop) c = 1
+				end
+				print('pp:'..self.player_pos, 0, 6, 7)
 
 				rectfill(x1, 64, x2, 74, c)
+				if (c == 1) then
+					if (self.player_pos == count) then 
+						rectfill(x1+self.fall_anim, 64+self.fall_anim, x2-self.fall_anim, 74-self.fall_anim, 7)
+						self.falling = true
+					end
+				end
 				--print(i, space+(i*10)+i-self.t, 84, 7)
 				space = space + 2
 				count+=1
@@ -400,10 +415,8 @@ function reset_to_next_stage()
 	overlay_state = 1
 
 	if level == 0 then
-		--level = 1
-		--one_level_start()
-		level = 2
-		two_level_start()
+		level = 1
+		one_level_start()
 	elseif level == 1 then
 		level = 2
 		two_level_start()
