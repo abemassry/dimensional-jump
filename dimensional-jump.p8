@@ -37,6 +37,7 @@ function _init()
 	-- overlay_state 4 transition
 	-- overlay_state 5 credits
 	level = 0 -- default 0
+	reset_stage = false
 	pause_length = 5
 	score = 0
 	score_counter = 0
@@ -109,6 +110,7 @@ end
 
 function zero_level_start()
 	music(0,1000,0)
+	reset_stage = false
 	zero_level = {
 		button_released = false,
 		color = 5,
@@ -132,6 +134,7 @@ function zero_level_start()
 	}
 end
 function one_level_start()
+	reset_stage = false
 	one_level = {
 		-- todo: max dash value
 		-- todo: recharge max dash
@@ -152,7 +155,7 @@ function one_level_start()
 		update=function(self)
 			-- handle right button press
 			self.right_released = handle_button_release(1)
-			if (btn(4) and self.right_released and self.allow_timer == false and self.player_screen_pos < 130) then
+			if (btn(4) and self.right_released and self.allow_timer == false and self.player_screen_pos < 130 and self.falling == false) then
 				-- handle dash jump mechanic
 				self.start_pos-=2
 				self.end_pos-=2
@@ -160,7 +163,7 @@ function one_level_start()
 				self.allow_timer = true
 				self.dash_jump = true
 				sfx(63)
-			elseif (self.right_released and self.allow_timer == false and self.player_screen_pos < 130) then
+			elseif (self.right_released and self.allow_timer == false and self.player_screen_pos < 130 and self.falling == false) then
 				self.start_pos-=1
 				self.end_pos-=1
 				self.player_pos+=2
@@ -192,7 +195,13 @@ function one_level_start()
 			local dashx = 0
 			local drops = {15, 21, 28, 35, 42}
 			if (self.falling and self.tick_timer % 2 == 0) self.fall_anim += 1
-			if (self.fall_anim > 6) self.fall_anim = 6
+			if (self.fall_anim > 6) then
+				self.fall_anim = 6
+				if (self.tick_timer > 115) then
+					reset_stage = true
+					overlay_state = 4
+				end
+			end
 			for i=self.start_pos,self.end_pos,1 do
 				c = 5
 
@@ -207,8 +216,8 @@ function one_level_start()
 				end
 				if (i == self.end_tile) c = 11
 
-
 				if (count == self.player_pos and i >= self.end_tile) then
+					-- win level
 					overlay_state = 4
 				end
 
@@ -235,6 +244,7 @@ function one_level_start()
 	}
 end
 function two_level_start()
+	reset_stage = false
 	two_level = {
 		player_posx = 112,
 		player_posy = 0,
@@ -364,6 +374,7 @@ function two_level_start()
 	}
 end
 function three_level_start()
+	reset_stage = false
 	three_level = {
 		draw=function(self)
 			-- draw items in here
@@ -383,48 +394,72 @@ function draw_score()
 end
 
 function draw_transition()
-	if score_tabulate == 0 then
-		-- TODO: tabulate score at end of level
-		score_tabulate = 1
-	end
-	local multiplier = flr(score/100) * 2
-	if multiplier < 1 then
-		multiplier = 1
-	end
-	if score_counter < score then
-		score_counter+=multiplier
-		sfx(17)
-	else
-		score_counter = score
+	if (reset_stage) then
+		print('you disappeared', 40, 50, 7)
 		transition_timer += 1
-	end
-	print('score: '..flr(score_counter), 40, 50, 7)
-	if transition_timer > 120 then
-		if level == 3 then
-			-- call roll credits
-			transition_timer = 0
-			overlay_state = 5
-			music(43, 1000)
+		if (transition_timer > 120) reset_to_next_stage()
+	else
+		if score_tabulate == 0 then
+			-- TODO: tabulate score at end of level
+			score_tabulate = 1
+		end
+		local multiplier = flr(score/100) * 2
+		if multiplier < 1 then
+			multiplier = 1
+		end
+		if score_counter < score then
+			score_counter+=multiplier
+			sfx(17)
 		else
-			reset_to_next_stage()
+			score_counter = score
+			transition_timer += 1
+		end
+		print('score: '..flr(score_counter), 40, 50, 7)
+		if transition_timer > 120 then
+			if level == 3 then
+				-- call roll credits
+				transition_timer = 0
+				overlay_state = 5
+				music(43, 1000)
+			else
+				reset_to_next_stage()
+			end
 		end
 	end
 end
 
 function reset_to_next_stage()
 	overlay_state = 1
+	transition_timer = 0
 
 	if level == 0 then
+		if (reset_stage) then
+			zero_level_start()
+			return
+		end
 		level = 1
 		one_level_start()
 	elseif level == 1 then
+		if (reset_stage) then
+			one_level_start()
+			return
+		end
 		level = 2
 		two_level_start()
 		-- music(28, 1000, 3)
 	elseif level == 2 then
+		if (reset_stage) then
+			two_level_start()
+			return
+		end
 		level = 3
 		three_level_start()
 		-- music(19, 1000, 3)
+	elseif level == 3 then
+		if (reset_stage) then
+			three_level_start()
+			return
+		end
 	end
 	-- overlay_state 0 title screen
 	-- overlay_state 1 main play
@@ -436,7 +471,6 @@ function reset_to_next_stage()
 	
 	offset = 0
 	end_stage_control = 0
-	transition_timer = 0
 	i=0
 
 end
