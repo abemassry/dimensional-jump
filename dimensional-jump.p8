@@ -225,6 +225,7 @@ function one_level_start()
 					if (i == drop) c = 1
 				end
 				print('pp:'..self.player_pos, 0, 6, 7)
+				if ((self.player_pos - 5) < 5 and count < self.player_pos) c = 0
 
 				rectfill(x1, 64, x2, 74, c)
 				if (c == 1) then
