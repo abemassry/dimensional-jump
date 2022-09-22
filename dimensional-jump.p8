@@ -151,6 +151,7 @@ function one_level_start()
 		dropping = false,
 		fall_anim = 0,
 		falling = false,
+		fall_override = false,
 		t=0,
 		update=function(self)
 			-- handle right button press
@@ -194,10 +195,11 @@ function one_level_start()
 			local count=0
 			local dashx = 0
 			local drops = {15, 21, 28, 35, 42}
-			if (self.falling and self.tick_timer % 2 == 0) self.fall_anim += 1
+			if (self.falling and self.tick_timer % 4 == 0) self.fall_anim += 1
 			if (self.fall_anim > 6) then
 				self.fall_anim = 6
 				if (self.tick_timer > 115) then
+					self.fall_override = true
 					reset_stage = true
 					overlay_state = 4
 				end
@@ -225,12 +227,15 @@ function one_level_start()
 					if (i == drop) c = 1
 				end
 				print('pp:'..self.player_pos, 0, 6, 7)
-				if ((self.player_pos - 5) < 5 and count < self.player_pos) c = 0
+				if (count < self.player_pos and count < 5) c = 0
+				if (count < self.player_pos-1 and count < 7) c = 0
+				if (count < self.player_pos-3 and count < 9) c = 0
+				if (count < self.player_pos-5 and count < 11) c = 0
 
 				rectfill(x1, 64, x2, 74, c)
 				if (c == 1) then
 					if (self.player_pos == count) then 
-						rectfill(x1+self.fall_anim, 64+self.fall_anim, x2-self.fall_anim, 74-self.fall_anim, 7)
+						if (self.fall_anim <= 5) rectfill(x1+self.fall_anim, 64+self.fall_anim, x2-self.fall_anim, 74-self.fall_anim, 7)
 						self.falling = true
 					end
 				end
