@@ -195,6 +195,7 @@ function one_level_start()
 			local count=0
 			local dashx = 0
 			local drops = {15, 21, 28, 35, 42}
+			local x1, x2 = 0
 			if (self.falling and self.tick_timer % 4 == 0) self.fall_anim += 1
 			if (self.fall_anim > 6) then
 				self.fall_anim = 6
@@ -233,6 +234,7 @@ function one_level_start()
 				if (count < self.player_pos-5 and count < 11) c = 0
 
 				rectfill(x1, 64, x2, 74, c)
+				if (c == 7 and x2 < 0) self.falling = true
 				if (c == 1) then
 					if (self.player_pos == count) then 
 						if (self.fall_anim <= 5) rectfill(x1+self.fall_anim, 64+self.fall_anim, x2-self.fall_anim, 74-self.fall_anim, 7)
@@ -243,6 +245,7 @@ function one_level_start()
 				space = space + 2
 				count+=1
 			end
+
 
 			if (self.dash_jump) spr(252,dashx-12, 65, 2, 1)
 
@@ -401,7 +404,8 @@ end
 
 function draw_transition()
 	if (reset_stage) then
-		print('you disappeared', 40, 50, 7)
+		print('you disappeared', 36, 50, 7)
+		print('from existence', 38, 60, 7)
 		transition_timer += 1
 		if (transition_timer > 120) reset_to_next_stage()
 	else
