@@ -266,68 +266,71 @@ function two_level_start()
 			-- handle button presses
 			-- handle dash jump mechanic
 			self.dashed = false
-			if (handle_button_release(0)) then
-				self.player_posx_prev = self.player_posx
-				self.player_posy_prev = self.player_posy
-				if (btn(4)) then
-					-- these bounds are for dash jumping
-					-- it's two less than the bounds below
-					if (self.player_posx < 114) then
+			function control()
+				if (handle_button_release(0)) then
+					self.player_posx_prev = self.player_posx
+					self.player_posy_prev = self.player_posy
+					if (btn(4)) then
+						-- these bounds are for dash jumping
+						-- it's two less than the bounds below
+						if (self.player_posx < 114) then
+							self.player_posx-=1
+						else
+							self.player_posx-=2
+							self.dashed = true
+							self.dash_dir = '-h'
+						end
+					else
 						self.player_posx-=1
-					else
-						self.player_posx-=2
-						self.dashed = true
-						self.dash_dir = '-h'
 					end
-				else
-					self.player_posx-=1
-				end
-			end
-			if (handle_button_release(1)) then
-				self.player_posx_prev = self.player_posx
-				self.player_posy_prev = self.player_posy
-				if (btn(4)) then
-					if (self.player_posx > 125) then
+					return
+				elseif (handle_button_release(1)) then
+					self.player_posx_prev = self.player_posx
+					self.player_posy_prev = self.player_posy
+					if (btn(4)) then
+						if (self.player_posx > 125) then
+							self.player_posx+=1
+						else
+							self.player_posx+=2
+							self.dashed = true
+							self.dash_dir = '+h'
+						end
+					else
 						self.player_posx+=1
-					else
-						self.player_posx+=2
-						self.dashed = true
-						self.dash_dir = '+h'
 					end
-				else
-					self.player_posx+=1
-				end
-			end
-			if (handle_button_release(2)) then
-				self.player_posx_prev = self.player_posx
-				self.player_posy_prev = self.player_posy
-				if (btn(4)) then
-					if (self.player_posy < 2) then
+					return
+				elseif (handle_button_release(2)) then
+					self.player_posx_prev = self.player_posx
+					self.player_posy_prev = self.player_posy
+					if (btn(4)) then
+						if (self.player_posy < 2) then
+							self.player_posy-=1
+						else
+							self.player_posy -= 2
+							self.dashed = true
+							self.dash_dir = '-v'
+						end
+					else
 						self.player_posy-=1
-					else
-						self.player_posy -= 2
-						self.dashed = true
-						self.dash_dir = '-v'
 					end
-				else
-					self.player_posy-=1
-				end
-			end
-			if (handle_button_release(3)) then
-				self.player_posx_prev = self.player_posx
-				self.player_posy_prev = self.player_posy
-				if (btn(4)) then
-					if (self.player_posy > 13) then
+					return
+				elseif (handle_button_release(3)) then
+					self.player_posx_prev = self.player_posx
+					self.player_posy_prev = self.player_posy
+					if (btn(4)) then
+						if (self.player_posy > 13) then
+							self.player_posy+=1
+						else
+							self.player_posy+=2
+							self.dashed = true
+							self.dash_dir = '+v'
+						end
+					else
 						self.player_posy+=1
-					else
-						self.player_posy+=2
-						self.dashed = true
-						self.dash_dir = '+v'
 					end
-				else
-					self.player_posy+=1
 				end
 			end
+			control()
 			if (self.player_posx > 127) then
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
@@ -357,10 +360,21 @@ function two_level_start()
 			-- draw items in here
 			map(112, 0, 0, 0, 128, 128)
 			mset(self.player_posx, self.player_posy, 254)
+
 			if (self.player_posx >= 112 and self.player_posx <= 127 and self.player_posy >= 0 and self.player_posy <= 15) then
 				mset(self.player_posx, self.player_posy, 254)
 
 				if (self.dashed) then
+					if (self.dashed_prev) then
+						mset(self.player_posx_prev+1, self.player_posy_prev, 255)
+						mset(self.player_posx_prev-1, self.player_posy_prev, 255)
+						mset(self.player_posx_prev, self.player_posy_prev+1, 255)
+						mset(self.player_posx_prev, self.player_posy_prev-1, 255)
+						mset(self.player_posx_prev-2, self.player_posy_prev-2, 255)
+						mset(self.player_posx_prev+2, self.player_posy_prev+2, 255)
+						mset(self.player_posx_prev+2, self.player_posy_prev-2, 255)
+						mset(self.player_posx_prev-2, self.player_posy_prev+2, 255)
+					end
 					if (self.dash_dir == '+h') mset(self.player_posx_prev+1, self.player_posy_prev, 251)
 					if (self.dash_dir == '-h') mset(self.player_posx_prev-1, self.player_posy_prev, 251)
 					if (self.dash_dir == '+v') mset(self.player_posx_prev, self.player_posy_prev+1, 250)
@@ -374,11 +388,15 @@ function two_level_start()
 						mset(self.player_posx_prev-1, self.player_posy_prev, 255)
 						mset(self.player_posx_prev, self.player_posy_prev+1, 255)
 						mset(self.player_posx_prev, self.player_posy_prev-1, 255)
+						mset(self.player_posx_prev-2, self.player_posy_prev-2, 255)
+						mset(self.player_posx_prev+2, self.player_posy_prev+2, 255)
+						mset(self.player_posx_prev+2, self.player_posy_prev-2, 255)
+						mset(self.player_posx_prev-2, self.player_posy_prev+2, 255)
 						self.dashed_prev = false
 					end
 				end
-
 			end
+
 		end
 	}
 end
@@ -442,6 +460,8 @@ function reset_to_next_stage()
 	overlay_state = 1
 	transition_timer = 0
 
+	level = 1 
+	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
 			zero_level_start()
