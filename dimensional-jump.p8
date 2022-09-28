@@ -275,58 +275,67 @@ function two_level_start()
 						-- it's two less than the bounds below
 						if (self.player_posx < 114) then
 							self.player_posx-=1
+							return
 						else
 							self.player_posx-=2
 							self.dashed = true
 							self.dash_dir = '-h'
+							return
 						end
 					else
 						self.player_posx-=1
+						return
 					end
-					return
 				elseif (handle_button_release(1)) then
 					self.player_posx_prev = self.player_posx
 					self.player_posy_prev = self.player_posy
 					if (btn(4)) then
 						if (self.player_posx > 125) then
 							self.player_posx+=1
+							return
 						else
 							self.player_posx+=2
 							self.dashed = true
 							self.dash_dir = '+h'
+							return
 						end
 					else
 						self.player_posx+=1
+						return
 					end
-					return
 				elseif (handle_button_release(2)) then
 					self.player_posx_prev = self.player_posx
 					self.player_posy_prev = self.player_posy
 					if (btn(4)) then
 						if (self.player_posy < 2) then
 							self.player_posy-=1
+							return
 						else
 							self.player_posy -= 2
 							self.dashed = true
 							self.dash_dir = '-v'
+							return
 						end
 					else
 						self.player_posy-=1
+						return
 					end
-					return
 				elseif (handle_button_release(3)) then
 					self.player_posx_prev = self.player_posx
 					self.player_posy_prev = self.player_posy
 					if (btn(4)) then
 						if (self.player_posy > 13) then
 							self.player_posy+=1
+							return
 						else
 							self.player_posy+=2
 							self.dashed = true
 							self.dash_dir = '+v'
+							return
 						end
 					else
 						self.player_posy+=1
+						return
 					end
 				end
 			end
@@ -360,6 +369,20 @@ function two_level_start()
 			-- draw items in here
 			map(112, 0, 0, 0, 128, 128)
 			mset(self.player_posx, self.player_posy, 254)
+			print('pp:'..self.player_posx, 0, 0, 7)
+
+			if (self.player_posy_prev and self.player_posy_prev) then
+				print('xv:'..self.player_posx, 0, 6, 7)
+				print('yv:'..self.player_posy, 0, 12, 7)
+				mset(self.player_posx_prev+1, self.player_posy_prev, 255)
+				mset(self.player_posx_prev-1, self.player_posy_prev, 255)
+				mset(self.player_posx_prev, self.player_posy_prev+1, 255)
+				mset(self.player_posx_prev, self.player_posy_prev-1, 255)
+				mset(self.player_posx_prev-2, self.player_posy_prev-2, 255)
+				mset(self.player_posx_prev+2, self.player_posy_prev+2, 255)
+				mset(self.player_posx_prev+2, self.player_posy_prev-2, 255)
+				mset(self.player_posx_prev-2, self.player_posy_prev+2, 255)
+			end
 
 			if (self.player_posx >= 112 and self.player_posx <= 127 and self.player_posy >= 0 and self.player_posy <= 15) then
 				mset(self.player_posx, self.player_posy, 254)
@@ -396,6 +419,7 @@ function two_level_start()
 					end
 				end
 			end
+
 
 		end
 	}
