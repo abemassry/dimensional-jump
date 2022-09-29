@@ -284,6 +284,7 @@ function two_level_start()
 						end
 					else
 						self.player_posx-=1
+						sfx(62)
 						return
 					end
 				elseif (handle_button_release(1)) then
@@ -301,6 +302,7 @@ function two_level_start()
 						end
 					else
 						self.player_posx+=1
+						sfx(62)
 						return
 					end
 				elseif (handle_button_release(2)) then
@@ -318,6 +320,7 @@ function two_level_start()
 						end
 					else
 						self.player_posy-=1
+						sfx(62)
 						return
 					end
 				elseif (handle_button_release(3)) then
@@ -335,6 +338,7 @@ function two_level_start()
 						end
 					else
 						self.player_posy+=1
+						sfx(62)
 						return
 					end
 				end
@@ -369,11 +373,7 @@ function two_level_start()
 			-- draw items in here
 			map(112, 0, 0, 0, 128, 128)
 			mset(self.player_posx, self.player_posy, 254)
-			print('pp:'..self.player_posx, 0, 0, 7)
-
-			if (self.player_posy_prev and self.player_posy_prev) then
-				print('xv:'..self.player_posx, 0, 6, 7)
-				print('yv:'..self.player_posy, 0, 12, 7)
+			function dash_unset()
 				mset(self.player_posx_prev+1, self.player_posy_prev, 255)
 				mset(self.player_posx_prev-1, self.player_posy_prev, 255)
 				mset(self.player_posx_prev, self.player_posy_prev+1, 255)
@@ -384,19 +384,28 @@ function two_level_start()
 				mset(self.player_posx_prev-2, self.player_posy_prev+2, 255)
 			end
 
+
+			if (self.player_posx and self.player_posy) then
+				mset(self.player_posx+1, self.player_posy, 255)
+				mset(self.player_posx-1, self.player_posy, 255)
+				mset(self.player_posx, self.player_posy+1, 255)
+				mset(self.player_posx, self.player_posy-1, 255)
+				mset(self.player_posx-2, self.player_posy-2, 255)
+				mset(self.player_posx+2, self.player_posy+2, 255)
+				mset(self.player_posx+2, self.player_posy-2, 255)
+				mset(self.player_posx-2, self.player_posy+2, 255)
+				mset(self.player_posx, self.player_posy-2, 255)
+				mset(self.player_posx, self.player_posy+2, 255)
+				mset(self.player_posx+2, self.player_posy, 255)
+				mset(self.player_posx-2, self.player_posy, 255)
+			end
+
 			if (self.player_posx >= 112 and self.player_posx <= 127 and self.player_posy >= 0 and self.player_posy <= 15) then
 				mset(self.player_posx, self.player_posy, 254)
 
 				if (self.dashed) then
 					if (self.dashed_prev) then
-						mset(self.player_posx_prev+1, self.player_posy_prev, 255)
-						mset(self.player_posx_prev-1, self.player_posy_prev, 255)
-						mset(self.player_posx_prev, self.player_posy_prev+1, 255)
-						mset(self.player_posx_prev, self.player_posy_prev-1, 255)
-						mset(self.player_posx_prev-2, self.player_posy_prev-2, 255)
-						mset(self.player_posx_prev+2, self.player_posy_prev+2, 255)
-						mset(self.player_posx_prev+2, self.player_posy_prev-2, 255)
-						mset(self.player_posx_prev-2, self.player_posy_prev+2, 255)
+						dash_unset()
 					end
 					if (self.dash_dir == '+h') mset(self.player_posx_prev+1, self.player_posy_prev, 251)
 					if (self.dash_dir == '-h') mset(self.player_posx_prev-1, self.player_posy_prev, 251)
@@ -407,14 +416,7 @@ function two_level_start()
 				else
 					mset(self.player_posx_prev, self.player_posy_prev, 255)
 					if (self.dashed_prev) then
-						mset(self.player_posx_prev+1, self.player_posy_prev, 255)
-						mset(self.player_posx_prev-1, self.player_posy_prev, 255)
-						mset(self.player_posx_prev, self.player_posy_prev+1, 255)
-						mset(self.player_posx_prev, self.player_posy_prev-1, 255)
-						mset(self.player_posx_prev-2, self.player_posy_prev-2, 255)
-						mset(self.player_posx_prev+2, self.player_posy_prev+2, 255)
-						mset(self.player_posx_prev+2, self.player_posy_prev-2, 255)
-						mset(self.player_posx_prev-2, self.player_posy_prev+2, 255)
+						dash_unset()
 						self.dashed_prev = false
 					end
 				end
