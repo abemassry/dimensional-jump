@@ -263,7 +263,11 @@ function two_level_start()
 		dashed = false,
 		dashed_prev = false,
 		dash_dir = '+h',
+		tick_timer = 0,
+		end_timer = 0,
 		update=function(self)
+			self.tick_timer += 1
+			if (self.tick_timer > 60) self.tick_timer = 0
 			-- handle button presses
 			-- handle dash jump mechanic
 			self.dashed = false
@@ -344,7 +348,12 @@ function two_level_start()
 					end
 				end
 			end
-			control()
+			if (self.player_posx == 127 and self.player_posy == 15) then
+				self.end_timer += 1
+			else
+				control()
+			end
+
 			if (self.player_posx > 127) then
 				self.player_posx_prev = self.player_posx
 				self.player_posy_prev = self.player_posy
@@ -366,9 +375,7 @@ function two_level_start()
 				self.player_posy = 0
 			end
 			-- temp end
-			if (btn(5)) then
-				overlay_state = 4
-			end
+			-- 127,15
 		end,
 		draw=function(self)
 			-- draw items in here
@@ -376,7 +383,6 @@ function two_level_start()
 			mset(self.player_posx, self.player_posy, 254)
 			print('ppx:'..self.player_posx, 0, 6, 7)
 			print('ppy:'..self.player_posy, 0, 12, 7)
-			mset(127,15,249)
 			function dash_unset()
 				mset(self.player_posx_prev+1, self.player_posy_prev, 255)
 				mset(self.player_posx_prev-1, self.player_posy_prev, 255)
@@ -426,6 +432,11 @@ function two_level_start()
 				end
 			end
 
+			mset(127,15,249)
+			if (self.player_posx == 127 and self.player_posy == 15) then
+				mset(127,15,254)
+				if (self.end_timer > 40) overlay_state = 4
+			end
 
 		end
 	}
@@ -490,7 +501,7 @@ function reset_to_next_stage()
 	overlay_state = 1
 	transition_timer = 0
 
-	-- level = 1 
+	level = 1
 	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
