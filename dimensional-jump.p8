@@ -368,6 +368,7 @@ function two_level_start()
 			end
 
 			if self.lose_timer > 60 then
+				map(112, 0, 0, 0, 128, 128)
 				reset_stage = true
 				overlay_state = 4
 			end
