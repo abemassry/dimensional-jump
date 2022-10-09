@@ -401,6 +401,11 @@ function two_level_start()
 			local i = 0
 			local j = 0
 			map(112, 0, 0, 0, 128, 128)
+			for i=111,127,1 do
+				for j=-1,15,1 do
+					mset(i, j, 255)
+				end
+			end
 			mset(self.player_posx, self.player_posy, 254)
 			print('ppx:'..self.player_posx, 0, 6, 7)
 			print('ppy:'..self.player_posy, 0, 12, 7)
