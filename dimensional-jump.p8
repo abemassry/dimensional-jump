@@ -523,6 +523,7 @@ function three_level_start()
 		lvl = 0,
 		xnudge = 0,
 		ynudge = 0,
+		ydiff = 0,
 		xcpos = 0,
 		jumpanim = 0,
 		startanim = 0,
@@ -590,68 +591,73 @@ function three_level_start()
 			if self.xcpos > 60 then
 				self.xcpos = 60
 			end
-			if xcpos < -60 then
-				xcpos = -60
+			if self.xcpos < -60 then
+				self.xcpos = -60
 			end
-			if current > 3 then
-				current = 3
+			if self.current > 3 then
+				self.current = 3
 			end
-			if current < -3 then
-				current = -3
-			end
-
-			if level < 0 then
-				level = 0
+			if self.current < -3 then
+				self.current = -3
 			end
 
-			if level > 3 then
-				level = 3
+			if self.lvl < 0 then
+				self.lvl = 0
 			end
 
-			if (jumppress == true) then
-				current = -10
-				if (startanim > 5) then
-					jumpanim -= 3.75
+			if self.lvl > 3 then
+				self.lvl = 3
+			end
+
+			if (self.jumppress == true) then
+				self.current = -10
+				if (self.startanim > 5) then
+					self.jumpanim -= 3.75
 				end
 			end
 
-			if (jumpanim < -75) then
-				jumpanim = 0
-				jumppress = false
-				current = prevcurrent
-				startanim = 0
-				blocksize = 8
+			if (self.jumpanim < -75) then
+				self.jumpanim = 0
+				self.jumppress = false
+				self.current = self.prevcurrent
+				self.startanim = 0
+				self.blocksize = 8
 			end
 		end,
 
 		draw=function(self)
 			cls()
 			for i=0,0 do
-				if (jumpanim == 0) then
-					ydiff = -17 + (i * 20) - (level*4)
+				if (self.jumpanim == 0) then
+					self.ydiff = -17 + (i * 20) - (self.lvl*4)
 				else
-					ydiff = -17 + (i * 20) - (level*4) - (jumpanim * .2)
+					self.ydiff = -17 + (i * 20) - (self.lvl*4) - (self.jumpanim * .2)
 				end
 
-				zdiff = 7
-				depth = 2
-				blocksize = 8
-				if (level > 0) ydiff = ydiff + 5
-				if (level >= 3) ydiff = ydiff + 6
-				setup_block(xcpos+64+57,64+ydiff,zdiff,depth,12+xnudge,u,5,blocksize)
-				setup_block(xcpos+64+37,64+ydiff,zdiff,depth,10+xnudge,u,5,blocksize)
-				setup_block(xcpos+64+20,64+ydiff,zdiff,depth,8+xnudge,u,5,blocksize)
-				setup_block(xcpos+64+3,64+ydiff,zdiff,depth,7+xnudge,u,5,blocksize)
-				setup_block(xcpos+64-15,64+ydiff,zdiff,depth,4+xnudge,u,5,blocksize)
-				setup_block(xcpos+64-32,64+ydiff,zdiff,depth,2+xnudge,u,5,blocksize)
-				setup_block(xcpos+64-52,64+ydiff,zdiff,depth,0+xnudge,u,5,blocksize)
+				local zdiff = 7
+				local depth = 2
+				local blocksize = 8
+				local ja5 = 0
+				local ja5n = 0
+				local ja2 = 0
+				local ja2n = 0
+				local c = 5
+				if (self.lvl > 0) self.ydiff = self.ydiff + 5
+				if (self.lvl >= 3) self.ydiff = self.ydiff + 6
+				setup_block(self.xcpos+64+57,64+self.ydiff,zdiff,depth,12+self.xnudge,self.u,5,blocksize)
+				setup_block(self.xcpos+64+37,64+self.ydiff,zdiff,depth,10+self.xnudge,self.u,5,blocksize)
+				setup_block(self.xcpos+64+20,64+self.ydiff,zdiff,depth,8+self.xnudge,self.u,5,blocksize)
+				setup_block(self.xcpos+64+3,64+self.ydiff,zdiff,depth,7+self.xnudge,self.u,5,blocksize)
+				setup_block(self.xcpos+64-15,64+self.ydiff,zdiff,depth,4+self.xnudge,self.u,5,blocksize)
+				setup_block(self.xcpos+64-32,64+self.ydiff,zdiff,depth,2+self.xnudge,self.u,5,blocksize)
+				setup_block(self.xcpos+64-52,64+self.ydiff,zdiff,depth,0+self.xnudge,self.u,5,blocksize)
 			end
 			for i=0,3 do
-				if (jumpanim == 0) then
+				if (self.jumpanim == 0) then
 					if (i > 0) then
 						break
 					end
-					ydiff = -10 + (i * 20) - (level*4)
+					self.ydiff = -10 + (i * 20) - (self.lvl*4)
 					blocksize = 8
 					zdiff = 3
 					ja5 = 0
@@ -659,77 +665,77 @@ function three_level_start()
 					ja2 = 0
 					ja2n = 0
 				else
-					ydiff = - 10 + (i * 20) - (level*4) - (jumpanim * .2)
-					blocksize = 8 - (jumpanim *.02)
-					zdiff = 3  + (jumpanim * .02)
-					ja5 = 5 + (jumpanim *.06)
-					ja5n = -5 - (jumpanim *.06)
-					ja2 = 2 + (jumpanim *.06)
-					ja2n = -2 - (jumpanim *.06)
+					self.ydiff = - 10 + (i * 20) - (self.lvl*4) - (self.jumpanim * .2)
+					blocksize = 8 - (self.jumpanim *.02)
+					zdiff = 3  + (self.jumpanim * .02)
+					ja5 = 5 + (self.jumpanim *.06)
+					ja5n = -5 - (self.jumpanim *.06)
+					ja2 = 2 + (self.jumpanim *.06)
+					ja2n = -2 - (self.jumpanim *.06)
 				end
 				depth = 5
-				if (level > 0) ydiff = ydiff + 5 + (jumpanim * .2)
-				if (level >= 3) ydiff = ydiff + 6 + (jumpanim * .2)
+				if (level > 0) self.ydiff = self.ydiff + 5 + (self.jumpanim * .2)
+				if (level >= 3) self.ydiff = self.ydiff + 6 + (self.jumpanim * .2)
 				c = 5
-				if (prevcurrent == 3 and jumppress == true and i == level) c = 7
-				setup_block(ja5+xcpos+64+55,64+ydiff,zdiff,depth,12+xnudge,u,c,blocksize)
+				if (self.prevcurrent == 3 and self.jumppress == true and i == self.lvl) c = 7
+				setup_block(ja5+self.xcpos+64+55,64+self.ydiff,zdiff,depth,12+self.xnudge,self.u,c,blocksize)
 				c = 5
-				if (prevcurrent == 2 and jumppress == true and i == level) c = 7
-				setup_block(ja5+xcpos+64+35,64+ydiff,zdiff,depth,10+xnudge,u,c,blocksize)
+				if (self.prevcurrent == 2 and self.jumppress == true and i == self.lvl) c = 7
+				setup_block(ja5+self.xcpos+64+35,64+self.ydiff,zdiff,depth,10+self.xnudge,self.u,c,blocksize)
 				c = 5
-				if (prevcurrent == 1 and jumppress == true and i == level) c = 7
-				setup_block(ja2+xcpos+64+18,64+ydiff,zdiff,depth,8+xnudge,u,c,blocksize)
+				if (self.prevcurrent == 1 and self.jumppress == true and i == self.lvl) c = 7
+				setup_block(ja2+self.xcpos+64+18,64+self.ydiff,zdiff,depth,8+self.xnudge,self.u,c,blocksize)
 				c = 5
-				if (prevcurrent == 0 and jumppress == true and i == level) c = 7
-				setup_block(xcpos+64,64+ydiff,zdiff,depth,7+xnudge,u,c,blocksize)
+				if (self.prevcurrent == 0 and self.jumppress == true and i == self.lvl) c = 7
+				setup_block(self.xcpos+64,64+self.ydiff,zdiff,depth,7+self.xnudge,self.u,c,blocksize)
 				c = 5
-				if (prevcurrent == -1 and jumppress == true and i == level) c = 7
-				setup_block(ja2n+xcpos+64-18,64+ydiff,zdiff,depth,4+xnudge,u,c,blocksize)
+				if (self.prevcurrent == -1 and self.jumppress == true and i == self.lvl) c = 7
+				setup_block(ja2n+self.xcpos+64-18,64+self.ydiff,zdiff,depth,4+self.xnudge,self.u,c,blocksize)
 				c = 5
-				if (prevcurrent == -2 and jumppress == true and i == level) c = 7
-				setup_block(ja5n+xcpos+64-35,64+ydiff,zdiff,depth,2+xnudge,u,c,blocksize)
+				if (self.prevcurrent == -2 and self.jumppress == true and i == self.lvl) c = 7
+				setup_block(ja5n+self.xcpos+64-35,64+self.ydiff,zdiff,depth,2+self.xnudge,self.u,c,blocksize)
 				c = 5
-				if (prevcurrent == -3 and jumppress == true and i == level) c = 7
-				setup_block(ja5n+xcpos+64-55,64+ydiff,zdiff,depth,0+xnudge,u,c,blocksize)
+				if (self.prevcurrent == -3 and self.jumppress == true and i == self.lvl) c = 7
+				setup_block(ja5n+self.xcpos+64-55,64+self.ydiff,zdiff,depth,0+self.xnudge,self.u,c,blocksize)
 			end
 			for j=0,3 do
-				if (jumpanim < -40) then
+				if (self.jumpanim < -40) then
 					break
 				end
-				i= (jumpanim * .5)
-				if (jumpanim == 0) then
-					blocksize = 8
-					ydiff = j*22 - (level*4)
+				i= (self.jumpanim * .5)
+				if (self.jumpanim == 0) then
+					self.blocksize = 8
+					self.ydiff = j*22 - (self.lvl*4)
 				else
-					ydiff = j*22 - (level*4) - (jumpanim * .2)
-					blocksize = 8 - (jumpanim * .02)
+					self.ydiff = j*22 - (self.lvl*4) - (self.jumpanim * .2)
+					self.blocksize = 8 - (self.jumpanim * .02)
 				end
 				i = 0
 				depth = 5
 				c = 5
-				if (j == level) u = -(j-0.5)
-				if (current == 3 and j == level) c = 7
-				setup_block(xcpos+64+60,64+ydiff,i,depth,13+xnudge,u,c,blocksize)
+				if (j == self.lvl) u = -(j-0.5)
+				if (current == 3 and j == self.lvl) c = 7
+				setup_block(self.xcpos+64+60,64+self.ydiff,i,depth,13+self.xnudge,self.u,c,self.blocksize)
 				c = 5
-				if (current == 2 and j == level) c = 7
-				setup_block(xcpos+64+40,64+ydiff,i,depth,11+xnudge,u,c,blocksize)
+				if (current == 2 and j == self.lvl) c = 7
+				setup_block(self.xcpos+64+40,64+self.ydiff,i,depth,11+self.xnudge,self.u,c,self.blocksize)
 				c = 5
-				if (current == 1 and j == level) c = 7
-				setup_block(xcpos+64+20,64+ydiff,i,depth,9+xnudge,u,c,blocksize)
+				if (current == 1 and j == self.lvl) c = 7
+				setup_block(self.xcpos+64+20,64+self.ydiff,i,depth,9+self.xnudge,self.u,c,self.blocksize)
 				c = 5
-				if (current == 0 and j == level) c = 7
-				setup_block(xcpos+64,64+ydiff,i,depth,7+xnudge,u,c,blocksize)
+				if (current == 0 and j == self.lvl) c = 7
+				setup_block(self.xcpos+64,64+self.ydiff,i,depth,7+self.xnudge,self.u,c,self.blocksize)
 				c = 5
-				if (current == -1 and j == level) c = 7
-				setup_block(xcpos+64-20,64+ydiff,i,depth,4+xnudge,u,c,blocksize)
+				if (current == -1 and j == self.lvl) c = 7
+				setup_block(self.xcpos+64-20,64+self.ydiff,i,depth,4+self.xnudge,self.u,c,self.blocksize)
 				c = 5
-				if (current == -2 and j == level) c = 7
-				setup_block(xcpos+64-40,64+ydiff,i,depth,2+xnudge,u,c,blocksize)
+				if (current == -2 and j == self.lvl) c = 7
+				setup_block(self.xcpos+64-40,64+self.ydiff,i,depth,2+self.xnudge,self.u,c,self.blocksize)
 				c = 5
-				if (current == -3 and j == level) c = 7
-				setup_block(xcpos+64-60,64+ydiff,i,depth,0+xnudge,u,c,blocksize)
+				if (current == -3 and j == self.lvl) c = 7
+				setup_block(self.xcpos+64-60,64+self.ydiff,i,depth,0+self.xnudge,self.u,c,self.blocksize)
 			end
-			if (jumppress == true) startanim += 1
+			if (self.jumppress == true) self.startanim += 1
 		end
 	}
 end
@@ -779,7 +785,7 @@ function reset_to_next_stage()
 	transition_timer = 0
 
 	-- TODO: debug
-	-- level = 1
+	level = 2
 	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
