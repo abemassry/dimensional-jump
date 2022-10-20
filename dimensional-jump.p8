@@ -691,7 +691,7 @@ function three_level_start()
 				setup_block(ja5n+self.xcpos+64-55,64+ydiff,zdiff,depth,0+self.xnudge,self.u,c,self.blocksize)
 			end
 			for j=0,3 do
-				if (self.jumpanim < -40) then
+				if (self.jumpanim < -2) then
 					break
 				end
 				i= (self.jumpanim * .5)
@@ -707,7 +707,7 @@ function three_level_start()
 				c = 5
 				if (j == self.lvl) u = -(j-0.5)
 				if (self.current == 3 and j == self.lvl) c = 7
-				setup_block(self.xcpos+64+60,64+ydiff,i,depth,13+self.xnudge,self.u,c,self.blocksize)
+				setup_block(self.xcpos+64+60,64+ydiff,i,depth,12+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.current == 2 and j == self.lvl) c = 7
 				setup_block(self.xcpos+64+40,64+ydiff,i,depth,11+self.xnudge,self.u,c,self.blocksize)
