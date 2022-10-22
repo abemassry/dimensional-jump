@@ -607,7 +607,7 @@ function three_level_start()
 			if (self.jumppress == true) then
 				self.current = -10
 				if (self.startanim > 5) then
-					self.jumpanim -= 3.75
+					self.jumpanim -= 5.95
 				end
 			end
 
