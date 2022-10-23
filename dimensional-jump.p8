@@ -528,6 +528,9 @@ function three_level_start()
 		uppress = false,
 		downpress = false,
 		jumppress = false,
+		jumplevel = 0,
+		jumptimer = 0,
+		jumptimerset = false,
 
 		update=function(self)
 			-- current = 0
@@ -550,16 +553,20 @@ function three_level_start()
 			if(btn(3)) then
 				self.downpress = true
 			end
-			if(btn(4)) then
+			if(btn(4) and self.jumptimer == 0) then
 				if (self.jumppress == false) self.prevcurrent = self.current
 				self.jumppress = true
+				self.jumptimerset = true
+				self.jumplevel += 1
 			end
-			if(btn(5)) then
+			if(btn(5) and self.jumptimer == 0) then
 				if (self.jumppress == false) self.prevcurrent = self.current
 				self.jumppress = true
+				self.jumptimerset = true
+				self.jumplevel += 1
 			end
 
-			if ((not btn(0)) and (not btn(1)) and (not btn(2)) and (not btn(3))) then
+			if ((not btn(0)) and (not btn(1)) and (not btn(2)) and (not btn(3)) and (not btn(4)) and (not btn(5)))then
 				if (self.leftpress == true) then
 					self.xnudge+=1
 					self.current-=1
@@ -580,7 +587,10 @@ function three_level_start()
 					self.lvl += 1
 					self.downpress = false
 				end
-
+				if (self.jumptimerset == true) then
+					self.jumptimerset = false
+					self.jumptimer = 0
+				end
 			end
 
 			if self.xcpos > 60 then
@@ -618,12 +628,18 @@ function three_level_start()
 				self.startanim = 0
 				self.blocksize = 8
 			end
+			if (self.jumptimerset == true) self.jumptimer += 1
+			if (self.jumptimer > 120) then
+				self.jumptimer = 0
+				self.jumptimerset = false
+			end
 
 
 		end,
 
 		draw=function(self)
 			cls()
+			print('jumplevel:'..self.jumplevel, 0, 6, 7)
 			for i=0,0 do
 				if (self.jumpanim == 0) then
 					ydiff = -17 + (i * 20) - (self.lvl*4)
