@@ -531,6 +531,9 @@ function three_level_start()
 		jumplevel = 0,
 		jumptimer = 0,
 		jumptimerset = false,
+		endgoallevel = 3, -- change to 24?
+		endblockx = flr(rnd(6)),
+		endblocky = flr(rnd(3)),
 
 		update=function(self)
 			-- current = 0
@@ -640,6 +643,9 @@ function three_level_start()
 		draw=function(self)
 			cls()
 			print('jumplevel:'..self.jumplevel, 0, 6, 7)
+			print('endgoallevel:'..self.endgoallevel, 0, 12, 7)
+			print('endblockx:'..self.endblockx, 0, 18, 7)
+			print('endblocky:'..self.endblocky, 0, 24, 7)
 			for i=0,0 do
 				if (self.jumpanim == 0) then
 					ydiff = -17 + (i * 20) - (self.lvl*4)
@@ -686,24 +692,31 @@ function three_level_start()
 				if (self.lvl >= 3) ydiff = ydiff + 6 + (self.jumpanim * .2)
 				c = 5
 				if (self.prevcurrent == 3 and self.jumppress == true and i == self.lvl) c = 7
+				if (self.endgoallevel == (self.jumplevel+1) and i == 0 and self.endblocky == i and self.endblockx == 0) c = 11
 				setup_block(ja5+self.xcpos+64+55,64+ydiff,zdiff,depth,12+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.prevcurrent == 2 and self.jumppress == true and i == self.lvl) c = 7
+				if (self.endgoallevel == (self.jumplevel+1) and i == 0 and self.endblocky == i and self.endblockx == 1) c = 11
 				setup_block(ja5+self.xcpos+64+35,64+ydiff,zdiff,depth,10+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.prevcurrent == 1 and self.jumppress == true and i == self.lvl) c = 7
+				if (self.endgoallevel == (self.jumplevel+1) and i == 0 and self.endblocky == i and self.endblockx == 2) c = 11
 				setup_block(ja2+self.xcpos+64+18,64+ydiff,zdiff,depth,8+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.prevcurrent == 0 and self.jumppress == true and i == self.lvl) c = 7
+				if (self.endgoallevel == (self.jumplevel+1) and i == 0 and self.endblocky == i and self.endblockx == 3) c = 11
 				setup_block(self.xcpos+64,64+ydiff,zdiff,depth,7+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.prevcurrent == -1 and self.jumppress == true and i == self.lvl) c = 7
+				if (self.endgoallevel == (self.jumplevel+1) and i == 0 and self.endblocky == i and self.endblockx == 4) c = 11
 				setup_block(ja2n+self.xcpos+64-18,64+ydiff,zdiff,depth,4+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.prevcurrent == -2 and self.jumppress == true and i == self.lvl) c = 7
+				if (self.endgoallevel == (self.jumplevel+1) and i == 0 and self.endblocky == i and self.endblockx == 5) c = 11
 				setup_block(ja5n+self.xcpos+64-35,64+ydiff,zdiff,depth,2+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.prevcurrent == -3 and self.jumppress == true and i == self.lvl) c = 7
+				if (self.endgoallevel == (self.jumplevel+1) and i == 0 and self.endblocky == i and self.endblockx == 6) c = 11
 				setup_block(ja5n+self.xcpos+64-55,64+ydiff,zdiff,depth,0+self.xnudge,self.u,c,self.blocksize)
 			end
 			for j=0,3 do
@@ -723,24 +736,31 @@ function three_level_start()
 				c = 5
 				if (j == self.lvl) u = -(j-0.5)
 				if (self.current == 3 and j == self.lvl) c = 7
+				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 0) c = 11
 				setup_block(self.xcpos+64+60,64+ydiff,i,depth,12+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.current == 2 and j == self.lvl) c = 7
+				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 1) c = 11
 				setup_block(self.xcpos+64+40,64+ydiff,i,depth,11+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.current == 1 and j == self.lvl) c = 7
+				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 2) c = 11
 				setup_block(self.xcpos+64+20,64+ydiff,i,depth,9+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.current == 0 and j == self.lvl) c = 7
+				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 3) c = 11
 				setup_block(self.xcpos+64,64+ydiff,i,depth,7+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.current == -1 and j == self.lvl) c = 7
+				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 4) c = 11
 				setup_block(self.xcpos+64-20,64+ydiff,i,depth,4+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.current == -2 and j == self.lvl) c = 7
+				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 5) c = 11
 				setup_block(self.xcpos+64-40,64+ydiff,i,depth,2+self.xnudge,self.u,c,self.blocksize)
 				c = 5
 				if (self.current == -3 and j == self.lvl) c = 7
+				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 6) c = 11
 				setup_block(self.xcpos+64-60,64+ydiff,i,depth,0+self.xnudge,self.u,c,self.blocksize)
 			end
 			if (self.jumppress == true) self.startanim += 1
