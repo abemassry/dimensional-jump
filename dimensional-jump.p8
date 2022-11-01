@@ -511,6 +511,13 @@ function draw_block(x0,x1,y0,y1,xx0,xx1,yy0,yy1,c)
 	line(xx1,yy1,x1-2,y1,c)
 end
 
+function determine_color(self, i, column)
+	if (self.prevcurrent == ((column-3) * -1) and self.jumppress == true and i == self.lvl) return 7
+	if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == column) return 11
+	if (self.endgoallevel == (self.jumplevel+1) and self.jumppress == false and i == 0 and self.endblocky == i and self.endblockx == column) return 11
+	return 5
+end
+
 function three_level_start()
 	reset_stage = false
 	three_level = {
@@ -693,33 +700,20 @@ function three_level_start()
 					depth = 5
 					if (self.lvl > 0) ydiff = ydiff + 5 + (self.jumpanim * .2)
 					if (self.lvl >= 3) ydiff = ydiff + 6 + (self.jumpanim * .2)
-					c = 5
-					if (self.prevcurrent == 3 and self.jumppress == true and i == self.lvl) c = 7
-					if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == 0) c = 11
+					-- render second layer
+					c = determine_color(self, i, 0)
 					setup_block(ja5+self.xcpos+64+55,64+ydiff,zdiff,depth,12+self.xnudge,self.u,c,self.blocksize)
-					c = 5
-					if (self.prevcurrent == 2 and self.jumppress == true and i == self.lvl) c = 7
-					if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == 1) c = 11
+					c = determine_color(self, i, 1)
 					setup_block(ja5+self.xcpos+64+35,64+ydiff,zdiff,depth,10+self.xnudge,self.u,c,self.blocksize)
-					c = 5
-					if (self.prevcurrent == 1 and self.jumppress == true and i == self.lvl) c = 7
-					if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == 2) c = 11
+					c = determine_color(self, i, 2)
 					setup_block(ja2+self.xcpos+64+18,64+ydiff,zdiff,depth,8+self.xnudge,self.u,c,self.blocksize)
-					c = 5
-					if (self.prevcurrent == 0 and self.jumppress == true and i == self.lvl) c = 7
-					if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == 3) c = 11
+					c = determine_color(self, i, 3)
 					setup_block(self.xcpos+64,64+ydiff,zdiff,depth,7+self.xnudge,self.u,c,self.blocksize)
-					c = 5
-					if (self.prevcurrent == -1 and self.jumppress == true and i == self.lvl) c = 7
-					if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == 4) c = 11
+					c = determine_color(self, i, 4)
 					setup_block(ja2n+self.xcpos+64-18,64+ydiff,zdiff,depth,4+self.xnudge,self.u,c,self.blocksize)
-					c = 5
-					if (self.prevcurrent == -2 and self.jumppress == true and i == self.lvl) c = 7
-					if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == 5) c = 11
+					c = determine_color(self, i, 5)
 					setup_block(ja5n+self.xcpos+64-35,64+ydiff,zdiff,depth,2+self.xnudge,self.u,c,self.blocksize)
-					c = 5
-					if (self.prevcurrent == -3 and self.jumppress == true and i == self.lvl) c = 7
-					if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == 6) c = 11
+					c = determine_color(self, i, 6)
 					setup_block(ja5n+self.xcpos+64-55,64+ydiff,zdiff,depth,0+self.xnudge,self.u,c,self.blocksize)
 				end
 			end
@@ -738,6 +732,7 @@ function three_level_start()
 				i = 0
 				depth = 5
 				c = 5
+				-- render first layer
 				if (j == self.lvl) u = -(j-0.5)
 				if (self.current == 3 and j == self.lvl) c = 7
 				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 0) c = 11
