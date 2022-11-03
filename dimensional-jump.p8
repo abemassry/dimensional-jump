@@ -475,6 +475,7 @@ function two_level_start()
 					end
 				end
 			end
+			if (self.end_timer > 0) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
 
 		end
 	}
@@ -512,6 +513,7 @@ function draw_block(x0,x1,y0,y1,xx0,xx1,yy0,yy1,c)
 end
 
 function determine_color(self, i, column)
+
 	if (self.prevcurrent == ((column-3) * -1) and self.jumppress == true and i == self.lvl) return 7
 	if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == column) return 11
 	if (self.endgoallevel == (self.jumplevel+1) and self.jumppress == false and i == 0 and self.endblocky == i and self.endblockx == column) return 11
@@ -538,112 +540,121 @@ function three_level_start()
 		jumplevel = 0,
 		jumptimer = 0,
 		jumptimerset = false,
+		end_timer = 0,
 		endgoallevel = 3, -- change to 24?
 		endblockx = 0, --flr(rnd(6)),
 		endblocky = 0, --flr(rnd(3)),
 
 		update=function(self)
-			-- current = 0
-			if(btn(0)) then
-				self.leftpress = true
-			end
-			if(btn(1)) then
-				self.rightpress = true
-			end
-			if self.xnudge > 3 then
-				self.xnudge = 3
-			end
-			if self.xnudge < -3 then
-				self.xnudge = -3
-			end
+			function control3d()
+				-- current = 0
+				if(btn(0)) then
+					self.leftpress = true
+				end
+				if(btn(1)) then
+					self.rightpress = true
+				end
+				if self.xnudge > 3 then
+					self.xnudge = 3
+				end
+				if self.xnudge < -3 then
+					self.xnudge = -3
+				end
 
-			if(btn(2)) then
-				self.uppress = true
-			end
-			if(btn(3)) then
-				self.downpress = true
-			end
-			if(btn(4) and self.jumptimer == 0) then
-				if (self.jumppress == false) self.prevcurrent = self.current
-				self.jumppress = true
-				self.jumptimerset = true
-				self.jumplevel += 1
-			end
-			if(btn(5) and self.jumptimer == 0) then
-				if (self.jumppress == false) self.prevcurrent = self.current
-				self.jumppress = true
-				self.jumptimerset = true
-				self.jumplevel += 1
-			end
+				if(btn(2)) then
+					self.uppress = true
+				end
+				if(btn(3)) then
+					self.downpress = true
+				end
+				if(btn(4) and self.jumptimer == 0) then
+					if (self.jumppress == false) self.prevcurrent = self.current
+					self.jumppress = true
+					self.jumptimerset = true
+					self.jumplevel += 1
+				end
+				if(btn(5) and self.jumptimer == 0) then
+					if (self.jumppress == false) self.prevcurrent = self.current
+					self.jumppress = true
+					self.jumptimerset = true
+					self.jumplevel += 1
+				end
 
-			if ((not btn(0)) and (not btn(1)) and (not btn(2)) and (not btn(3)) and (not btn(4)) and (not btn(5)))then
-				if (self.leftpress == true) then
-					self.xnudge+=1
-					self.current-=1
-					self.xcpos+=20
-					self.leftpress = false
+				if ((not btn(0)) and (not btn(1)) and (not btn(2)) and (not btn(3)) and (not btn(4)) and (not btn(5)))then
+					if (self.leftpress == true) then
+						self.xnudge+=1
+						self.current-=1
+						self.xcpos+=20
+						self.leftpress = false
+					end
+					if (self.rightpress == true) then
+						self.xnudge-=1
+						self.current+=1
+						self.xcpos-=20
+						self.rightpress = false
+					end
+					if (self.uppress == true) then
+						self.lvl -= 1
+						self.uppress = false
+					end
+					if (self.downpress == true) then
+						self.lvl += 1
+						self.downpress = false
+					end
+					if (self.jumptimerset == true) then
+						self.jumptimerset = false
+						self.jumptimer = 0
+					end
 				end
-				if (self.rightpress == true) then
-					self.xnudge-=1
-					self.current+=1
-					self.xcpos-=20
-					self.rightpress = false
+
+				if self.xcpos > 60 then
+					self.xcpos = 60
 				end
-				if (self.uppress == true) then
-					self.lvl -= 1
-					self.uppress = false
+				if self.xcpos < -60 then
+					self.xcpos = -60
 				end
-				if (self.downpress == true) then
-					self.lvl += 1
-					self.downpress = false
+				if self.current > 3 then
+					self.current = 3
 				end
-				if (self.jumptimerset == true) then
-					self.jumptimerset = false
+				if self.current < -3 then
+					self.current = -3
+				end
+
+				if self.lvl < 0 then
+					self.lvl = 0
+				end
+
+				if self.lvl > 3 then
+					self.lvl = 3
+				end
+
+				if (self.jumppress == true) then
+					self.current = -10
+					if (self.startanim > 5) then
+						self.jumpanim -= 5.95
+					end
+				end
+
+				if (self.jumpanim < -75) then
+					self.jumpanim = 0
+					self.jumppress = false
+					self.current = self.prevcurrent
+					self.startanim = 0
+					self.blocksize = 8
+				end
+				if (self.jumptimerset == true) self.jumptimer += 1
+				if (self.jumptimer > 120) then
 					self.jumptimer = 0
+					self.jumptimerset = false
 				end
-			end
 
-			if self.xcpos > 60 then
-				self.xcpos = 60
 			end
-			if self.xcpos < -60 then
-				self.xcpos = -60
+			if self.jumplevel == self.endgoallevel and self.endblockx == ((self.current-3)*-1) and self.endblocky == self.lvl then
+				self.end_timer += 1
+			else
+				control3d()
 			end
-			if self.current > 3 then
-				self.current = 3
-			end
-			if self.current < -3 then
-				self.current = -3
-			end
-
-			if self.lvl < 0 then
-				self.lvl = 0
-			end
-
-			if self.lvl > 3 then
-				self.lvl = 3
-			end
-
-			if (self.jumppress == true) then
-				self.current = -10
-				if (self.startanim > 5) then
-					self.jumpanim -= 5.95
-				end
-			end
-
-			if (self.jumpanim < -75) then
-				self.jumpanim = 0
-				self.jumppress = false
-				self.current = self.prevcurrent
-				self.startanim = 0
-				self.blocksize = 8
-			end
-			if (self.jumptimerset == true) self.jumptimer += 1
-			if (self.jumptimer > 120) then
-				self.jumptimer = 0
-				self.jumptimerset = false
-			end
-
+			if (self.end_timer > 60) overlay_state = 4
 
 		end,
 
@@ -763,6 +774,7 @@ function three_level_start()
 				setup_block(self.xcpos+64-60,64+ydiff,i,depth,0+self.xnudge,self.u,c,self.blocksize)
 			end
 			if (self.jumppress == true) self.startanim += 1
+			if (self.end_timer > 0) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
 		end
 	}
 end
@@ -812,7 +824,7 @@ function reset_to_next_stage()
 	transition_timer = 0
 
 	-- TODO: debug
-	level = 2
+	-- level = 2
 	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
