@@ -660,10 +660,6 @@ function three_level_start()
 
 		draw=function(self)
 			cls()
-			print('jumplevel:'..self.jumplevel, 0, 6, 7)
-			print('endgoallevel:'..self.endgoallevel, 0, 12, 7)
-			print('endblockx:'..self.endblockx, 0, 18, 7)
-			print('endblocky:'..self.endblocky, 0, 24, 7)
 			for i=0,0 do
 				if (self.jumpanim == 0) then
 					ydiff = -17 + (i * 20) - (self.lvl*4)
