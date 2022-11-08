@@ -156,7 +156,7 @@ function one_level_start()
 		update=function(self)
 			-- handle right button press
 			self.right_released = handle_button_release(1)
-			if (btn(4) and self.right_released and self.allow_timer == false and self.player_screen_pos < 130 and self.falling == false) then
+			if (btn(4) and self.right_released and self.player_screen_pos < 130 and self.falling == false) then
 				-- handle dash jump mechanic
 				self.start_pos-=2
 				self.end_pos-=2
@@ -164,7 +164,7 @@ function one_level_start()
 				self.allow_timer = true
 				self.dash_jump = true
 				sfx(63)
-			elseif (self.right_released and self.allow_timer == false and self.player_screen_pos < 130 and self.falling == false) then
+			elseif (self.right_released and self.player_screen_pos < 130 and self.falling == false) then
 				self.start_pos-=1
 				self.end_pos-=1
 				self.player_pos+=2
