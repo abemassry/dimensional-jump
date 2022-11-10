@@ -820,7 +820,7 @@ function reset_to_next_stage()
 	transition_timer = 0
 
 	-- TODO: debug
-	level = 2
+	-- level = 2
 	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
