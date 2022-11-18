@@ -253,6 +253,16 @@ function one_level_start()
 		end
 	}
 end
+function two_level_blanks()
+	return {
+		{127,10},
+		{126,11},
+		{125,12},
+		{124,13},
+		{123,14},
+		{122,15},
+	}
+end
 function two_level_start()
 	reset_stage = false
 	two_level = {
@@ -266,6 +276,7 @@ function two_level_start()
 		disappear_timer = 0,
 		disappear_x = 111,
 		disappear_y = -1,
+		obstacles = two_level_blanks(),
 		tick_timer = 0,
 		end_timer = 0,
 		lose_timer = 0,
@@ -473,6 +484,21 @@ function two_level_start()
 						if (self.lose_timer > 30) mset(i, j, 246)
 						if (self.lose_timer > 45) mset(i, j, 248)
 					end
+				end
+			end
+			for key,value in pairs(self.obstacles) do
+				mset(value[1], value[2], 248)
+				if (self.player_posx == i and self.player_posy == j) then
+					mset(i, j, 247)
+					self.falling = true
+					if (self.lose_timer > 30) mset(i, j, 246)
+					if (self.lose_timer > 45) mset(i, j, 248)
+				end
+				if (self.player_posx_prev) then
+					if (self.dash_dir == '+h') mset(self.player_posx_prev+1, self.player_posy_prev, 251)
+					if (self.dash_dir == '-h') mset(self.player_posx_prev-1, self.player_posy_prev, 251)
+					if (self.dash_dir == '+v') mset(self.player_posx_prev, self.player_posy_prev+1, 250)
+					if (self.dash_dir == '-v') mset(self.player_posx_prev, self.player_posy_prev-1, 250)
 				end
 			end
 			if (self.end_timer > 0) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
@@ -820,7 +846,7 @@ function reset_to_next_stage()
 	transition_timer = 0
 
 	-- TODO: debug
-	-- level = 2
+	level = 1
 	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
