@@ -261,6 +261,49 @@ function two_level_blanks()
 		{124,13},
 		{123,14},
 		{122,15},
+		{124, 0},
+		{124, 1},
+		{124, 2},
+		{124, 3},
+		{124, 4},
+		{124, 5},
+		{124, 6},
+		{124, 7},
+		{124, 8},
+		{124, 9},
+		{124, 10},
+		{124, 11},
+		{124, 12},
+		{112, 12},
+		{113, 12},
+		{114, 12},
+		{115, 12},
+		{116, 12},
+		{117, 12},
+		{118, 12},
+		{119, 12},
+		{120, 12},
+		{121, 12},
+		{122, 12},
+		{123, 12},
+		{124, 12},
+		{120, 2},
+		{120, 3},
+		{120, 4},
+		{120, 5},
+		{120, 6},
+		{120, 7},
+		{120, 8},
+		{113, 10},
+		{114, 10},
+		{115, 10},
+		{116, 10},
+		{117, 10},
+		{115, 4},
+		{115, 5},
+		{115, 6},
+		{115, 7},
+		{115, 8}
 	}
 end
 function two_level_start()
@@ -488,13 +531,13 @@ function two_level_start()
 			end
 			for key,value in pairs(self.obstacles) do
 				mset(value[1], value[2], 248)
-				if (self.player_posx == i and self.player_posy == j) then
-					mset(i, j, 247)
+				if (self.player_posx == value[1] and self.player_posy == value[2]) then
+					mset(value[1], value[2], 247)
 					self.falling = true
-					if (self.lose_timer > 30) mset(i, j, 246)
-					if (self.lose_timer > 45) mset(i, j, 248)
+					if (self.lose_timer > 30) mset(value[1], value[2], 246)
+					if (self.lose_timer > 45) mset(value[1], value[2], 248)
 				end
-				if (self.player_posx_prev) then
+				if (self.player_posx_prev and self.dashed) then
 					if (self.dash_dir == '+h') mset(self.player_posx_prev+1, self.player_posy_prev, 251)
 					if (self.dash_dir == '-h') mset(self.player_posx_prev-1, self.player_posy_prev, 251)
 					if (self.dash_dir == '+v') mset(self.player_posx_prev, self.player_posy_prev+1, 250)
