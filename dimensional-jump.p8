@@ -589,6 +589,12 @@ function determine_color(self, i, column)
 	return 5
 end
 
+function determine_color_first_layer(self, j, column)
+	if (self.current == ((column * -1) + 3) and j == self.lvl) return 7
+	if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == column) return 11
+	return 5
+end
+
 function three_level_start()
 	reset_stage = false
 	three_level = {
@@ -807,35 +813,21 @@ function three_level_start()
 				end
 				i = 0
 				depth = 5
-				c = 5
 				-- render first layer
 				if (j == self.lvl) u = -(j-0.5)
-				if (self.current == 3 and j == self.lvl) c = 7
-				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 0) c = 11
+				c = determine_color_first_layer(self, j, 0)
 				setup_block(self.xcpos+64+60,64+ydiff,i,depth,12+self.xnudge,self.u,c,self.blocksize)
-				c = 5
-				if (self.current == 2 and j == self.lvl) c = 7
-				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 1) c = 11
+				c = determine_color_first_layer(self, j, 1)
 				setup_block(self.xcpos+64+40,64+ydiff,i,depth,11+self.xnudge,self.u,c,self.blocksize)
-				c = 5
-				if (self.current == 1 and j == self.lvl) c = 7
-				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 2) c = 11
+				c = determine_color_first_layer(self, j, 2)
 				setup_block(self.xcpos+64+20,64+ydiff,i,depth,9+self.xnudge,self.u,c,self.blocksize)
-				c = 5
-				if (self.current == 0 and j == self.lvl) c = 7
-				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 3) c = 11
+				c = determine_color_first_layer(self, j, 3)
 				setup_block(self.xcpos+64,64+ydiff,i,depth,7+self.xnudge,self.u,c,self.blocksize)
-				c = 5
-				if (self.current == -1 and j == self.lvl) c = 7
-				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 4) c = 11
+				c = determine_color_first_layer(self, j, 4)
 				setup_block(self.xcpos+64-20,64+ydiff,i,depth,4+self.xnudge,self.u,c,self.blocksize)
-				c = 5
-				if (self.current == -2 and j == self.lvl) c = 7
-				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 5) c = 11
+				c = determine_color_first_layer(self, j, 5)
 				setup_block(self.xcpos+64-40,64+ydiff,i,depth,2+self.xnudge,self.u,c,self.blocksize)
-				c = 5
-				if (self.current == -3 and j == self.lvl) c = 7
-				if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == 6) c = 11
+				c = determine_color_first_layer(self, j, 6)
 				setup_block(self.xcpos+64-60,64+ydiff,i,depth,0+self.xnudge,self.u,c,self.blocksize)
 			end
 			if (self.jumppress == true) self.startanim += 1
@@ -889,7 +881,7 @@ function reset_to_next_stage()
 	transition_timer = 0
 
 	-- TODO: debug
-	level = 1
+	level = 2
 	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
