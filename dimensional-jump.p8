@@ -152,6 +152,8 @@ function one_level_start()
 		fall_anim = 0,
 		falling = false,
 		fall_override = false,
+		enemy_visible = false,
+		enemy_pos = 0,
 		t=0,
 		update=function(self)
 			-- handle right button press
@@ -164,6 +166,7 @@ function one_level_start()
 				self.allow_timer = true
 				self.dash_jump = true
 				sfx(63)
+				if (self.enemy_visible and flr(rnd(3)) > 2) self.enemy_pos += 2
 			elseif (self.right_released and self.player_screen_pos < 130 and self.falling == false) then
 				self.start_pos-=1
 				self.end_pos-=1
@@ -171,6 +174,7 @@ function one_level_start()
 				self.allow_timer = true
 				self.dash_jump = false
 				sfx(62)
+				if (self.enemy_visible and flr(rnd(3)) > 2) self.enemy_pos += 2
 			end
 			if self.allow_timer then
 				self.t += 1
@@ -187,6 +191,11 @@ function one_level_start()
 				self.tick_timer = 0
 				self.dash_jump = false
 			end
+
+			if (self.player_pos > 31 and self.enemy_visible == false and flr(rnd(3)) > 2) then
+				self.enemy_visible = true
+				self.enemy_pos = self.player_pos - 6
+			end
 		end,
 		draw=function(self)
 			-- draw items in here
@@ -195,7 +204,9 @@ function one_level_start()
 			local count=0
 			local dashx = 0
 			local drops = {15, 21, 28, 35, 42}
+			--             25  37  51  65  79
 			local x1, x2 = 0
+			local player_local = self.player_pos - ( (self.player_pos - 5) / 2 )
 			if (self.falling and self.tick_timer % 4 == 0) self.fall_anim += 1
 			if (self.fall_anim == 1 and self.tick_timer % 4 == 0) sfx(61)
 			if (self.fall_anim > 6) then
@@ -206,6 +217,9 @@ function one_level_start()
 					overlay_state = 4
 				end
 			end
+
+
+				
 			for i=self.start_pos,self.end_pos,1 do
 				c = 5
 
@@ -218,6 +232,12 @@ function one_level_start()
 					dashx = x1
 					self.player_screen_pos = x2
 				end
+
+				if(count == self.enemy_pos) then
+					c = 8
+				end
+
+				if (count == self.player_pos - 2 and self.player_pos > 31) c = 8
 				if (i == self.end_tile) c = 11
 
 				if (count == self.player_pos and i >= self.end_tile) then
@@ -227,6 +247,8 @@ function one_level_start()
 
 				for drop in all(drops) do
 					if (i == drop) c = 1
+					-- 79 - ((79-5)/2)
+					-- if (self.player_pos > 31 and x2 > 64 and i == (player_local - 2)) c = 8
 				end
 				print('pp:'..self.player_pos, 0, 6, 7)
 				if (count < self.player_pos and count < 5) c = 0
@@ -881,7 +903,7 @@ function reset_to_next_stage()
 	transition_timer = 0
 
 	-- TODO: debug
-	level = 2
+	-- level = 2
 	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
