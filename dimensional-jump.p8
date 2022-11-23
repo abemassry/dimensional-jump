@@ -1114,7 +1114,7 @@ end
 function _update60()
 	timer+=1
 	if (timer > 60) timer=0
-	sintimer+=0.005
+	sintimer+=0.004
 	if overlay_state == 0 then
 		
 		if (btn(4) or btn(5)) then
