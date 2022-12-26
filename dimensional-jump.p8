@@ -153,7 +153,8 @@ function one_level_start()
 		falling = false,
 		fall_override = false,
 		enemy_visible = false,
-		enemy_pos = 0,
+		enemy_posx = 0,
+		enemy_posy = 0,
 		t=0,
 		update=function(self)
 			-- handle right button press
@@ -246,7 +247,7 @@ function one_level_start()
 				end
 
 				for drop in all(drops) do
-					if (i == drop) c = 1
+					if (i == drop) c = 8
 					-- 79 - ((79-5)/2)
 					-- if (self.player_pos > 31 and x2 > 64 and i == (player_local - 2)) c = 8
 				end
@@ -258,7 +259,7 @@ function one_level_start()
 
 				rectfill(x1, 64, x2, 74, c)
 				if (c == 7 and x2 < 0) self.falling = true
-				if (c == 1) then
+				if (c == 8) then
 					if (self.player_pos == count) then
 						if (self.fall_anim <= 5) rectfill(x1+self.fall_anim, 64+self.fall_anim, x2-self.fall_anim, 74-self.fall_anim, 7)
 						self.falling = true
@@ -346,6 +347,8 @@ function two_level_start()
 		end_timer = 0,
 		lose_timer = 0,
 		falling = false,
+		enemy_visible = false,
+		enemy_pos = 0,
 		update=function(self)
 			self.tick_timer += 1
 			self.disappear_timer += 1
@@ -434,6 +437,10 @@ function two_level_start()
 						return
 					end
 				end
+
+					
+					
+
 			end
 			if (self.player_posx == 127 and self.player_posy == 15) then
 				self.end_timer += 1
@@ -470,8 +477,19 @@ function two_level_start()
 				self.player_posy_prev = self.player_posy
 				self.player_posy = 0
 			end
+			if (self.tick_timer > 180) then
+				self.enemy_visible = true
+				self.enemy_posx = flr(rnd(128))
+				self.enemy_posy = flr(rnd(128))
+			end
 			-- temp end
 			-- 127,15
+			if self.enemy_visible and self.tick_timer % 60 == 0 then
+				if (self.player_posx > self.enemy_posx) self.enemy_posx+=1
+				if (self.player_posx < self.enemy_posx) self.enemy_posx-=1
+				if (self.player_posy > self.enemy_posy) self.enemy_posy+=1
+				if (self.player_posy < self.enemy_posy) self.enemy_posy-=1
+			end
 		end,
 		draw=function(self)
 			-- draw items in here
@@ -903,7 +921,7 @@ function reset_to_next_stage()
 	transition_timer = 0
 
 	-- TODO: debug
-	-- level = 2
+	level = 1
 	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
