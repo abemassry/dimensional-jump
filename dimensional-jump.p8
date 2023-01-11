@@ -109,18 +109,21 @@ function handle_button_release(btn_num)
 end
 
 function zero_level_start()
-	music(21,1000,0)
+	if (reset_stage == false) music(21,1000,0)
 	reset_stage = false
 	zero_level = {
 		lscore = 0,
 		button_released = false,
+		button_release_count = 0,
 		color = 5,
 		even = false,
 		update=function(self)
 			-- handle button press
-			self.button_released = handle_button_release(4)
+			self.button_released = handle_button_release(4) or handle_button_release(5)
+			if (self.button_released) self.button_release_count += 1
+			if (self.button_release_count == 1) self.button_released = false
 			if (timer == 300) score+=1
-			if score > 3 then
+			if self.lscore == 10 then
 				overlay_state = 4
 			end
 			if (stat(51) > 14 and self.even == true) self.even = false
@@ -130,11 +133,11 @@ function zero_level_start()
 			-- draw items in here
 			self.color = 5
 			if (stat(51) != nil) then
-				print('score: '..self.lscore, 0, 6, 7)
-				-- print('stat:'..stat(51), 0, 6, 7)
-				-- print('stat:'..stat(47), 0, 12, 7)
-				print('even:'..(self.even and 'true' or 'false'), 0, 18, 7)
-				print('button:'..(self.button_released and 'true' or 'false'), 0, 24, 7)
+				print('beats: '..self.lscore, 0, 6, 7)
+				-- print('even:'..(self.even and 'true' or 'false'), 0, 18, 7)
+				print('press ❎/🅾️ when', 34, 20, 7)
+				print('the object lights up', 27, 26, 7)
+				-- print('button:'..(self.button_released and 'true' or 'false'), 0, 24, 7)
 				if ((stat(51) > 19 and stat(51) < 24 and self.even == false) or (stat(51) > 10 and stat(51) < 15 and self.even == true)) then
 					if (self.button_released) self.lscore += 1
 					self.color = 7
@@ -147,6 +150,7 @@ function zero_level_start()
 	}
 end
 function one_level_start()
+	if (reset_stage == false) music(20,1000,0)
 	reset_stage = false
 	one_level = {
 		-- todo: max dash value
@@ -343,6 +347,7 @@ function two_level_blanks()
 	}
 end
 function two_level_start()
+	if (reset_stage == false) music(20,1000,0)
 	reset_stage = false
 	two_level = {
 		player_posx = 112,
@@ -649,6 +654,7 @@ function determine_color_first_layer(self, j, column)
 end
 
 function three_level_start()
+	if (reset_stage == false) music(20,1000,0)
 	reset_stage = false
 	three_level = {
 		u=0,
@@ -890,7 +896,8 @@ function three_level_start()
 end
 
 function draw_score()
-	print(flr(score), 2, 2, 5)
+	-- TODO: possibly remove
+	-- print(flr(score), 2, 2, 5)
 end
 
 function draw_transition()
@@ -900,6 +907,7 @@ function draw_transition()
 		transition_timer += 1
 		if (transition_timer > 120) reset_to_next_stage()
 	else
+		-- TODO: fade out music, do transition
 		if score_tabulate == 0 then
 			-- TODO: tabulate score at end of level
 			score_tabulate = 1
@@ -934,7 +942,7 @@ function reset_to_next_stage()
 	transition_timer = 0
 
 	-- TODO: debug
-	level = 1
+	-- level = 1
 	-- TODO: debug
 	if level == 0 then
 		if (reset_stage) then
