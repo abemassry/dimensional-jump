@@ -111,6 +111,9 @@ end
 function zero_level_start()
 	if (reset_stage == false) music(21,1000,0)
 	reset_stage = false
+	-- TODO: debugging
+	overlay_state = 4
+	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
 		button_released = false,
@@ -150,6 +153,9 @@ function zero_level_start()
 	}
 end
 function one_level_start()
+	-- TODO: debugging
+	overlay_state = 4
+	-- TODO: debugging
 	if (reset_stage == false) music(20,1000,0)
 	reset_stage = false
 	one_level = {
@@ -160,6 +166,7 @@ function one_level_start()
 		start_pos = 0,
 		end_pos = 300,
 		end_tile = 88,
+		end_timer = 0,
 		player_pos = 5,
 		player_screen_pos = 0,
 		allow_timer = 0,
@@ -170,30 +177,40 @@ function one_level_start()
 		falling = false,
 		fall_override = false,
 		enemy_visible = false,
-		enemy_posx = 0,
-		enemy_posy = 0,
+		enemy_start_timer = 0,
+		enemy_current_time = 0,
+		enemy_pos = 0,
+		enemy_fall_anim = 0,
 		t=0,
 		update=function(self)
-			-- handle right button press
-			self.right_released = handle_button_release(1)
-			if (btn(4) and self.right_released and self.player_screen_pos < 130 and self.falling == false) then
-				-- handle dash jump mechanic
-				self.start_pos-=2
-				self.end_pos-=2
-				self.player_pos+=4
-				self.allow_timer = true
-				self.dash_jump = true
-				sfx(63)
-				if (self.enemy_visible and flr(rnd(3)) > 2) self.enemy_pos += 2
-			elseif (self.right_released and self.player_screen_pos < 130 and self.falling == false) then
-				self.start_pos-=1
-				self.end_pos-=1
-				self.player_pos+=2
-				self.allow_timer = true
-				self.dash_jump = false
-				sfx(62)
-				if (self.enemy_visible and flr(rnd(3)) > 2) self.enemy_pos += 2
+			self.enemy_start_timer += 1
+			if (self.enemy_start_timer > 300 and self.enemy_visible == false) then
+				self.enemy_visible = true
+				self.enemy_pos = self.player_pos - 6
 			end
+			-- handle right button press
+			function control()
+				self.right_released = handle_button_release(1)
+				if (btn(4) and self.right_released and self.player_screen_pos < 130 and self.falling == false) then
+					-- handle dash jump mechanic
+					self.start_pos-=2
+					self.end_pos-=2
+					self.player_pos+=4
+					self.allow_timer = true
+					self.dash_jump = true
+					sfx(63)
+					if (self.enemy_visible) self.enemy_pos += 2
+				elseif (self.right_released and self.player_screen_pos < 130 and self.falling == false) then
+					self.start_pos-=1
+					self.end_pos-=1
+					self.player_pos+=2
+					self.allow_timer = true
+					self.dash_jump = false
+					sfx(62)
+					if (self.enemy_visible) self.enemy_pos += 1
+				end
+			end
+			if (self.end_timer == 0) control()
 			if self.allow_timer then
 				self.t += 1
 				if self.t % 14 == 0 then
@@ -209,11 +226,14 @@ function one_level_start()
 				self.tick_timer = 0
 				self.dash_jump = false
 			end
-
-			if (self.player_pos > 31 and self.enemy_visible == false and flr(rnd(3)) > 2) then
-				self.enemy_visible = true
-				self.enemy_pos = self.player_pos - 6
+			if (self.enemy_pos < self.player_pos and self.tick_timer % 32 == 0) then
+				if (self.enemy_visible and flr(rnd(10) > 6) and self.enemy_fall_anim == 0 and self.end_timer == 0) self.enemy_pos += 1
 			end
+
+			-- if (self.player_pos > 31 and self.enemy_visible == false and flr(rnd(3)) > 2) then
+			-- 	self.enemy_visible = true
+			-- 	self.enemy_pos = self.player_pos - 6
+			-- end
 		end,
 		draw=function(self)
 			-- draw items in here
@@ -244,47 +264,66 @@ function one_level_start()
 				local x1 = space+(i*10)+i-self.t
 				local x2 = space+10+(i*10)+i-self.t
 
-				--if (i % 2 == 0 ) c = 6
+				if (count == self.enemy_pos and self.player_pos > 31) c = 8
+
 				if(count == self.player_pos) then
 					c = 7
 					dashx = x1
 					self.player_screen_pos = x2
 				end
 
-				if(count == self.enemy_pos) then
-					c = 8
-				end
-
-				if (count == self.player_pos - 2 and self.player_pos > 31) c = 8
+				-- if (count == self.player_pos - 2 and self.player_pos > 31) c = 8
 				if (i == self.end_tile) c = 11
 
-				if (count == self.player_pos and i >= self.end_tile) then
-					-- win level
-					overlay_state = 4
-				end
 
 				for drop in all(drops) do
-					if (i == drop) c = 8
+					if (i == drop) c = 0
 					-- 79 - ((79-5)/2)
 					-- if (self.player_pos > 31 and x2 > 64 and i == (player_local - 2)) c = 8
 				end
 				print('pp:'..self.player_pos, 0, 6, 7)
+				print('ep:'..self.enemy_pos, 0, 12, 7)
 				if (count < self.player_pos and count < 5) c = 0
 				if (count < self.player_pos-1 and count < 7) c = 0
 				if (count < self.player_pos-3 and count < 9) c = 0
 				if (count < self.player_pos-5 and count < 11) c = 0
 
-				rectfill(x1, 64, x2, 74, c)
+				if (self.enemy_pos == count and self.player_pos == count) then
+					self.falling = true
+					if (self.end_timer == 0) rectfill(x1, 64, x2, 74, 8)
+					if (self.fall_anim <= 5) rectfill(x1+self.fall_anim, 64+self.fall_anim, x2-self.fall_anim, 74-self.fall_anim, 7)
+				else
+					if (self.end_timer == 0) rectfill(x1, 64, x2, 74, c)
+				end
 				if (c == 7 and x2 < 0) self.falling = true
-				if (c == 8) then
+				if (c == 0) then
 					if (self.player_pos == count) then
 						if (self.fall_anim <= 5) rectfill(x1+self.fall_anim, 64+self.fall_anim, x2-self.fall_anim, 74-self.fall_anim, 7)
 						self.falling = true
+					end
+
+					if (self.enemy_pos == count and self.enemy_start_timer > 300) then
+						if (self.enemy_current_time == 0) self.enemy_current_time = self.enemy_start_timer
+						if (self.enemy_fall_anim <= 5) rectfill(x1+self.enemy_fall_anim, 64+self.enemy_fall_anim, x2-self.enemy_fall_anim, 74-self.enemy_fall_anim, 8)
+						print('counted', 0, 18, 7)
+						if (self.enemy_start_timer > self.enemy_current_time + 60) then
+							self.enemy_fall_anim = 0
+							self.enemy_visible = false
+							self.enemy_start_timer = 0
+						else
+							self.enemy_fall_anim += 1
+						end
 					end
 				end
 				--print(i, space+(i*10)+i-self.t, 84, 7)
 				space = space + 2
 				count+=1
+				if (count == self.player_pos and i >= (self.end_tile - 1)) then
+					-- win level
+					self.end_timer += 1
+					if (self.end_timer > 0) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
+					if (self.end_timer > 40) overlay_state = 4
+				end
 			end
 
 
@@ -495,18 +534,32 @@ function two_level_start()
 				self.player_posy_prev = self.player_posy
 				self.player_posy = 0
 			end
-			if (self.tick_timer > 180) then
+			if (self.tick_timer > 40 and self.enemy_visible == false) then
 				self.enemy_visible = true
-				self.enemy_posx = flr(rnd(128))
-				self.enemy_posy = flr(rnd(128))
+				--self.enemy_posx = flr(rnd(127)) + 112
+				--self.enemy_posy = flr(rnd(15))
+				self.enemy_posx = 115
+				self.enemy_posy = 6
 			end
 			-- temp end
 			-- 127,15
-			if self.enemy_visible and self.tick_timer % 60 == 0 then
-				if (self.player_posx > self.enemy_posx) self.enemy_posx+=1
-				if (self.player_posx < self.enemy_posx) self.enemy_posx-=1
-				if (self.player_posy > self.enemy_posy) self.enemy_posy+=1
-				if (self.player_posy < self.enemy_posy) self.enemy_posy-=1
+			if self.enemy_visible and self.tick_timer % 45 == 0 then
+				local condition_x = abs(self.player_posx - self.enemy_posx)
+				local condition_y = abs(self.player_posy - self.enemy_posy)
+
+				if (condition_x >= condition_y) then
+					if (self.player_posx > self.enemy_posx) then
+						self.enemy_posx+=1
+					elseif (self.player_posx < self.enemy_posx) then 
+						self.enemy_posx-=1
+					end
+				else
+					if (self.player_posy > self.enemy_posy) then
+						self.enemy_posy+=1
+					elseif (self.player_posy < self.enemy_posy) then
+						self.enemy_posy-=1
+					end
+				end
 			end
 		end,
 		draw=function(self)
@@ -602,6 +655,7 @@ function two_level_start()
 					if (self.dash_dir == '-v') mset(self.player_posx_prev, self.player_posy_prev-1, 250)
 				end
 			end
+      if (self.enemy_visible) mset(self.enemy_posx, self.enemy_posy, 239)
 			if (self.end_timer > 0) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
 
 		end
@@ -1394,12 +1448,12 @@ __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000000000000000cc000cc002222222000800000cd444500000000000000000000000000bbbbbb0057557500555555077777777777777000777777005555550
