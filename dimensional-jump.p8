@@ -544,6 +544,7 @@ function two_level_start()
 
 			-- spawn enemy
 			if (self.tick_timer > 40 and self.enemy_visible == false) then
+				self.enemy_fall_timer = 0
 				self.enemy_falling = false
 				self.enemy_visible = true
 				self.enemy_posx = flr(rnd(15)) + 112
@@ -557,7 +558,6 @@ function two_level_start()
 			-- enemy reset after falling
 			if (self.enemy_fall_timer > 60 and self.tick_timer == 0) then
 				self.enemy_visible = false
-				self.enemy_fall_timer = 0
 				self.enemy_fall_anim = 0
 			end
 
@@ -693,6 +693,7 @@ function two_level_start()
 					self.enemy_falling = true
 					if (self.enemy_fall_timer > 30) mset(value[1], value[2], 236)
 					if (self.enemy_fall_timer > 45) mset(value[1], value[2], 235)
+					if (self.enemy_fall_timer > 55) mset(value[1], value[2], 248)
 				end
 
 				-- show dashed line of player dashing past drop
