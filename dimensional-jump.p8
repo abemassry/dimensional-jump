@@ -405,7 +405,10 @@ function two_level_start()
 		lose_timer = 0,
 		falling = false,
 		enemy_visible = false,
-		enemy_pos = 0,
+		enemy_posx = 0,
+		enemy_posy = 0,
+		enemy_win = false,
+		enemy_fall_timer = 0,
 		update=function(self)
 			self.tick_timer += 1
 			self.disappear_timer += 1
@@ -499,6 +502,10 @@ function two_level_start()
 					
 
 			end
+			if (self.player_posx == self.enemy_posx and self.player_posy == self.enemy_posy) then
+				self.falling = true
+				self.enemy_win = true
+			end
 			if (self.player_posx == 127 and self.player_posy == 15) then
 				self.end_timer += 1
 			elseif (self.falling == true) then
@@ -534,33 +541,52 @@ function two_level_start()
 				self.player_posy_prev = self.player_posy
 				self.player_posy = 0
 			end
+
+			-- spawn enemy
 			if (self.tick_timer > 40 and self.enemy_visible == false) then
+				self.enemy_falling = false
 				self.enemy_visible = true
-				--self.enemy_posx = flr(rnd(127)) + 112
-				--self.enemy_posy = flr(rnd(15))
-				self.enemy_posx = 115
-				self.enemy_posy = 6
+				self.enemy_posx = flr(rnd(15)) + 112
+				self.enemy_posy = flr(rnd(15))
+				--self.enemy_posx = 115
+				--self.enemy_posy = 6
 			end
+			-- enemy fall animation counter
+			if (self.enemy_visible and self.enemy_falling) self.enemy_fall_timer += 1
+
+			-- enemy reset after falling
+			if (self.enemy_fall_timer > 60 and self.tick_timer == 0) then
+				self.enemy_visible = false
+				self.enemy_fall_timer = 0
+				self.enemy_fall_anim = 0
+			end
+
 			-- temp end
 			-- 127,15
-			if self.enemy_visible and self.tick_timer % 45 == 0 then
-				local condition_x = abs(self.player_posx - self.enemy_posx)
-				local condition_y = abs(self.player_posy - self.enemy_posy)
 
-				if (condition_x >= condition_y) then
-					if (self.player_posx > self.enemy_posx) then
-						self.enemy_posx+=1
-					elseif (self.player_posx < self.enemy_posx) then 
-						self.enemy_posx-=1
-					end
-				else
-					if (self.player_posy > self.enemy_posy) then
-						self.enemy_posy+=1
-					elseif (self.player_posy < self.enemy_posy) then
-						self.enemy_posy-=1
+			function enemy_ai()
+				if (self.enemy_falling) return
+				if self.enemy_visible and self.tick_timer % 45 == 0 then
+					local condition_x = abs(self.player_posx - self.enemy_posx)
+					local condition_y = abs(self.player_posy - self.enemy_posy)
+
+					if (condition_x >= condition_y) then
+						if (self.player_posx > self.enemy_posx) then
+							self.enemy_posx+=1
+						elseif (self.player_posx < self.enemy_posx) then 
+							self.enemy_posx-=1
+						end
+					else
+						if (self.player_posy > self.enemy_posy) then
+							self.enemy_posy+=1
+						elseif (self.player_posy < self.enemy_posy) then
+							self.enemy_posy-=1
+						end
 					end
 				end
 			end
+			enemy_ai()
+
 		end,
 		draw=function(self)
 			-- draw items in here
@@ -575,6 +601,8 @@ function two_level_start()
 			mset(self.player_posx, self.player_posy, 254)
 			print('ppx:'..self.player_posx, 0, 6, 7)
 			print('ppy:'..self.player_posy, 0, 12, 7)
+			print('epx:'..self.enemy_posx, 0, 18, 7)
+			print('epy:'..self.enemy_posy, 0, 24, 7)
 			function dash_unset()
 				mset(self.player_posx_prev+1, self.player_posy_prev, 255)
 				mset(self.player_posx_prev-1, self.player_posy_prev, 255)
@@ -623,6 +651,7 @@ function two_level_start()
 					end
 				end
 			end
+			if (self.enemy_visible and self.enemy_falling == false) mset(self.enemy_posx, self.enemy_posy, 239)
 
 			mset(127,15,249)
 			if (self.player_posx == 127 and self.player_posy == 15) then
@@ -640,14 +669,33 @@ function two_level_start()
 					end
 				end
 			end
+
+			if (self.enemy_win) then
+				if (self.lose_timer > 20) mset(self.player_posx, self.player_posy, 238)
+				if (self.lose_timer > 35) mset(self.player_posx, self.player_posy, 237)
+				if (self.lose_timer > 45) mset(self.player_posx, self.player_posy, 239)
+			end
+				
 			for key,value in pairs(self.obstacles) do
-				mset(value[1], value[2], 248)
+				mset(value[1], value[2], 248) -- black square representing drop
+
+				-- player falls down
 				if (self.player_posx == value[1] and self.player_posy == value[2]) then
 					mset(value[1], value[2], 247)
 					self.falling = true
 					if (self.lose_timer > 30) mset(value[1], value[2], 246)
 					if (self.lose_timer > 45) mset(value[1], value[2], 248)
 				end
+
+				-- enemy falls down
+				if (self.enemy_posx == value[1] and self.enemy_posy == value[2]) then
+					mset(value[1], value[2], 239)
+					self.enemy_falling = true
+					if (self.enemy_fall_timer > 30) mset(value[1], value[2], 236)
+					if (self.enemy_fall_timer > 45) mset(value[1], value[2], 235)
+				end
+
+				-- show dashed line of player dashing past drop
 				if (self.player_posx_prev and self.dashed) then
 					if (self.dash_dir == '+h') mset(self.player_posx_prev+1, self.player_posy_prev, 251)
 					if (self.dash_dir == '-h') mset(self.player_posx_prev-1, self.player_posy_prev, 251)
@@ -655,7 +703,8 @@ function two_level_start()
 					if (self.dash_dir == '-v') mset(self.player_posx_prev, self.player_posy_prev-1, 250)
 				end
 			end
-      if (self.enemy_visible) mset(self.enemy_posx, self.enemy_posy, 239)
+
+			-- win condition hit
 			if (self.end_timer > 0) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
 
 		end
@@ -1448,12 +1497,12 @@ __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088888800888888008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000888800088888800877778008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008800000888800088778800877778008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008800000888800088778800877778008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000888800088888800877778008888880
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088888800888888008888880
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000000000000000cc000cc002222222000800000cd444500000000000000000000000000bbbbbb0057557500555555077777777777777000777777005555550
