@@ -386,6 +386,9 @@ function two_level_blanks()
 	}
 end
 function two_level_start()
+	-- TODO: debugging
+	overlay_state = 4
+	-- TODO: debugging
 	if (reset_stage == false) music(20,1000,0)
 	reset_stage = false
 	two_level = {
@@ -807,12 +810,14 @@ function three_level_start()
 				end
 				if(btn(4) and self.jumptimer == 0) then
 					if (self.jumppress == false) self.prevcurrent = self.current
+					sfx(63)
 					self.jumppress = true
 					self.jumptimerset = true
 					self.jumplevel += 1
 				end
 				if(btn(5) and self.jumptimer == 0) then
 					if (self.jumppress == false) self.prevcurrent = self.current
+					sfx(63)
 					self.jumppress = true
 					self.jumptimerset = true
 					self.jumplevel += 1
@@ -820,22 +825,26 @@ function three_level_start()
 
 				if ((not btn(0)) and (not btn(1)) and (not btn(2)) and (not btn(3)) and (not btn(4)) and (not btn(5)))then
 					if (self.leftpress == true) then
+						sfx(62)
 						self.xnudge+=1
 						self.current-=1
 						self.xcpos+=20
 						self.leftpress = false
 					end
 					if (self.rightpress == true) then
+						sfx(62)
 						self.xnudge-=1
 						self.current+=1
 						self.xcpos-=20
 						self.rightpress = false
 					end
 					if (self.uppress == true) then
+						sfx(62)
 						self.lvl -= 1
 						self.uppress = false
 					end
 					if (self.downpress == true) then
+						sfx(62)
 						self.lvl += 1
 						self.downpress = false
 					end
