@@ -751,12 +751,15 @@ function determine_color(self, i, column)
 	if (self.prevcurrent == ((column-3) * -1) and self.jumppress == true and i == self.lvl) return 7
 	if (self.endgoallevel == (self.jumplevel) and self.jumppress == true and i == 0 and self.endblocky == i and self.endblockx == column) return 11
 	if (self.endgoallevel == (self.jumplevel+1) and self.jumppress == false and i == 0 and self.endblocky == i and self.endblockx == column) return 11
+	if (self.enemy_slice == self.jumplevel and self.jumppress == true and i == self.enemyy and column == self.enemyx) return 8
+	if (self.enemy_slice == (self.jumplevel+1) and self.jumppress == false and i == self.enemyy and column == self.enemyx) return 8
 	return 5
 end
 
 function determine_color_first_layer(self, j, column)
 	if (self.current == ((column * -1) + 3) and j == self.lvl) return 7
 	if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == column) return 11
+	if (self.jumppress == false and self.enemy_slice == self.jumplevel and j == self.enemyy and column == self.enemyx) return 8
 	return 5
 end
 
@@ -785,8 +788,15 @@ function three_level_start()
 		endgoallevel = 3, -- change to 24?
 		endblockx = 0, --flr(rnd(6)),
 		endblocky = 0, --flr(rnd(3)),
+		enemy_slice = 3,
+		enemyx = 6, --flr(rnd(6)),
+		enemyy = 0, --flr(rnd(3)),
+		enemy_visible = true,
+		tick_timer = 0,
 
 		update=function(self)
+			self.tick_timer += 1
+			-- if (self.tick_timer > 60) self.tick_timer = 0
 			function control3d()
 				-- current = 0
 				if(btn(0)) then
@@ -901,12 +911,41 @@ function three_level_start()
 			else
 				control3d()
 			end
+
+			-- self.lvl is y the top is 0 and it goes down to 3
+			-- self.current is x, the middle is 0 left is -3 right is 3
+			function enemy_ai3d()
+				if self.enemy_visible and self.tick_timer % 45 == 0 then
+					-- local condition_x = abs(self.player_posx - self.enemy_posx)
+					-- local condition_y = abs(self.player_posy - self.enemy_posy)
+					self.enemyx -= 1
+					self.enemyy += 1
+
+					-- if (condition_x >= condition_y) then
+					-- 	if (self.player_posx > self.enemy_posx) then
+					-- 		self.enemy_posx+=1
+					-- 	elseif (self.player_posx < self.enemy_posx) then 
+					-- 		self.enemy_posx-=1
+					-- 	end
+					-- else
+					-- 	if (self.player_posy > self.enemy_posy) then
+					-- 		self.enemy_posy+=1
+					-- 	elseif (self.player_posy < self.enemy_posy) then
+					-- 		self.enemy_posy-=1
+					-- 	end
+					-- end
+				end
+			end
+			if (self.tick_timer > 200) enemy_ai3d()
 			if (self.end_timer > 60) overlay_state = 4
 
 		end,
 
 		draw=function(self)
 			cls()
+			print('pvc:'..self.prevcurrent, 0, 0, 7)
+			print('lvl:'..self.lvl, 0, 6, 7)
+			print('cur:'..self.current, 0, 12, 7)
 			for i=0,0 do
 				if (self.jumpanim == 0) then
 					ydiff = -17 + (i * 20) - (self.lvl*4)
