@@ -913,27 +913,28 @@ function three_level_start()
 			end
 
 			-- self.lvl is y the top is 0 and it goes down to 3
-			-- self.current is x, the middle is 0 left is -3 right is 3
+			-- self.current is x, the middle is 0, left is -3, right is 3
 			function enemy_ai3d()
 				if self.enemy_visible and self.tick_timer % 45 == 0 then
-					-- local condition_x = abs(self.player_posx - self.enemy_posx)
-					-- local condition_y = abs(self.player_posy - self.enemy_posy)
-					self.enemyx -= 1
-					self.enemyy += 1
+					local player_x = self.current
+					local player_y = self.lvl
+					local player_z = self.jumplevel
+					local condition_x = abs(player_x - self.enemyx)
+					local condition_y = abs(player_y - self.enemyy)
 
-					-- if (condition_x >= condition_y) then
-					-- 	if (self.player_posx > self.enemy_posx) then
-					-- 		self.enemy_posx+=1
-					-- 	elseif (self.player_posx < self.enemy_posx) then 
-					-- 		self.enemy_posx-=1
-					-- 	end
-					-- else
-					-- 	if (self.player_posy > self.enemy_posy) then
-					-- 		self.enemy_posy+=1
-					-- 	elseif (self.player_posy < self.enemy_posy) then
-					-- 		self.enemy_posy-=1
-					-- 	end
-					-- end
+					if (condition_x >= condition_y) then
+						if (player_x > self.enemyx) then
+							self.enemyx+=1
+						elseif (player_x < self.enemyx) then 
+							self.enemyx-=1
+						end
+					else
+						if (player_y > self.enemyy) then
+							self.enemyy+=1
+						elseif (player_y < self.enemyy) then
+							self.enemyy-=1
+						end
+					end
 				end
 			end
 			if (self.tick_timer > 200) enemy_ai3d()
@@ -946,6 +947,7 @@ function three_level_start()
 			print('pvc:'..self.prevcurrent, 0, 0, 7)
 			print('lvl:'..self.lvl, 0, 6, 7)
 			print('cur:'..self.current, 0, 12, 7)
+			print('jmp:'..self.jumplevel, 0, 18, 7)
 			for i=0,0 do
 				if (self.jumpanim == 0) then
 					ydiff = -17 + (i * 20) - (self.lvl*4)
