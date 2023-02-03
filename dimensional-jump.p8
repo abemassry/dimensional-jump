@@ -757,9 +757,9 @@ function determine_color(self, i, column)
 end
 
 function determine_color_first_layer(self, j, column)
-	if (self.current == ((column * -1) + 3) and j == self.lvl) return 7
 	if (self.jumppress == false and self.endgoallevel == self.jumplevel and self.endblocky == j and self.endblockx == column) return 11
 	if (self.jumppress == false and self.enemy_slice == self.jumplevel and j == self.enemyy and column == self.enemyx) return 8
+	if (self.current == ((column * -1) + 3) and j == self.lvl) return 7
 	return 5
 end
 
@@ -919,13 +919,14 @@ function three_level_start()
 					local player_x = self.current
 					local player_y = self.lvl
 					local player_z = self.jumplevel
-					local condition_x = abs(player_x - self.enemyx)
+					local player_x_conv = (player_x * -1) + 3
+					local condition_x = abs(abs(player_x_conv) - abs(self.enemyx))
 					local condition_y = abs(player_y - self.enemyy)
 
 					if (condition_x >= condition_y) then
-						if (player_x > self.enemyx) then
+						if (self.enemyx < player_x_conv) then
 							self.enemyx+=1
-						elseif (player_x < self.enemyx) then 
+						elseif (self.enemyx > player_x_conv) then
 							self.enemyx-=1
 						end
 					else
@@ -937,7 +938,15 @@ function three_level_start()
 					end
 				end
 			end
-			if (self.tick_timer > 200) enemy_ai3d()
+			if (self.jumplevel == self.enemy_slice + 1) self.enemy_visible = false
+			if (self.enemy_visible == false) then
+				self.enemy_slice = self.jumplevel + flr(rnd(3))
+				self.enemyx = flr(rnd(6))
+			end
+			if (self.tick_timer > 200) then
+				enemy_ai3d()
+				self.enemy_visible = true
+			end
 			if (self.end_timer > 60) overlay_state = 4
 
 		end,
@@ -948,6 +957,8 @@ function three_level_start()
 			print('lvl:'..self.lvl, 0, 6, 7)
 			print('cur:'..self.current, 0, 12, 7)
 			print('jmp:'..self.jumplevel, 0, 18, 7)
+			print('enx:'..self.enemyx, 60, 0, 7)
+			print('eny:'..self.enemyy, 60, 6, 7)
 			for i=0,0 do
 				if (self.jumpanim == 0) then
 					ydiff = -17 + (i * 20) - (self.lvl*4)
