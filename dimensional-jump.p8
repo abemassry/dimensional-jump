@@ -785,6 +785,7 @@ function three_level_start()
 		jumptimer = 0,
 		jumptimerset = false,
 		end_timer = 0,
+		lose_timer = 0,
 		endgoallevel = 3, -- change to 24?
 		endblockx = 0, --flr(rnd(6)),
 		endblocky = 0, --flr(rnd(3)),
@@ -792,6 +793,7 @@ function three_level_start()
 		enemyx = 6, --flr(rnd(6)),
 		enemyy = 0, --flr(rnd(3)),
 		enemy_visible = true,
+		enemy_reset = false,
 		tick_timer = 0,
 
 		update=function(self)
@@ -908,6 +910,8 @@ function three_level_start()
 			end
 			if self.jumplevel == self.endgoallevel and self.endblockx == ((self.current-3)*-1) and self.endblocky == self.lvl then
 				self.end_timer += 1
+			elseif self.jumplevel == self.enemy_slice and self.enemyx == ((self.current-3)*-1) and self.enemyy == self.lvl then
+				self.lose_timer += 1
 			else
 				control3d()
 			end
@@ -948,6 +952,10 @@ function three_level_start()
 				self.enemy_visible = true
 			end
 			if (self.end_timer > 60) overlay_state = 4
+			if (self.lose_timer > 60) then
+				reset_stage = true
+				overlay_state = 4
+			end
 
 		end,
 
@@ -959,6 +967,8 @@ function three_level_start()
 			print('jmp:'..self.jumplevel, 0, 18, 7)
 			print('enx:'..self.enemyx, 60, 0, 7)
 			print('eny:'..self.enemyy, 60, 6, 7)
+			print('ens:'..self.enemy_slice, 60, 12, 7)
+
 			for i=0,0 do
 				if (self.jumpanim == 0) then
 					ydiff = -17 + (i * 20) - (self.lvl*4)
@@ -1057,6 +1067,7 @@ function three_level_start()
 			end
 			if (self.jumppress == true) self.startanim += 1
 			if (self.end_timer > 0) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
+			if (self.lose_timer > 0) rectfill(64 - self.lose_timer*2,64 - self.lose_timer*2,64 + self.lose_timer*2, 64 + self.lose_timer*2,8)
 		end
 	}
 end
