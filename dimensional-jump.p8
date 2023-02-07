@@ -764,7 +764,7 @@ function determine_color_first_layer(self, j, column)
 end
 
 function three_level_start()
-	if (reset_stage == false) music(20,1000,0)
+	if (reset_stage == false) music(29,1000,0)
 	reset_stage = false
 	three_level = {
 		u=0,
