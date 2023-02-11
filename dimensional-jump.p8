@@ -1100,7 +1100,11 @@ function draw_transition()
 			score_counter = score
 			transition_timer += 1
 		end
-		print('score: '..flr(score_counter), 40, 50, 7)
+		-- print('score: '..flr(score_counter), 40, 50, 7)
+		if (level == 0) print('zero to one message', 40, 50, 7)
+		if (level == 1) print('one to two message', 40, 50, 7)
+		if (level == 2) print('two to three message', 40, 50, 7)
+		if (level == 3) print('three to end message', 40, 50, 7)
 		if transition_timer > 120 then
 			if level == 3 then
 				-- call roll credits
@@ -1275,7 +1279,7 @@ end
 
 
 function roll_credits()
-	print('score: '..flr(score), 0, 0, 5)
+	-- print('score: '..flr(score), 0, 0, 5)
 	if (rolling_credits == false) then
 		transition_timer += 0.5
 		if (transition_timer < 5) then
