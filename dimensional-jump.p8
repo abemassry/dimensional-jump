@@ -29,7 +29,7 @@ function _init()
 	btn_release[5] = false
 
 	overlay_state = 0
-	music(20,1000,0)
+	music(20,1000)
 	-- overlay_state 0 title screen
 	-- overlay_state 1 main play
 	-- overlay_state 2 pause
@@ -109,7 +109,7 @@ function handle_button_release(btn_num)
 end
 
 function zero_level_start()
-	if (reset_stage == false) music(21,1000,0)
+	if (reset_stage == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
 	overlay_state = 4
@@ -154,9 +154,9 @@ function zero_level_start()
 end
 function one_level_start()
 	-- TODO: debugging
-	overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
-	if (reset_stage == false) music(20,1000,0)
+	if (reset_stage == false) music(2,1000)
 	reset_stage = false
 	one_level = {
 		-- todo: max dash value
@@ -281,8 +281,8 @@ function one_level_start()
 					-- 79 - ((79-5)/2)
 					-- if (self.player_pos > 31 and x2 > 64 and i == (player_local - 2)) c = 8
 				end
-				print('pp:'..self.player_pos, 0, 6, 7)
-				print('ep:'..self.enemy_pos, 0, 12, 7)
+				-- print('pp:'..self.player_pos, 0, 6, 7)
+				-- print('ep:'..self.enemy_pos, 0, 12, 7)
 				if (count < self.player_pos and count < 5) c = 0
 				if (count < self.player_pos-1 and count < 7) c = 0
 				if (count < self.player_pos-3 and count < 9) c = 0
@@ -305,7 +305,7 @@ function one_level_start()
 					if (self.enemy_pos == count and self.enemy_start_timer > 300) then
 						if (self.enemy_current_time == 0) self.enemy_current_time = self.enemy_start_timer
 						if (self.enemy_fall_anim <= 5) rectfill(x1+self.enemy_fall_anim, 64+self.enemy_fall_anim, x2-self.enemy_fall_anim, 74-self.enemy_fall_anim, 8)
-						print('counted', 0, 18, 7)
+						-- print('counted', 0, 18, 7)
 						if (self.enemy_start_timer > self.enemy_current_time + 60) then
 							self.enemy_fall_anim = 0
 							self.enemy_visible = false
@@ -329,6 +329,8 @@ function one_level_start()
 
 			if (self.dash_jump) spr(252,dashx-12, 65, 2, 1)
 
+			print('hold ❎/🅾️ and press ➡️ ', 4, 10, 7)
+			print('to dash-jump', 4, 20, 7)
 		end
 	}
 end
@@ -387,9 +389,9 @@ function two_level_blanks()
 end
 function two_level_start()
 	-- TODO: debugging
-	overlay_state = 4
+	--overlay_state = 4
 	-- TODO: debugging
-	if (reset_stage == false) music(20,1000,0)
+	if (reset_stage == false) music(45,1000)
 	reset_stage = false
 	two_level = {
 		player_posx = 112,
@@ -764,7 +766,7 @@ function determine_color_first_layer(self, j, column)
 end
 
 function three_level_start()
-	if (reset_stage == false) music(29,1000,0)
+	if (reset_stage == false) music(29,1000)
 	reset_stage = false
 	three_level = {
 		u=0,
