@@ -389,7 +389,7 @@ function two_level_blanks()
 end
 function two_level_start()
 	-- TODO: debugging
-	--overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(45,1000)
 	reset_stage = false
