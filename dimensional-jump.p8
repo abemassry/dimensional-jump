@@ -797,6 +797,7 @@ function three_level_start()
 		enemy_visible = true,
 		enemy_reset = false,
 		tick_timer = 0,
+		wlcontrol = false, -- win lose control, if win or lose take control
 
 		update=function(self)
 			self.tick_timer += 1
@@ -914,8 +915,11 @@ function three_level_start()
 				self.end_timer += 1
 			elseif self.jumplevel == self.enemy_slice and self.enemyx == ((self.current-3)*-1) and self.enemyy == self.lvl then
 				self.lose_timer += 1
-			else
+				self.wlcontrol = true
+			elseif self.wlcontrol == false then
 				control3d()
+			elseif self.wlcontrol == true and self.lose_timer > 0 then
+				self.lose_timer += 1
 			end
 
 			-- self.lvl is y the top is 0 and it goes down to 3
@@ -945,11 +949,12 @@ function three_level_start()
 				end
 			end
 			if (self.jumplevel == self.enemy_slice + 1) self.enemy_visible = false
-			if (self.enemy_visible == false) then
+			if (self.enemy_visible == false and self.jumptimer == 0) then
 				self.enemy_slice = self.jumplevel + flr(rnd(3))
 				self.enemyx = flr(rnd(6))
+				self.enemy_visible = true
 			end
-			if (self.tick_timer > 200) then
+			if (self.tick_timer > 200 and self.jumptimer == 0) then
 				enemy_ai3d()
 				self.enemy_visible = true
 			end
