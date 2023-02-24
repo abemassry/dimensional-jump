@@ -37,6 +37,7 @@ function _init()
 	-- overlay_state 4 transition
 	-- overlay_state 5 credits
 	level = 0 -- default 0
+	title_to_zero = true
 	reset_stage = false
 	pause_length = 5
 	score = 0
@@ -109,10 +110,10 @@ function handle_button_release(btn_num)
 end
 
 function zero_level_start()
-	if (reset_stage == false) music(21,1000)
+	if (reset_stage == false and title_to_zero == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
-	-- overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
@@ -145,7 +146,7 @@ function zero_level_start()
 					if (self.button_released) self.lscore += 1
 					self.color = 7
 				else
-					if (self.button_released) self.lscore -= 1
+					--if (self.button_released) self.lscore -= 1
 				end
 			end
 			rectfill(44, 44, 84, 84, self.color)
@@ -154,7 +155,7 @@ function zero_level_start()
 end
 function one_level_start()
 	-- TODO: debugging
-	-- overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(2,1000)
 	reset_stage = false
@@ -389,7 +390,7 @@ function two_level_blanks()
 end
 function two_level_start()
 	-- TODO: debugging
-	--overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(45,1000)
 	reset_stage = false
@@ -1108,11 +1109,16 @@ function draw_transition()
 			transition_timer += 1
 		end
 		-- print('score: '..flr(score_counter), 40, 50, 7)
-		if (level == 0) print('zero to one message', 40, 50, 7)
-		if (level == 1) print('one to two message', 40, 50, 7)
-		if (level == 2) print('two to three message', 40, 50, 7)
-		if (level == 3) print('three to end message', 40, 50, 7)
-		if transition_timer > 120 then
+		if title_to_zero then
+			print('well, square,', 40, 50, 7)
+			print('how did we get here?', 25, 62, 7)
+		else
+			if (level == 0) print('is it hip to be square?', 22, 50, 7)
+			if (level == 1) print('where is that beautiful square?', 0, 50, 7)
+			if (level == 2) print('two to three message', 40, 50, 7)
+			if (level == 3) print('three to end message', 40, 50, 7)
+		end
+		if transition_timer > 300 then
 			if level == 3 then
 				-- call roll credits
 				transition_timer = 0
@@ -1133,7 +1139,8 @@ function reset_to_next_stage()
 	-- level = 1
 	-- TODO: debug
 	if level == 0 then
-		if (reset_stage) then
+		if (reset_stage or title_to_zero) then
+			title_to_zero = false
 			zero_level_start()
 			return
 		end
@@ -1445,14 +1452,19 @@ function _draw()
 		draw_score()
 		-- end hud
 		-- below is foreground
-		if level == 0 then
-			zero_level:draw()
-		elseif level == 1 then
-			one_level:draw()
-		elseif level == 2 then
-			two_level:draw()
-		elseif level == 3 then
-			three_level:draw()
+		if title_to_zero then
+			cls()
+			draw_transition()
+		else 
+			if level == 0 then
+				zero_level:draw()
+			elseif level == 1 then
+				one_level:draw()
+			elseif level == 2 then
+				two_level:draw()
+			elseif level == 3 then
+				three_level:draw()
+			end
 		end
 	elseif overlay_state == 3 then
 		cls()
