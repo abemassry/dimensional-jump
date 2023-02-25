@@ -1114,8 +1114,9 @@ function draw_transition()
 			print('how did we get here?', 25, 62, 7)
 		else
 			if (level == 0) print('is it hip to be square?', 22, 50, 7)
-			if (level == 1) print('where is that beautiful square?', 0, 50, 7)
-			if (level == 2) print('two to three message', 40, 50, 7)
+			if (level == 1) print('where is that beautiful square?', 5, 50, 7)
+			if (level == 2) print("you're so square,", 30, 50, 7)
+			if (level == 2) print("but do you care?", 32, 62, 7)
 			if (level == 3) print('three to end message', 40, 50, 7)
 		end
 		if transition_timer > 300 then
