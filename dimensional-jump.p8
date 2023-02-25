@@ -113,7 +113,7 @@ function zero_level_start()
 	if (reset_stage == false and title_to_zero == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
-	overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
@@ -155,7 +155,7 @@ function zero_level_start()
 end
 function one_level_start()
 	-- TODO: debugging
-	overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(2,1000)
 	reset_stage = false
@@ -336,61 +336,60 @@ function one_level_start()
 	}
 end
 function two_level_blanks()
-	return {
+	local l = {
 		{127,10},
 		{126,11},
 		{125,12},
 		{124,13},
 		{123,14},
 		{122,15},
-		{124, 0},
-		{124, 1},
-		{124, 2},
-		{124, 3},
-		{124, 4},
-		{124, 5},
-		{124, 6},
-		{124, 7},
-		{124, 8},
-		{124, 9},
-		{124, 10},
-		{124, 11},
-		{124, 12},
-		{112, 12},
-		{113, 12},
-		{114, 12},
-		{115, 12},
-		{116, 12},
-		{117, 12},
-		{118, 12},
-		{119, 12},
-		{120, 12},
-		{121, 12},
-		{122, 12},
-		{123, 12},
-		{124, 12},
-		{120, 2},
-		{120, 3},
-		{120, 4},
-		{120, 5},
-		{120, 6},
-		{120, 7},
-		{120, 8},
 		{113, 10},
 		{114, 10},
 		{115, 10},
 		{116, 10},
 		{117, 10},
-		{115, 4},
-		{115, 5},
-		{115, 6},
-		{115, 7},
-		{115, 8}
 	}
+	for i=0,12 do
+		add(l, {124, i})
+	end
+	for i=112,124 do
+		add(l, {i, 12})
+	end
+	for i=112,124 do
+		add(l, {i, 6})
+	end
+	for i=2,8 do
+		add(l, {129, i})
+	end
+	for i=2,8 do
+		add(l, {130, i})
+	end
+	for i=3,9 do
+		add(l, {119, i})
+	end
+	for i=0,7 do
+		add(l, {121, i})
+		add(l, {126, i})
+	end
+	for i=4,8 do
+		add(l, {115, i})
+	end
+	for i=4,8 do
+		add(l, {112, i})
+	end
+	for i=113,117 do
+		add(l, {i, 12})
+	end
+	for i=113,117 do
+		add(l, {i+2, 10})
+		add(l, {i+1, 14})
+		add(l, {i-1, 8})
+	end
+	return l
 end
 function two_level_start()
 	-- TODO: debugging
-	overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(45,1000)
 	reset_stage = false
@@ -572,7 +571,7 @@ function two_level_start()
 
 			function enemy_ai()
 				if (self.enemy_falling) return
-				if self.enemy_visible and self.tick_timer % 45 == 0 then
+				if self.enemy_visible and self.tick_timer % 30 == 0 then
 					local condition_x = abs(self.player_posx - self.enemy_posx)
 					local condition_y = abs(self.player_posy - self.enemy_posy)
 
@@ -605,10 +604,10 @@ function two_level_start()
 				end
 			end
 			mset(self.player_posx, self.player_posy, 254)
-			print('ppx:'..self.player_posx, 0, 6, 7)
-			print('ppy:'..self.player_posy, 0, 12, 7)
-			print('epx:'..self.enemy_posx, 0, 18, 7)
-			print('epy:'..self.enemy_posy, 0, 24, 7)
+			-- print('ppx:'..self.player_posx, 0, 6, 7)
+			-- print('ppy:'..self.player_posy, 0, 12, 7)
+			-- print('epx:'..self.enemy_posx, 0, 18, 7)
+			-- print('epy:'..self.enemy_posy, 0, 24, 7)
 			function dash_unset()
 				mset(self.player_posx_prev+1, self.player_posy_prev, 255)
 				mset(self.player_posx_prev-1, self.player_posy_prev, 255)
@@ -789,9 +788,9 @@ function three_level_start()
 		jumptimerset = false,
 		end_timer = 0,
 		lose_timer = 0,
-		endgoallevel = 3, -- change to 24?
-		endblockx = 0, --flr(rnd(6)),
-		endblocky = 0, --flr(rnd(3)),
+		endgoallevel = 24, -- change to 24?
+		endblockx = flr(rnd(6)),
+		endblocky = flr(rnd(3)),
 		enemy_slice = 3,
 		enemyx = 6, --flr(rnd(6)),
 		enemyy = 0, --flr(rnd(3)),
@@ -964,18 +963,19 @@ function three_level_start()
 				reset_stage = true
 				overlay_state = 4
 			end
+			if (self.jumplevel > self.endgoallevel) self.endgoallevel += 10
 
 		end,
 
 		draw=function(self)
 			cls()
-			print('pvc:'..self.prevcurrent, 0, 0, 7)
-			print('lvl:'..self.lvl, 0, 6, 7)
-			print('cur:'..self.current, 0, 12, 7)
-			print('jmp:'..self.jumplevel, 0, 18, 7)
-			print('enx:'..self.enemyx, 60, 0, 7)
-			print('eny:'..self.enemyy, 60, 6, 7)
-			print('ens:'..self.enemy_slice, 60, 12, 7)
+			-- print('pvc:'..self.prevcurrent, 0, 0, 7)
+			-- print('lvl:'..self.lvl, 0, 6, 7)
+			-- print('cur:'..self.current, 0, 12, 7)
+			-- print('jmp:'..self.jumplevel, 0, 18, 7)
+			-- print('enx:'..self.enemyx, 60, 0, 7)
+			-- print('eny:'..self.enemyy, 60, 6, 7)
+			-- print('ens:'..self.enemy_slice, 60, 12, 7)
 
 			for i=0,0 do
 				if (self.jumpanim == 0) then
@@ -1074,8 +1074,8 @@ function three_level_start()
 				setup_block(self.xcpos+64-60,64+ydiff,i,depth,0+self.xnudge,self.u,c,self.blocksize)
 			end
 			if (self.jumppress == true) self.startanim += 1
-			if (self.end_timer > 0) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
-			if (self.lose_timer > 0) rectfill(64 - self.lose_timer*2,64 - self.lose_timer*2,64 + self.lose_timer*2, 64 + self.lose_timer*2,8)
+			if (self.end_timer > 15) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
+			if (self.lose_timer > 15) rectfill(64 - self.lose_timer*2,64 - self.lose_timer*2,64 + self.lose_timer*2, 64 + self.lose_timer*2,8)
 		end
 	}
 end
@@ -1115,8 +1115,9 @@ function draw_transition()
 		else
 			if (level == 0) print('is it hip to be square?', 22, 50, 7)
 			if (level == 1) print('where is that beautiful square?', 5, 50, 7)
-			if (level == 2) print("you're so square,", 30, 50, 7)
-			if (level == 2) print("but do you care?", 32, 62, 7)
+			if (level == 2 and transition_timer <= 200) print("you're so square,", 30, 50, 7)
+			if (level == 2 and transition_timer <= 200) print("but do you care?", 32, 62, 7)
+			if (level == 2 and transition_timer > 200) print("press ❎/🅾️ to jump", 25, 50, 7)
 			if (level == 3) print('three to end message', 40, 50, 7)
 		end
 		if transition_timer > 300 then
