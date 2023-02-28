@@ -113,7 +113,7 @@ function zero_level_start()
 	if (reset_stage == false and title_to_zero == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
-	-- overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
@@ -155,7 +155,7 @@ function zero_level_start()
 end
 function one_level_start()
 	-- TODO: debugging
-	-- overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(2,1000)
 	reset_stage = false
@@ -389,7 +389,7 @@ function two_level_blanks()
 end
 function two_level_start()
 	-- TODO: debugging
-	-- overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(45,1000)
 	reset_stage = false
@@ -788,7 +788,7 @@ function three_level_start()
 		jumptimerset = false,
 		end_timer = 0,
 		lose_timer = 0,
-		endgoallevel = 24, -- change to 24?
+		endgoallevel = 3, -- change to 24?
 		endblockx = flr(rnd(6)),
 		endblocky = flr(rnd(3)),
 		enemy_slice = 3,
@@ -1118,7 +1118,8 @@ function draw_transition()
 			if (level == 2 and transition_timer <= 200) print("you're so square,", 30, 50, 7)
 			if (level == 2 and transition_timer <= 200) print("but do you care?", 32, 62, 7)
 			if (level == 2 and transition_timer > 200) print("press ❎/🅾️ to jump", 25, 50, 7)
-			if (level == 3) print('three to end message', 40, 50, 7)
+			if (level == 3) print('is this the end for us,', 15, 50, 7)
+			if (level == 3) print('or are we stuck at square one?', 5, 62, 7)
 		end
 		if transition_timer > 300 then
 			if level == 3 then
@@ -1208,10 +1209,6 @@ function display_credit(credit)
 		print('art', 52 + pad_left, 50, 7)
 		spr(242, 28 + pad_left, 55)
 		print('@abemassry', 37 + pad_left, 57, 7)
-		spr(242, 21 + pad_left, 62)
-		print('@kenjihasegawa', 30 + pad_left, 64, 7)
-		spr(243, 27 + pad_left, 70)
-		print('@berrynikki', 36 + pad_left, 71, 7)
 	end
 	if (credit == 7) then
 		print('music', 46 + pad_left, 50, 7)
@@ -1226,8 +1223,6 @@ function display_credit(credit)
 		print('@abemassry', 37 + pad_left, 57, 7)
 		spr(242, 21 + pad_left, 62)
 		print('@kenjihasegawa', 30 + pad_left, 64, 7)
-		spr(243, 27 + pad_left, 70)
-		print('@berrynikki', 36 + pad_left, 71, 7)
 	end
 
 	if (credit == 10) then
@@ -1259,17 +1254,17 @@ function rolling_credits_active(y)
 	htxt = 0
 	creative_contributors = {
 		'@tory2k',
-		'@illblew',
-		'@admiralyarrr',
+		'@willblew',
 		'@lyn81',
 		'@victorycondition',
+		'@berrynikki',
 		'@itsphillc',
 		'@lucky_chucky7',
 		'@zerotoherodev',
-		'@evinjenioso',
 		'@displague',
 		'@yodadog',
 		'@diagnostuck',
+		'@droppingrain',
 		'@puffinplaytv',
 		'@alladuss',
 		'@rps_75',
@@ -1278,7 +1273,32 @@ function rolling_credits_active(y)
 		'@bigwaterkids12',
 		'@arieshothead',
 		'@slickshoess',
-		'@kr_deepblack'
+		'@kr_deepblack',
+		'@eclypst',
+		'@ztemqnoj',
+		'@droidimus',
+		'@sedosangaming',
+		'@mecmgmt',
+		'@sambelco',
+		'@lotusleafstyle',
+		'@darkhoursco',
+		'@beardedbaritone_',
+		'@ravensevermore',
+		'@4parcade',
+		'@gizmo_joe',
+		'@frenchtoasters',
+		'@gentlegiantdev',
+		'@russjr08',
+		'@theegreatdanee',
+		'@mrlovepickle',
+		'@klondike7000',
+		'@vladaah',
+		'@thenightowl03',
+		'@tactiledactyl',
+		'@zachariah_is_kewl',
+		'@daneboy_',
+		'@mechamedeley',
+		'@returntodust'
 	}
 	print('creative contributors', 22 + pad_left, y, 7)
 	for c in all(creative_contributors) do
