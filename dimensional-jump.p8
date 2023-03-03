@@ -48,7 +48,7 @@ function _init()
 	transition_timer = 0
 	monamie_code={}
 	monamie = false
-	credit_number = 1
+	credit_number = 0
 	rolling_credits = false
 	rolling_credits_height = 130
 	reset_game = false
@@ -79,22 +79,6 @@ function draw_zero_overlay()
 	zero_overlay()
 end
 
-function screen_shake(acs)
-	local fade = 0.95
-	local offset_x=1-rnd(2)
-	local offset_y=1-rnd(2)
-	if acs == 0 then
-		offset_x*=offset
-		offset_y*=offset
-	end
-
-	camera(offset_x,offset_y)
-	offset*=fade
-	if offset<0.5 then
-		offset=0
-	end
-end
-
 function handle_button_release(btn_num)
 	if btn_press[btn_num] == true and btn_release[btn_num] == true then
 		btn_press[btn_num] = false
@@ -113,7 +97,7 @@ function zero_level_start()
 	if (reset_stage == false and title_to_zero == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
-	overlay_state = 4
+	--overlay_state = 4
 	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
@@ -155,7 +139,7 @@ function zero_level_start()
 end
 function one_level_start()
 	-- TODO: debugging
-	overlay_state = 4
+	--overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(2,1000)
 	reset_stage = false
@@ -389,7 +373,7 @@ function two_level_blanks()
 end
 function two_level_start()
 	-- TODO: debugging
-	overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(45,1000)
 	reset_stage = false
@@ -788,7 +772,7 @@ function three_level_start()
 		jumptimerset = false,
 		end_timer = 0,
 		lose_timer = 0,
-		endgoallevel = 3, -- change to 24?
+		endgoallevel = 24,
 		endblockx = flr(rnd(6)),
 		endblocky = flr(rnd(3)),
 		enemy_slice = 3,
@@ -969,13 +953,6 @@ function three_level_start()
 
 		draw=function(self)
 			cls()
-			-- print('pvc:'..self.prevcurrent, 0, 0, 7)
-			-- print('lvl:'..self.lvl, 0, 6, 7)
-			-- print('cur:'..self.current, 0, 12, 7)
-			-- print('jmp:'..self.jumplevel, 0, 18, 7)
-			-- print('enx:'..self.enemyx, 60, 0, 7)
-			-- print('eny:'..self.enemyy, 60, 6, 7)
-			-- print('ens:'..self.enemy_slice, 60, 12, 7)
 
 			for i=0,0 do
 				if (self.jumpanim == 0) then
@@ -1186,36 +1163,41 @@ function reset_to_next_stage()
 end
 
 function display_credit(credit)
-	if (credit == 1) print("the end", 50, 50, 7)
-	if (credit == 2) print("winners don't use drugs\n rip william sessions", 20, 50, 7)
-	if (credit == 3) then
+	if (credit == 0) print("the end", 50, 50, 7)
+	if (credit == 1) print("winners don't use drugs\n rip william sessions", 20, 50, 7)
+	if (credit == 2) then
 		print('presented by:', 39, 50, 6)
 		print('massindustries', 36, 56, 5)
 	end
 	pad_left = 4
-	if (credit == 4) then
+	if (credit == 3) then
 		print('game design', 35 + pad_left, 50, 7)
 		spr(242, 28 + pad_left, 55)
 		print('@abemassry', 37 + pad_left, 57, 7)
 		spr(242, 21 + pad_left, 62)
 		print('@kenjihasegawa', 30 + pad_left, 64, 7)
 	end
-	if (credit == 5) then
+	if (credit == 4) then
 		print('programming', 35 + pad_left, 50, 7)
 		spr(242, 28 + pad_left, 55)
 		print('@abemassry', 37 + pad_left, 57, 7)
 	end
-	if (credit == 6) then
+	if (credit == 5) then
 		print('art', 52 + pad_left, 50, 7)
 		spr(242, 28 + pad_left, 55)
 		print('@abemassry', 37 + pad_left, 57, 7)
 	end
-	if (credit == 7) then
+	if (credit == 6) then
 		print('music', 46 + pad_left, 50, 7)
 		spr(242, 28 + pad_left, 55)
 		print('@abemassry', 37 + pad_left, 57, 7)
 		spr(242, 21 + pad_left, 62)
 		print('@kenjihasegawa', 30 + pad_left, 64, 7)
+	end
+	if (credit == 7) then
+		print('narrative design', 32 + pad_left, 50, 7)
+		spr(242, 28 + pad_left, 55)
+		print('@kenjihasegawa', 37 + pad_left, 57, 7)
 	end
 	if (credit == 8) then
 		print('creative directors', 20 + pad_left, 50, 7)
