@@ -59,9 +59,9 @@ function _init()
 end
 
 function zero_overlay()
-	print('press ❎ or 🅾️ to start', 18, 98, 7)
-	print('presented by:', 39, 107, 6)
-	print('mass industries', 35, 113, 5)
+	print('press ❎ or 🅾️ to start', 18, 103, 7)
+	print('presented by:', 39, 112, 6)
+	print('mass industries', 35, 118, 5)
 end
 
 function draw_zero_overlay()
@@ -70,12 +70,12 @@ function draw_zero_overlay()
 	pal(7, 12)
 	bluepos = sin(sintimer)*5
 	res = 5 + bluepos
-	map(1, 0, 13+bluepos, 0, 128, 128)
+	map(1, 0, 13+bluepos, 4, 128, 128)
 	pal(7, 8)
 	redpos = -1*(sin(sintimer)*5)
-	map(1, 0, 4+(redpos), 0, 128, 128)
+	map(1, 0, 4+(redpos), 4, 128, 128)
 	pal(7, 7)
-	map(1, 0, 8, 0, 128, 128)
+	map(1, 0, 8, 4, 128, 128)
 	zero_overlay()
 end
 
@@ -373,7 +373,7 @@ function two_level_blanks()
 end
 function two_level_start()
 	-- TODO: debugging
-	-- overlay_state = 4
+	--overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(45,1000)
 	reset_stage = false
@@ -1090,12 +1090,12 @@ function draw_transition()
 			print('well, square,', 40, 50, 7)
 			print('how did we get here?', 25, 62, 7)
 		else
-			if (level == 0) print('is it hip to be square?', 22, 50, 7)
-			if (level == 1) print('where is that beautiful square?', 5, 50, 7)
+			if (level == 0) print('is it hip to be square?', 19, 50, 7)
+			if (level == 1) print('where is that beautiful square?', 3, 50, 7)
 			if (level == 2 and transition_timer <= 200) print("you're so square,", 30, 50, 7)
 			if (level == 2 and transition_timer <= 200) print("but do you care?", 32, 62, 7)
 			if (level == 2 and transition_timer > 200) print("press ❎/🅾️ to jump", 25, 50, 7)
-			if (level == 3) print('is this the end for us,', 15, 50, 7)
+			if (level == 3) print('is this the end for us,', 17, 50, 7)
 			if (level == 3) print('or are we stuck at square one?', 5, 62, 7)
 		end
 		if transition_timer > 300 then
