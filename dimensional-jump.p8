@@ -97,7 +97,7 @@ function zero_level_start()
 	if (reset_stage == false and title_to_zero == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
-	-- overlay_state = 4
+	--overlay_state = 4
 	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
@@ -149,7 +149,7 @@ function zero_level_start()
 end
 function one_level_start()
 	-- TODO: debugging
-	--overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(2,1000)
 	reset_stage = false
@@ -383,7 +383,7 @@ function two_level_blanks()
 end
 function two_level_start()
 	-- TODO: debugging
-	--overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(45,1000)
 	reset_stage = false
@@ -1097,15 +1097,16 @@ function draw_transition()
 		end
 		-- print('score: '..flr(score_counter), 40, 50, 7)
 		if title_to_zero then
-			print('well, square,', 40, 50, 7)
-			print('how did we get here?', 25, 62, 7)
+			print("after this, we're square.", 15, 50, 7)
+			--print("we're square", 25, 62, 7)
 		else
-			if (level == 0) print('is it hip to be square?', 19, 50, 7)
-			if (level == 1) print('where is that beautiful square?', 3, 50, 7)
-			if (level == 2 and transition_timer <= 200) print("you're so square,", 30, 50, 7)
-			if (level == 2 and transition_timer <= 200) print("but do you care?", 32, 62, 7)
-			if (level == 2 and transition_timer > 200) print("press ❎/🅾️ to jump", 25, 50, 7)
-			if (level == 3) print('is this the end for us,', 17, 50, 7)
+			if (level == 0) print('is it hip to be square?', 17, 50, 7)
+			if (level == 1) print("you're so square,", 30, 50, 7)
+			if (level == 1) print("but do you care?", 31, 62, 7)
+			if (level == 2 and transition_timer <= 215) print("you'll never die round,", 19, 50, 7)
+			if (level == 2 and transition_timer <= 215) print('so square up.', 38, 62, 7)
+			if (level == 2 and transition_timer > 215) print("press ❎/🅾️ to jump", 25, 50, 7)
+			if (level == 3) print('is this the end for us,', 19, 50, 7)
 			if (level == 3) print('or are we stuck at square one?', 5, 62, 7)
 		end
 		if transition_timer > 300 then
