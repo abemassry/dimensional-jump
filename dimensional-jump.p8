@@ -97,18 +97,28 @@ function zero_level_start()
 	if (reset_stage == false and title_to_zero == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
-	--overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
 		button_released = false,
+		button_prev = false,
+		button_cur = false,
 		button_release_count = 0,
 		color = 5,
 		even = false,
 		update=function(self)
 			-- handle button press
 			self.button_released = handle_button_release(4) or handle_button_release(5)
+			if (not btn(4) and not btn(5)) self.button_prev = false
+			if (btn(4) or btn(5) and self.button_prev == false) then 
+				self.button_cur = true
+				self.button_prev = true
+			else
+				self.button_cur = false
+			end
 			if (self.button_released) self.button_release_count += 1
+			if (self.button_cur and self.color == 7) self.lscore += 1
 			if (self.button_release_count == 1) self.button_released = false
 			if (timer == 300) score+=1
 			if self.lscore == 10 then
@@ -126,9 +136,9 @@ function zero_level_start()
 				print('press ❎/🅾️ when', 34, 20, 7)
 				print('the object lights up', 27, 26, 7)
 				-- print('button:'..(self.button_released and 'true' or 'false'), 0, 24, 7)
-				if ((stat(51) > 19 and stat(51) < 24 and self.even == false) or (stat(51) > 10 and stat(51) < 15 and self.even == true)) then
-					if (self.button_released) self.lscore += 1
+				if ((stat(51) > 19 and stat(51) < 30 and self.even == false) or (stat(51) > 10 and stat(51) < 21 and self.even == true)) then
 					self.color = 7
+					--if (self.button_released) self.lscore += 1
 				else
 					--if (self.button_released) self.lscore -= 1
 				end
