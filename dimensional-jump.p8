@@ -97,7 +97,7 @@ function zero_level_start()
 	if (reset_stage == false and title_to_zero == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
-	--overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
@@ -111,14 +111,13 @@ function zero_level_start()
 			-- handle button press
 			self.button_released = handle_button_release(4) or handle_button_release(5)
 			if (not btn(4) and not btn(5)) self.button_prev = false
-			if (btn(4) or btn(5) and self.button_prev == false) then 
+			if ((btn(4) or btn(5)) and self.button_prev == false) then 
 				self.button_cur = true
 				self.button_prev = true
 			else
 				self.button_cur = false
 			end
 			if (self.button_released) self.button_release_count += 1
-			if (self.button_cur and self.color == 7) self.lscore += 1
 			if (self.button_release_count == 1) self.button_released = false
 			if (timer == 300) score+=1
 			if self.lscore == 10 then
@@ -136,13 +135,14 @@ function zero_level_start()
 				print('press ❎/🅾️ when', 34, 20, 7)
 				print('the object lights up', 27, 26, 7)
 				-- print('button:'..(self.button_released and 'true' or 'false'), 0, 24, 7)
-				if ((stat(51) > 19 and stat(51) < 30 and self.even == false) or (stat(51) > 10 and stat(51) < 21 and self.even == true)) then
+				if ((stat(51) > 16 and stat(51) < 30 and self.even == false) or (stat(51) > 7 and stat(51) < 21 and self.even == true)) then
 					self.color = 7
 					--if (self.button_released) self.lscore += 1
 				else
 					--if (self.button_released) self.lscore -= 1
 				end
 			end
+			if (self.button_cur and self.color == 7) self.lscore += 1
 			rectfill(44, 44, 84, 84, self.color)
 		end
 	}
@@ -208,9 +208,9 @@ function one_level_start()
 			if (self.end_timer == 0) control()
 			if self.allow_timer then
 				self.t += 1
-				if self.t % 14 == 0 then
+				if self.t % 18 == 0 then
 					self.allow_timer = false
-				self.dash_jump = false
+					self.dash_jump = false
 				end
 			end
 			self.tick_timer += 1
@@ -221,8 +221,8 @@ function one_level_start()
 				self.tick_timer = 0
 				self.dash_jump = false
 			end
-			if (self.enemy_pos < self.player_pos and self.tick_timer % 32 == 0) then
-				if (self.enemy_visible and flr(rnd(10) > 6) and self.enemy_fall_anim == 0 and self.end_timer == 0) self.enemy_pos += 1
+			if (self.enemy_pos < self.player_pos and self.tick_timer % 15 == 0) then
+				if (self.enemy_visible and flr(rnd(10)) > 4 and self.enemy_fall_anim == 0 and self.end_timer == 0) self.enemy_pos += 1
 			end
 
 			-- if (self.player_pos > 31 and self.enemy_visible == false and flr(rnd(3)) > 2) then
