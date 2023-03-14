@@ -97,7 +97,7 @@ function zero_level_start()
 	if (reset_stage == false and title_to_zero == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
-	-- overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
@@ -149,7 +149,7 @@ function zero_level_start()
 end
 function one_level_start()
 	-- TODO: debugging
-	-- overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(2,1000)
 	reset_stage = false
@@ -383,7 +383,7 @@ function two_level_blanks()
 end
 function two_level_start()
 	-- TODO: debugging
-	-- overlay_state = 4
+	overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(45,1000)
 	reset_stage = false
@@ -766,6 +766,7 @@ function three_level_start()
 		u=0,
 		current= 0,
 		prevcurrent = 0,
+		player_x_conv = ( 0 * -1) + 3,
 		lvl = 0,
 		xnudge = 0,
 		xcpos = 0,
@@ -794,6 +795,7 @@ function three_level_start()
 		wlcontrol = false, -- win lose control, if win or lose take control
 
 		update=function(self)
+			self.player_x_conv = (self.current * -1) + 3
 			self.tick_timer += 1
 			-- if (self.tick_timer > 60) self.tick_timer = 0
 			function control3d()
@@ -835,6 +837,7 @@ function three_level_start()
 				if ((not btn(0)) and (not btn(1)) and (not btn(2)) and (not btn(3)) and (not btn(4)) and (not btn(5)))then
 					if (self.leftpress == true) then
 						sfx(62)
+						pset(64,64,7)
 						self.xnudge+=1
 						self.current-=1
 						self.xcpos+=20
@@ -885,6 +888,9 @@ function three_level_start()
 				end
 
 				if (self.jumppress == true) then
+					-- prevent jumping into enemy at level gt 0
+					if (self.enemyx == self.player_x_conv and self.enemyy == self.lvl and self.enemyx >= 3 and self.lvl > 0) self.enemyx += 2
+					if (self.enemyx == self.player_x_conv and self.enemyy == self.lvl and self.enemyx < 3  and self.lvl > 0) self.enemyx -= 2
 					self.current = -10
 					if (self.startanim > 5) then
 						self.jumpanim -= 5.95
@@ -946,6 +952,11 @@ function three_level_start()
 			if (self.enemy_visible == false and self.jumptimer == 0) then
 				self.enemy_slice = self.jumplevel + flr(rnd(3))
 				self.enemyx = flr(rnd(6))
+				if (self.enemyx == self.player_x_conv and self.enemyx <= 3) then
+					self.enemyx += 2
+				elseif (self.enemyx == self.player_x_conv and self.enemyx > 3) then
+					self.enemyx -= 2
+				end
 				self.enemy_visible = true
 			end
 			if (self.tick_timer > 200 and self.jumptimer == 0) then
@@ -1047,6 +1058,8 @@ function three_level_start()
 				if (j == self.lvl) u = -(j-0.5)
 				c = determine_color_first_layer(self, j, 0)
 				setup_block(self.xcpos+64+60,64+ydiff,i,depth,12+self.xnudge,self.u,c,self.blocksize)
+
+
 				c = determine_color_first_layer(self, j, 1)
 				setup_block(self.xcpos+64+40,64+ydiff,i,depth,11+self.xnudge,self.u,c,self.blocksize)
 				c = determine_color_first_layer(self, j, 2)
@@ -1063,6 +1076,10 @@ function three_level_start()
 			if (self.jumppress == true) self.startanim += 1
 			if (self.end_timer > 15) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
 			if (self.lose_timer > 15) rectfill(64 - self.lose_timer*2,64 - self.lose_timer*2,64 + self.lose_timer*2, 64 + self.lose_timer*2,8)
+			print('pxc'..self.player_x_conv, 0,0,7)
+			print('ex'..self.enemyx, 0, 6, 7)
+			print('ey'..self.enemyy, 0,12,7)
+			print('lvl'..self.lvl, 0, 18, 7)
 		end
 	}
 end
