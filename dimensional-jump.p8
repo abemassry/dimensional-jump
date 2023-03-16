@@ -97,7 +97,7 @@ function zero_level_start()
 	if (reset_stage == false and title_to_zero == false) music(21,1000)
 	reset_stage = false
 	-- TODO: debugging
-	overlay_state = 4
+	--overlay_state = 4
 	-- TODO: debugging
 	zero_level = {
 		lscore = 0,
@@ -149,7 +149,7 @@ function zero_level_start()
 end
 function one_level_start()
 	-- TODO: debugging
-	overlay_state = 4
+	--overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(2,1000)
 	reset_stage = false
@@ -159,7 +159,7 @@ function one_level_start()
 		left_released = false,
 		right_released = false,
 		start_pos = 0,
-		end_pos = 300,
+		end_pos = 350,
 		end_tile = 88,
 		end_timer = 0,
 		player_pos = 5,
@@ -214,9 +214,8 @@ function one_level_start()
 				end
 			end
 			self.tick_timer += 1
-			if self.tick_timer > 120 then
+			if self.tick_timer > 120 or (self.tick_timer > 10 and self.player_screen_pos > 60) then
 				self.allow_timer = true
-				--self.start_pos-=1
 				self.end_pos-=1
 				self.tick_timer = 0
 				self.dash_jump = false
@@ -383,7 +382,7 @@ function two_level_blanks()
 end
 function two_level_start()
 	-- TODO: debugging
-	overlay_state = 4
+	-- overlay_state = 4
 	-- TODO: debugging
 	if (reset_stage == false) music(45,1000)
 	reset_stage = false
@@ -1076,10 +1075,6 @@ function three_level_start()
 			if (self.jumppress == true) self.startanim += 1
 			if (self.end_timer > 15) rectfill(64 - self.end_timer*2,64 - self.end_timer*2,64 + self.end_timer*2, 64 + self.end_timer*2,11)
 			if (self.lose_timer > 15) rectfill(64 - self.lose_timer*2,64 - self.lose_timer*2,64 + self.lose_timer*2, 64 + self.lose_timer*2,8)
-			print('pxc'..self.player_x_conv, 0,0,7)
-			print('ex'..self.enemyx, 0, 6, 7)
-			print('ey'..self.enemyy, 0,12,7)
-			print('lvl'..self.lvl, 0, 18, 7)
 		end
 	}
 end
