@@ -8,6 +8,7 @@ It is also posted on the Lexaloffle PICO-8 BBS: [Dimensional Jump]()
 Now that that's out of the way, let's begin.
 
 ![title_screen](https://wsnd.io/VvdFoU2O/dimensional-jump_title.gif)
+
 A journey through the dimensions from dimension zero to the third dimension.
 
 ## Level 0
@@ -33,6 +34,7 @@ Now the enemy might appear anywhere on the playing field, dodge them and make yo
 
 ## Level 3
 ![level_three](https://wsnd.io/M6sxwAn9/dimensional-jump_3d_long.gif)
+
 In the 3d level you get yet another degree of freedom you can jump into the screen, so the standard down, up, left, right directions. But there is one change.
 
 To jump press the 🅾️ or ❎ button (z or x on a keyboard).
