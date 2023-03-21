@@ -235,7 +235,7 @@ function one_level_start()
 			local space=0
 			local count=0
 			local dashx = 0
-			local drops = {15, 21, 28, 35, 42}
+			local drops = {15, 21, 28, 35, 42, 51, 65, 79}
 			--             25  37  51  65  79
 			local x1, x2 = 0
 			local player_local = self.player_pos - ( (self.player_pos - 5) / 2 )
