@@ -3,7 +3,8 @@
 This is the second game I've worked on, but I couldn't have done it without the support of everyone who helped, scroll down or check out the credits at the end. Much of the development was streamed [Live on Twitch](https://www.twitch.tv/abemassry).
 
 Before we get into the gameplay, I wanted ask if you'd consider supporting this game so we can make more games in the future. https://abemassry.itch.io/dimensional-jump
-It is also posted on the Lexaloffle PICO-8 BBS: [Dimensional Jump]()
+
+It is also posted on the Lexaloffle PICO-8 BBS: [Dimensional Jump](https://www.lexaloffle.com/bbs/?tid=52444)
 
 Now that that's out of the way, let's begin.
 
@@ -41,7 +42,7 @@ To jump press the 🅾️ or ❎ button (z or x on a keyboard).
 
 Instead of dash-jumping you press once to jump into the screen to the next slice of blocks. The end goal is in one of the blocks, further ahead, so look out for it.
 
-Watch out for the enemies, while they can't jump they can communicate your location to eachother.
+Watch out for the enemies, while they can't jump they can communicate your location to each other.
 
 ## Music
 This is all set to an original soundtrack.
