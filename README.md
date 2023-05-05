@@ -47,6 +47,8 @@ Watch out for the enemies, while they can't jump they can communicate your locat
 ## Music
 This is all set to an original soundtrack.
 
+Available at: https://abemassry.bandcamp.com/album/dimensional-jump-original-video-game-soundtrack
+
 ## Credits
 
 This was all made possible with many people's support, so here are the credits to the game:
